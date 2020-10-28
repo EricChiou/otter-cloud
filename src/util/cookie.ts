@@ -1,0 +1,35 @@
+export class Cookie {
+  public static readonly get = (key: string): string => {
+    const cookie = document.cookie;
+    const cookies = cookie.split(';');
+    for (const c of cookies) {
+      const kv = c.trim().split('=', 2);
+      if (kv[0] === key) {
+        return kv[1];
+      }
+    }
+    return '';
+  };
+
+  /**
+   * @param key Cookie key.
+   * @param value Cookie content.
+   * @param expires Cookie expires time. (seconds)
+   * @param path Cookie path.
+   */
+  public static readonly add = (key: string, value: string, expires?: number, path?: string) => {
+    let cookie = `${key}=${value};`;
+    if (expires !== undefined) {
+      const date = new Date();
+      date.setTime(date.getTime() + expires * 1000)
+      cookie += ` expires=${date.toUTCString()};`
+    }
+    cookie += ` path=${path ? path : '/'};`
+
+    document.cookie = cookie;
+  }
+
+  public static readonly remove = (key: string) => {
+    document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+};

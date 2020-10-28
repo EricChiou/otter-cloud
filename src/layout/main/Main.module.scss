@@ -1,0 +1,45 @@
+@import '../../assets/css/theme.scss';
+@import '../../assets/css/rwd.scss';
+
+#header {
+  height: 65px;
+  background-color: theme(blue);
+
+  @include breakpoint(m) {
+    height: 50px;
+  }
+
+  @include breakpoint(s) {
+    height: 40px;
+  }
+}
+
+#sideMenu {
+  display: inline-block;
+  width: 309px;
+  height: calc(100% - 65px);
+  background-color: theme(white);
+  border-right: 1px solid theme(gray);
+
+  @include breakpoint(m) {
+    height: calc(100% - 50px);
+  }
+
+  @include breakpoint(s) {
+    height: calc(100% - 40px);
+  }
+}
+
+#main {
+  display: inline-block;
+  width: calc(100% - 310px);
+  height: calc(100% - 65px);
+
+  @include breakpoint(m) {
+    height: calc(100% - 50px);
+  }
+
+  @include breakpoint(s) {
+    height: calc(100% - 40px);
+  }
+}

@@ -1,0 +1,24 @@
+$colors: (blue: (base:#30a9de, light:#dbe2ef, deep:#2196f3),
+  white:(base:#f5f5f5, deep:#eaeaea),
+  gray:(base:#bbbbbb, light:#dddddd),
+  black:(base:#222831, light:#393e46));
+
+@function theme($color, $type: 'base', $map: $colors) {
+  @if (map-has-key($map, $color)) {
+    $value: map-get($map, $color);
+
+    @if type-of($value)==color {
+      @return $value;
+    }
+
+    @if (map-has-key($value, $type)) {
+      $value: map-get($value, $type);
+
+      @if type-of($value)==color {
+        @return $value;
+      }
+    }
+  }
+
+  @return null;
+}

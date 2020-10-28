@@ -1,0 +1,14 @@
+@import '../../../assets/css/theme.scss';
+
+.input {
+  display: inline-block;
+  font-size: 16px;
+  color: theme(black, light);
+  border: 2px solid theme(blue, light);
+  border-radius: 4px;
+  outline: none;
+
+  &:focus {
+    border-color: #cadefc;
+  }
+}
