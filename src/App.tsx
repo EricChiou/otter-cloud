@@ -1,32 +1,41 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, Redirect, useLocation, useHistory } from "react-router-dom";
+import React, { Dispatch, useEffect } from 'react';
+import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-import { setUserProfile } from './store/userProfile';
-import { routes } from './routes/routes';
+import { routes } from './routes';
 
 import './App.scss';
 
-import { StatusService, UserProfileService } from './service';
+import { setUserProfile } from './store/user.slice';
+
+import { StatusService, UserService } from './service';
 import { Routes } from './constants';
 
+const init = (dispatch: Dispatch<any>) => {
+  try {
+    const token = UserService.getTokenFrCookie();
+    const userProfile = UserService.parseToken(token);
+    dispatch(setUserProfile(userProfile));
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 const App = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
+  // init data
+  init(dispatch);
+
   // if not login and not at login page, redirect to login page.
   useEffect(() => {
-    const token = UserProfileService.getTokenFrCookie();
-    if (token) {
-      // console.log(token);
-      // const userProfile = UserProfileService.parseToken(token);
-      // console.log(userProfile);
-      // setUserProfile(userProfile);
-    }
-
-    if (!StatusService.isLogin() && location.pathname !== Routes.LOGIN) {
+    if (location.pathname !== Routes.LOGIN && !StatusService.isLogin()) {
       history.push(Routes.LOGIN);
     }
-  }, [location]);
+  }, [location, history]);
 
   return (
     <div id="app">
@@ -39,7 +48,7 @@ const App = () => {
           </Route>
         ))}
         <Route path="/">
-          <Redirect to="/home" />
+          <Redirect to={Routes.HOME} />
         </Route>
       </Switch>
     </div>

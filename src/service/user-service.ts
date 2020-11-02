@@ -1,11 +1,9 @@
 import { UserProfile } from '../vo/common';
 
-import { store } from '../store/store';
-
-import { Cookie } from '../util/cookie';
+import { Cookie } from '../util/cookie.util';
 import { CookieKeys } from '../constants';
 
-export class UserProfileService {
+export class UserService {
   public static readonly parseToken = (token: string): UserProfile => {
     const userProfile: UserProfile = {
       token: null,
@@ -22,7 +20,7 @@ export class UserProfileService {
     const seg = token.split('.');
     if (seg.length !== 3) { return userProfile; }
 
-    const decode = atob(seg[1]);
+    const decode = decodeURIComponent(atob(seg[1]));
     if (!decode) { return userProfile; }
 
     const parse: UserProfile = JSON.parse(decode);
@@ -36,7 +34,7 @@ export class UserProfileService {
     userProfile.lang = parse.lang;
     userProfile.exp = parse.exp;
     return userProfile;
-  }
+  };
 
   public static readonly saveToken2Cookie = (token: string, expires: number) => {
     Cookie.add(CookieKeys.TOKEN_KEY, btoa(token), expires / 1000);
@@ -50,5 +48,5 @@ export class UserProfileService {
       console.error(error);
     }
     return '';
-  }
+  };
 }

@@ -19,7 +19,7 @@ export const langs = ls;
 export const intl = (key: string, type?: IntlType): string => {
   if (!key) { return ''; }
 
-  const userProfile = store.getState().userProfile;
+  const userProfile = store.getState().user.profile;
   const lang = userProfile ? userProfile.lang : '';
   let text: string;
 

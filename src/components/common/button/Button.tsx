@@ -17,7 +17,7 @@ interface Props {
   onClick?: () => void,
 }
 
-const button: FunctionComponent<Props> = ({ value, type, style, onClick }) => {
+const Button: FunctionComponent<Props> = ({ value, type, style, onClick }) => {
   let className = styles.btn;
 
   switch (type) {
@@ -47,4 +47,4 @@ const button: FunctionComponent<Props> = ({ value, type, style, onClick }) => {
   )
 };
 
-export const Button = button;
+export { Button };

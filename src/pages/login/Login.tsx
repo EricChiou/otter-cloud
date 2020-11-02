@@ -1,18 +1,17 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import styles from './Login.module.scss';
-
-import { setUserProfile } from '../../store/userProfile';
+import { setUserProfile } from '../../store/user.slice';
 
 import { Routes } from '../../constants';
 import { intl, keys, IntlType } from '../../i18n';
 
-import { StatusService, UserProfileService } from '../../service';
+import { StatusService, UserService } from '../../service';
 
 import Header from '../../components/header/Header';
 import { Input, Button } from '../../components/common';
 
+import styles from './Login.module.scss';
 
 const Login: FunctionComponent<{}> = () => {
   const history = useHistory();
@@ -47,15 +46,16 @@ const Login: FunctionComponent<{}> = () => {
     const fakeUserData = {
       id: 1,
       acc: 'UserAccount',
-      name: 'UserName',
+      name: 'UserName 使用者名稱',
       role: 'normal',
       lang: 'zh-tw',
       exp: new Date().getTime() + (7 * 24 * 60 * 60 * 1000),
     };
-    const fakeToken = `qazwsxedc.${btoa(JSON.stringify(fakeUserData))}.rfvtgbyhn`;
+    const jsonStr = JSON.stringify(fakeUserData);
+    const fakeToken = `qazwsxedc.${btoa(encodeURIComponent(jsonStr))}.rfvtgbyhn`;
 
-    const userProfile = UserProfileService.parseToken(fakeToken);
-    UserProfileService.saveToken2Cookie(fakeToken, userProfile.exp);
+    const userProfile = UserService.parseToken(fakeToken);
+    UserService.saveToken2Cookie(fakeToken, userProfile.exp);
     setUserProfile(userProfile);
 
     history.push(Routes.HOME);
@@ -66,7 +66,7 @@ const Login: FunctionComponent<{}> = () => {
       <div className={styles.mask}></div>
       <div className={styles.loginBlock}>
         <div className={styles.header}>
-          <Header fontSize={20}></Header>
+          <Header fontSize={20} showSetting={false}></Header>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.acc, IntlType.preUpper)}:</span>

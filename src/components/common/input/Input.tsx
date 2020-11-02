@@ -9,7 +9,7 @@ interface Props {
   style?: object
 }
 
-const input: FunctionComponent<Props> = ({ type, placeholder, disabled, style }) => {
+const Input: FunctionComponent<Props> = ({ type, placeholder, disabled, style }) => {
   return (
     <input className={styles.input}
       type={type ? type : 'text'}
@@ -20,4 +20,4 @@ const input: FunctionComponent<Props> = ({ type, placeholder, disabled, style })
   );
 }
 
-export const Input = input;
+export { Input };
