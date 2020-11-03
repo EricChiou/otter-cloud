@@ -10,4 +10,6 @@ export interface Keys {
   acc: string;
   pwd: string;
   login: string;
+  logout: string;
+  signUp: string;
 }

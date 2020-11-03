@@ -1,6 +1,6 @@
-$colors: (blue: (base:#30a9de, light:#dbe2ef, deep:#2196f3),
+$colors: (blue: (base:#30a9de, light:#bbe1fa, deep:#2196f3),
   white:(base:#f5f5f5, deep:#eaeaea),
-  gray:(base:#bbbbbb, light:#dddddd),
+  gray:(base:#bbbbbb, light:#dddddd, deep:#999999),
   black:(base:#222831, light:#393e46));
 
 @function theme($color, $type: 'base', $map: $colors) {

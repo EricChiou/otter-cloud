@@ -6,4 +6,6 @@ export const en_us: Keys = {
   acc: 'acc',
   pwd: 'pwd',
   login: 'login',
+  logout: 'logout',
+  signUp: 'sign up',
 };

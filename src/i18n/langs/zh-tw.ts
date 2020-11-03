@@ -6,4 +6,6 @@ export const zh_tw: Keys = {
   acc: '帳號',
   pwd: '密碼',
   login: '登入',
+  logout: '登出',
+  signUp: '註冊',
 };
