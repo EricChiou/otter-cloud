@@ -9,7 +9,6 @@ export class StatusService {
       userProfile.acc &&
       userProfile.name &&
       userProfile.role &&
-      userProfile.lang &&
       userProfile.exp) {
 
       return true;

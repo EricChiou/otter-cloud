@@ -11,7 +11,6 @@ export class UserService {
       acc: null,
       name: null,
       role: null,
-      lang: '',
       exp: 0,
     };
 
@@ -31,17 +30,12 @@ export class UserService {
     userProfile.acc = parse.acc;
     userProfile.name = parse.name;
     userProfile.role = parse.role;
-    userProfile.lang = parse.lang;
     userProfile.exp = parse.exp;
     return userProfile;
   };
 
-  public static readonly saveToken2Cookie = (token: string, expires: number) => {
-    Cookie.add(CookieKeys.TOKEN_KEY, btoa(token), expires / 1000);
-  }
-
   public static readonly getTokenFrCookie = (): string => {
-    const base64 = Cookie.get(CookieKeys.TOKEN_KEY);
+    const base64 = Cookie.get(CookieKeys.TOKEN);
     try {
       return atob(base64);
     } catch (error) {
@@ -49,4 +43,24 @@ export class UserService {
     }
     return '';
   };
+
+  public static readonly saveToken2Cookie = (token: string, expires: number) => {
+    Cookie.add(CookieKeys.TOKEN, btoa(token), expires);
+  }
+
+  public static readonly getLangFrCookie = (): string => {
+    const base64 = Cookie.get(CookieKeys.LANG);
+    try {
+      if (base64) {
+        return atob(base64);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return window.navigator.language;
+  };
+
+  public static readonly saveLang2Cookie = (lang: string) => {
+    Cookie.add(CookieKeys.LANG, btoa(lang), 100 * 365 * 24 * 60 * 60 * 1000); // 100 years
+  }
 }

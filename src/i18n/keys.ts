@@ -8,4 +8,7 @@ export const keys: Keys = {
   login: 'login',
   logout: 'logout',
   signUp: 'signUp',
+  lang: 'lang',
+  english: 'english',
+  tradChinese: 'tradChinese',
 };

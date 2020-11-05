@@ -9,6 +9,7 @@ import { intl, keys, IntlType } from '../../i18n';
 import { StatusService, UserService } from '../../service';
 
 import Header from '../../components/header/Header';
+import Lang from './lang/Lang';
 import { Input, Button } from '../../components/common';
 
 import styles from './Login.module.scss';
@@ -48,8 +49,7 @@ const Login: FunctionComponent<{}> = () => {
       acc: 'UserAccount',
       name: 'UserName 使用者名稱',
       role: 'normal',
-      lang: 'zh-tw',
-      exp: new Date().getTime() + (7 * 24 * 60 * 60 * 1000),
+      exp: new Date().getTime() + (7 * 24 * 60 * 60 * 1000), // 7days
     };
     const jsonStr = JSON.stringify(fakeUserData);
     const fakeToken = `qazwsxedc.${btoa(encodeURIComponent(jsonStr))}.rfvtgbyhn`;
@@ -70,17 +70,18 @@ const Login: FunctionComponent<{}> = () => {
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.acc, IntlType.preUpper)}:</span>
-          <Input placeholder={intl(keys.account)} style={{ padding: '2px' }}></Input>
+          <Input placeholder={intl(keys.account)} style={{ padding: '2px 3px' }}></Input>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.pwd, IntlType.preUpper)}:</span>
-          <Input type="password" placeholder={intl(keys.password)} style={{ padding: '2px' }}></Input>
+          <Input type="password" placeholder={intl(keys.password)} style={{ padding: '2px 3px' }}></Input>
         </div>
         <div className={styles.loginBtn}>
-          <Button value={intl(keys.login, IntlType.preUpper)} onClick={login}></Button>
+          <Button onClick={login}>{intl(keys.login, IntlType.preUpper)}</Button>
         </div>
         <div className={styles.signUp}>sign up</div>
       </div>
+      <Lang></Lang>
     </div >
   );
 }

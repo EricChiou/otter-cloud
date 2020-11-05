@@ -1,9 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { store } from '../../store/store';
-
-import { Gear } from '../../components/common/index';
-
+import { Gear } from '../../components/icon';
 import Menu from './menu/Menu';
 
 import styles from './Header.module.scss';
@@ -15,13 +13,13 @@ interface Props {
 }
 
 const Header: FunctionComponent<Props> = ({ fontSize, showSetting = true }) => {
-  const storeUser = store.getState().user;
+  const userStore = store.getState().user;
   const [userProfile, setUserProfile] = useState(store.getState().user.profile);
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     setUserProfile(store.getState().user.profile);
-  }, [storeUser.profile]);
+  }, [userStore.profile]);
 
   const settingOnClick = () => {
     setShowMenu(!showMenu);
@@ -44,7 +42,7 @@ const Header: FunctionComponent<Props> = ({ fontSize, showSetting = true }) => {
               <Gear></Gear>
             </div>
             {showMenu ?
-              <Menu></Menu>
+              <Menu close={settingOnClick}></Menu>
               : null
             }
           </div>

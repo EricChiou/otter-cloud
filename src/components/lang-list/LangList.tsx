@@ -1,0 +1,35 @@
+import React, { FunctionComponent } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { intl, keys, IntlType, langs } from '../../i18n';
+import { setLang } from '../../store/user.slice';
+import { UserService } from '../../service/user-service';
+
+import styles from './LangList.module.scss';
+
+interface Props {
+  onSelect?: Function;
+}
+
+const LangList: FunctionComponent<Props> = ({ onSelect }) => {
+  const dispatch = useDispatch();
+
+  const chooseLang = (lang: string) => {
+    UserService.saveLang2Cookie(lang);
+    dispatch(setLang(lang));
+
+    if (onSelect) {
+      onSelect();
+    }
+  }
+
+  return (
+    <ul className={styles.langList}>
+      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english, IntlType.preUpper)}</li>
+      <hr></hr>
+      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese, IntlType.preUpper)}</li>
+    </ul>
+  );
+};
+
+export default LangList;

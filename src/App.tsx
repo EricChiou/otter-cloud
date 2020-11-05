@@ -1,41 +1,41 @@
-import React, { Dispatch, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { routes } from './routes';
-
-import './App.scss';
-
-import { setUserProfile } from './store/user.slice';
-
+import { setUserProfile, selectUserProfile, selectLang } from './store/user.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
 
-const init = (dispatch: Dispatch<any>) => {
-  try {
-    const token = UserService.getTokenFrCookie();
-    const userProfile = UserService.parseToken(token);
-    dispatch(setUserProfile(userProfile));
-
-  } catch (error) {
-    console.error(error);
-  }
-}
+import './App.scss';
 
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const userProfile = useSelector(selectUserProfile);
+  const lang = useSelector(selectLang);
+  const token = UserService.getTokenFrCookie();
 
-  // init data
-  init(dispatch);
+  useEffect(() => { console.log('change language') }, [lang]);
+
+  // parse token from cookie
+  useEffect(() => {
+    try {
+      const userProfile = UserService.parseToken(token);
+      dispatch(setUserProfile(userProfile));
+
+    } catch (error) {
+      console.error(error);
+    }
+  }, [token, dispatch]);
 
   // if not login and not at login page, redirect to login page.
   useEffect(() => {
     if (location.pathname !== Routes.LOGIN && !StatusService.isLogin()) {
       history.push(Routes.LOGIN);
     }
-  }, [location, history]);
+  }, [location, history, userProfile]);
 
   return (
     <div id="app">

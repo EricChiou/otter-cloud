@@ -1,0 +1,24 @@
+@import '../../assets/css/theme.scss';
+
+.langList {
+  margin: 0;
+  padding: 3px;
+  list-style-type: none;
+
+  li {
+    margin: 0;
+    padding: 2px;
+    width: calc(100% - 4px);
+    line-height: 26px;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: theme(gray);
+    }
+  }
+
+  hr {
+    margin: 0;
+    padding: 0;
+  }
+}

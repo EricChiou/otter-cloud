@@ -43,7 +43,13 @@
     }
 
     .loginBtn {
-      margin-top: 15px;
+      margin-top: 14px;
+
+      .loginText {
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: bottom;
+      }
     }
 
     .signUp {

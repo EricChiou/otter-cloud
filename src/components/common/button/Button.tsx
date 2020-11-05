@@ -11,13 +11,12 @@ export enum ButtonType {
 }
 
 interface Props {
-  value?: string,
   type?: ButtonType,
   style?: object,
   onClick?: () => void,
 }
 
-const Button: FunctionComponent<Props> = ({ value, type, style, onClick }) => {
+const Button: FunctionComponent<Props> = ({ children, type, style, onClick }) => {
   let className = styles.btn;
 
   switch (type) {
@@ -43,7 +42,7 @@ const Button: FunctionComponent<Props> = ({ value, type, style, onClick }) => {
   }
 
   return (
-    <button className={className} style={style} onClick={onClick}>{value}</button>
+    <button className={className} style={style} onClick={onClick}>{children}</button>
   )
 };
 

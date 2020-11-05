@@ -14,14 +14,14 @@ export class Cookie {
   /**
    * @param key Cookie key.
    * @param value Cookie content.
-   * @param expires Cookie expires time. (seconds)
+   * @param expires Cookie expires time. (milliseconds)
    * @param path Cookie path.
    */
   public static readonly add = (key: string, value: string, expires?: number, path?: string) => {
     let cookie = `${key}=${value};`;
     if (expires !== undefined) {
       const date = new Date();
-      date.setTime(date.getTime() + expires * 1000)
+      date.setTime(date.getTime() + expires)
       cookie += ` expires=${date.toUTCString()};`
     }
     cookie += ` path=${path ? path : '/'};`

@@ -2,8 +2,7 @@ import { store } from '../store/store';
 
 import { Keys } from './interface';
 
-import { keys as ks } from './keys';
-import { langs as ls } from './langs';
+import { langs } from './langs';
 import { en_us } from './langs/en-us';
 import { zh_tw } from './langs/zh-tw';
 
@@ -14,21 +13,22 @@ export enum IntlType {
   preUpper = 'preUpper',
 }
 
-export const keys = ks;
-export const langs = ls;
+export { langs } from './langs';
+export { keys } from './keys';
 export const intl = (key: string, type?: IntlType): string => {
   if (!key) { return ''; }
 
-  const userProfile = store.getState().user.profile;
-  const lang = userProfile ? userProfile.lang : '';
+  const lang = store.getState().user.lang;
   let text: string;
 
   switch (lang) {
-    case ls.en_us:
+    case langs.en:
+    case langs.en_us:
       text = getText(key, en_us);
       break;
 
-    case ls.zh_tw:
+    case langs.zh:
+    case langs.zh_tw:
       text = getText(key, zh_tw);
       break;
 

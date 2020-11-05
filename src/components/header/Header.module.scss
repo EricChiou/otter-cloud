@@ -76,6 +76,7 @@
       text-align: right;
       text-overflow: ellipsis;
       vertical-align: middle;
+      overflow: hidden;
 
       @include breakpoint(s) {
         display: none;

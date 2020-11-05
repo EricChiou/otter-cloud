@@ -1,0 +1,40 @@
+@import '../../../assets/css/theme.scss';
+
+.lang {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 2px 3px;
+  color: theme(black, light);
+  background-color: theme(white, deep);
+  border-radius: 4px;
+  cursor: pointer;
+
+  .btn {
+    &:hover {
+      box-shadow: 0 0 3px 2px theme(gray);
+    }
+  }
+
+  svg {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    vertical-align: bottom;
+  }
+
+  .langText {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+
+  .langList {
+    position: absolute;
+    right: calc(100% + 4px);
+    bottom: 0;
+    min-width: 100px;
+    text-align: left;
+    background-color: theme(white, deep);
+    border-radius: 4px;
+  }
+}

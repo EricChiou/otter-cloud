@@ -1,6 +1,8 @@
 import { Langs } from './interface';
 
 export const langs: Langs = {
-  en_us: 'en-us',
-  zh_tw: 'zh-tw',
+  en: 'en',
+  en_us: 'en-US',
+  zh: 'zh',
+  zh_tw: 'zh-TW',
 };

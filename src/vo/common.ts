@@ -4,6 +4,5 @@ export interface UserProfile {
   acc: string | null;
   name: string | null;
   role: string | null;
-  lang: string;
   exp: number;
 }
