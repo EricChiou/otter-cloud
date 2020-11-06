@@ -10,7 +10,8 @@ export enum IntlType {
   normal = 'normal',
   upper = 'upper',
   lower = 'lower',
-  preUpper = 'preUpper',
+  beginUpper = 'beginUpper',
+  perUpper = 'perUpper',
 }
 
 export type { Langs, Keys } from './interface';
@@ -45,8 +46,14 @@ export const intl = (key: string, type?: IntlType): string => {
     case IntlType.lower:
       return text.toLowerCase();
 
-    case IntlType.preUpper:
+    case IntlType.beginUpper:
       return text.slice(0, 1).toUpperCase() + text.slice(1);
+
+    case IntlType.perUpper:
+      const segs = text.split(' ');
+      let newText = '';
+      segs.forEach((t) => { newText += ' ' + t.slice(0, 1).toUpperCase() + t.slice(1) });
+      return newText.slice(1);
 
     default:
       return text;

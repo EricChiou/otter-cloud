@@ -11,4 +11,5 @@ export const zh_tw: Keys = {
   lang: '語言',
   english: '英文',
   tradChinese: '繁體中文',
+  myCloudStorge: '我的雲端硬碟',
 };

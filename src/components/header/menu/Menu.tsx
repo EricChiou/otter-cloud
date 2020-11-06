@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { intl, keys, IntlType } from 'src/i18n';
 import { logout } from 'src/store/user.slice';
 import { Language, Logout } from 'src/components/icon';
-import Lang from './lang/Lang';
+import LangList from 'src/components/lang-list/LangList';
 
 import styles from './Menu.module.scss';
 
@@ -20,7 +20,6 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
     const onClick = (e: MouseEvent) => {
       let ele: HTMLElement | null = e.target as HTMLElement;
       while (ele) {
-        console.log(ele.className);
         if (ele.className === styles.menu) {
           return;
         }
@@ -45,16 +44,20 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
         <li onClick={() => { setShowLangList(!showLangList); }}>
           <div className={'vert-align-mid'}></div>
           <Language></Language>
-          <span className={styles.optionText}>{intl(keys.lang, IntlType.preUpper)}</span>
+          <span className={styles.optionText}>{intl(keys.lang, IntlType.beginUpper)}</span>
         </li>
         <hr></hr>
         <li onClick={doLogout}>
           <div className={'vert-align-mid'}></div>
           <Logout></Logout>
-          <span className={styles.optionText}>{intl(keys.logout, IntlType.preUpper)}</span>
+          <span className={styles.optionText}>{intl(keys.logout, IntlType.beginUpper)}</span>
         </li>
       </ul>
-      {showLangList ? <Lang close={() => { setShowLangList(false); }}></Lang> : null}
+      {showLangList ?
+        <div className={styles.lang}>
+          <LangList onSelect={() => { setShowLangList(false); }}></LangList>
+        </div> : null
+      }
     </div>
   );
 };

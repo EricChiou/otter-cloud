@@ -25,9 +25,9 @@ const LangList: FunctionComponent<Props> = ({ onSelect }) => {
 
   return (
     <ul className={styles.langList}>
-      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english, IntlType.preUpper)}</li>
+      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english, IntlType.beginUpper)}</li>
       <hr></hr>
-      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese, IntlType.preUpper)}</li>
+      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese, IntlType.beginUpper)}</li>
     </ul>
   );
 };

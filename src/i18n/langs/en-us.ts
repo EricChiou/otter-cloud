@@ -11,4 +11,5 @@ export const en_us: Keys = {
   lang: 'language',
   english: 'English',
   tradChinese: 'traditional Chinese',
+  myCloudStorge: 'my cloud storge',
 };

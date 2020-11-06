@@ -14,10 +14,8 @@ const App = () => {
   const history = useHistory();
   const location = useLocation();
   const userProfile = useSelector(selectUserProfile);
-  const lang = useSelector(selectLang);
+  useSelector(selectLang);
   const token = UserService.getTokenFrCookie();
-
-  useEffect(() => { console.log('change language') }, [lang]);
 
   // parse token from cookie
   useEffect(() => {

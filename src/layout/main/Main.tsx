@@ -31,17 +31,17 @@ const Main: FunctionComponent<{}> = ({ children }) => {
   });
 
   return (
-    <>
+    <div id={styles.main}>
       <div id={styles.header}>
         <Header fontSize={fontSize}></Header>
       </div>
       <div id={styles.sideMenu}>
         <SideMenu></SideMenu>
       </div>
-      <div id={styles.main}>
+      <div id={styles.content}>
         {children}
       </div>
-    </>
+    </div>
   );
 }
 

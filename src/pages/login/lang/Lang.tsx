@@ -21,7 +21,7 @@ const Lang: FunctionComponent<{}> = () => {
     <div className={styles.lang}>
       <div className={styles.btn} onClick={onClick}>
         <Language></Language>
-        <span className={styles.langText}>{intl(keys.lang, IntlType.preUpper)}</span>
+        <span className={styles.langText}>{intl(keys.lang, IntlType.beginUpper)}</span>
       </div>
       {showLangList ?
         <div className={styles.langList}>
