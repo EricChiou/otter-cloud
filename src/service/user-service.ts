@@ -1,7 +1,7 @@
-import { UserProfile } from '../vo/common';
+import { UserProfile } from 'src/vo/common';
 
-import { Cookie } from '../util/cookie.util';
-import { CookieKeys } from '../constants';
+import { Cookie } from 'src/util/cookie.util';
+import { CookieKeys } from 'src/constants';
 
 export class UserService {
   public static readonly parseToken = (token: string): UserProfile => {

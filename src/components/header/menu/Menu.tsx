@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { intl, keys, IntlType } from '../../../i18n';
-import { logout } from '../../../store/user.slice';
-import { Language, Logout } from '../../../components/icon';
+import { intl, keys, IntlType } from 'src/i18n';
+import { logout } from 'src/store/user.slice';
+import { Language, Logout } from 'src/components/icon';
 import Lang from './lang/Lang';
 
 import styles from './Menu.module.scss';

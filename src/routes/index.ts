@@ -1,10 +1,10 @@
-import Main from '../layout/main/Main';
-import NoSideMenu from '../layout/plain/Plain';
+import Main from 'src/layout/main/Main';
+import NoSideMenu from 'src/layout/plain/Plain';
 
-import { Routes } from '../constants/routes-url';
+import { Routes } from 'src/constants/routes-url';
 
-import Home from '../pages/home/Home';
-import Login from '../pages/login/Login';
+import Home from 'src/pages/home/Home';
+import Login from 'src/pages/login/Login';
 
 export const routes = [
   {

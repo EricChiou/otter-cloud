@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import LangList from '../../../../components/lang-list/LangList';
+import LangList from 'src/components/lang-list/LangList';
 
 import styles from './Lang.module.scss';
 

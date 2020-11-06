@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 // import styles from './Home.module.scss';
 
-import { selectUserProfile } from '../../store/user.slice';
+import { selectUserProfile } from 'src/store/user.slice';
 
 const Home: FunctionComponent<{}> = () => {
   const userProfile = useSelector(selectUserProfile);

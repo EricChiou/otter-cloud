@@ -2,8 +2,8 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import styles from './Main.module.scss';
 
-import Header from '../../components/header/Header';
-import SideMenu from '../../components/side-menu/SideMenu';
+import Header from 'src/components/header/Header';
+import SideMenu from 'src/components/side-menu/SideMenu';
 
 const Main: FunctionComponent<{}> = ({ children }) => {
   const [fontSize, setFontSize] = useState(32);

@@ -1,4 +1,4 @@
-import { Keys } from "../interface";
+import { Keys } from "src/i18n";
 
 export const en_us: Keys = {
   account: 'account',

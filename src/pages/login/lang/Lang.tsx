@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useState } from 'react';
 
-import { Language } from '../../../components/icon';
-import { intl, keys, IntlType } from '../../../i18n';
-import LangList from '../../../components/lang-list/LangList';
+import { Language } from 'src/components/icon';
+import { intl, keys, IntlType } from 'src/i18n';
+import LangList from 'src/components/lang-list/LangList';
 
 import styles from './Lang.module.scss';
 

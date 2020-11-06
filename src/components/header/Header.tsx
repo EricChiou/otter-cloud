@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { store } from '../../store/store';
-import { Gear } from '../../components/icon';
+import { store } from 'src/store/store';
+import { Gear } from 'src/components/icon/Gear';
 import Menu from './menu/Menu';
 
 import styles from './Header.module.scss';
-import logo from '../../assets/img/logo.png';
+import logo from 'src/assets/img/logo.png';
 
 interface Props {
   fontSize?: number;

@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { intl, keys, IntlType, langs } from '../../i18n';
-import { setLang } from '../../store/user.slice';
-import { UserService } from '../../service/user-service';
+import { intl, keys, IntlType, langs } from 'src/i18n';
+import { setLang } from 'src/store/user.slice';
+import { UserService } from 'src/service/user-service';
 
 import styles from './LangList.module.scss';
 

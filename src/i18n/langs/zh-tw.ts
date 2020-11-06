@@ -1,4 +1,4 @@
-import { Keys } from "../interface";
+import { Keys } from "src/i18n";
 
 export const zh_tw: Keys = {
   account: '帳號',

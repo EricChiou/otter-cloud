@@ -1,4 +1,4 @@
-import { store } from '../store/store';
+import { store } from 'src/store/store';
 
 export class StatusService {
   public static readonly isLogin = (): boolean => {

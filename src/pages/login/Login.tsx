@@ -1,16 +1,16 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
-import { setUserProfile } from '../../store/user.slice';
+import { setUserProfile } from 'src/store/user.slice';
 
-import { Routes } from '../../constants';
-import { intl, keys, IntlType } from '../../i18n';
+import { Routes } from 'src/constants';
+import { intl, keys, IntlType } from 'src/i18n';
 
-import { StatusService, UserService } from '../../service';
+import { StatusService, UserService } from 'src/service';
 
-import Header from '../../components/header/Header';
+import Header from 'src/components/header/Header';
 import Lang from './lang/Lang';
-import { Input, Button } from '../../components/common';
+import { Input, Button } from 'src/components/common';
 
 import styles from './Login.module.scss';
 

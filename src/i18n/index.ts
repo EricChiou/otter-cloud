@@ -1,4 +1,4 @@
-import { store } from '../store/store';
+import { store } from 'src/store/store';
 
 import { Keys } from './interface';
 
@@ -13,6 +13,7 @@ export enum IntlType {
   preUpper = 'preUpper',
 }
 
+export type { Langs, Keys } from './interface';
 export { langs } from './langs';
 export { keys } from './keys';
 export const intl = (key: string, type?: IntlType): string => {
