@@ -26,7 +26,7 @@ const Item: FunctionComponent<Props> = ({
   CreateItemIcon,
   createItem,
 }) => {
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(true);
 
   const itemOnSelect = (e: MouseEvent<HTMLElement>, itemData: Item) => {
     if (onSelect) {
