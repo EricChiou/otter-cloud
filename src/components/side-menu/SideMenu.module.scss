@@ -7,49 +7,6 @@
   color: theme(black);
   overflow: auto;
 
-  .option {
-    display: block;
-    padding: 4px 8px;
-    height: 26px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: theme(pink, light);
-    }
-
-    &:active {
-      background-color: theme(pink);
-    }
-
-    @include breakpoint(l) {
-      display: inline-block;
-    }
-
-    .content {
-      .icon {
-        display: inline-block;
-        margin-right: 5px;
-        vertical-align: middle;
-
-        svg {
-          display: block;
-          width: 26px;
-          height: 26px;
-        }
-      }
-
-      .text {
-        display: inline-block;
-        max-width: 202px;
-        font-size: 18px;
-        font-weight: bold;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        overflow: hidden;
-      }
-    }
-  }
-
   .active {
     background-color: theme(pink);
 

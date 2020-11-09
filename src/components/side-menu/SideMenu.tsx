@@ -1,32 +1,64 @@
-import React, { FunctionComponent, useRef, RefObject } from 'react';
+import React, { FunctionComponent, useRef, RefObject, useState } from 'react';
+
+import { intl, keys, IntlType } from 'src/i18n';
+import { Cloud, Folder, CreateFolder } from 'src/components/icons';
+import ItemComponent, { Item } from './item/Item';
 
 import styles from './SideMenu.module.scss';
 
-import { intl, keys, IntlType } from 'src/i18n';
-import { Cloud } from 'src/components/icon';
-
 const SideMenu: FunctionComponent<{}> = () => {
-  const myCloudStorgeRef: RefObject<HTMLDivElement> = useRef(null);
+  const fakeBucketName = 'myBucket';
+  const [fakeFolders, setFakeFolders] = useState<Item[]>([
+    { name: 'dir1', data: { bucketName: fakeBucketName, prefix: 'dir1/' } },
+    { name: 'dir2', data: { bucketName: fakeBucketName, prefix: 'dir2/' } },
+    { name: 'dir3', data: { bucketName: fakeBucketName, prefix: 'dir3/' } },
+  ]);
 
-  const onSelect = (ele: HTMLElement | null) => {
+  const sideMenuRef: RefObject<HTMLDivElement> = useRef(null);
+
+  const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }
 
-    myCloudStorgeRef.current?.classList.remove(styles.active);
-
+    removeActiveEle();
     ele.classList.add(styles.active);
-  }
+
+    console.log(folder);
+  };
+
+  const removeActiveEle = () => {
+    if (!sideMenuRef.current) { return; }
+
+    const avtiveEles = sideMenuRef.current.getElementsByClassName(styles.active);
+    Array.from(avtiveEles).forEach((ele) => {
+      ele.classList.remove(styles.active);
+    });
+  };
+
+  const createFolder = (folderName: string) => {
+    const data: Item = {
+      name: folderName,
+      data: {
+        bucketName: fakeBucketName,
+        prefix: folderName + '/'
+      }
+    };
+
+    const folders = [...fakeFolders, data];
+    setFakeFolders(folders);
+  };
 
   return (
-    <div id={styles.sideMenu}>
-      <div ref={myCloudStorgeRef} className={styles.option}>
-        <div className={styles.content} onClick={() => { onSelect(myCloudStorgeRef.current); }}>
-          <div className='vert-align-mid'></div>
-          <span className={styles.icon}>
-            <Cloud></Cloud>
-          </span>
-          <span className={styles.text}>{intl(keys.myCloudStorge, IntlType.perUpper)}</span>
-        </div>
-      </div>
+    <div ref={sideMenuRef} id={styles.sideMenu}>
+      <ItemComponent
+        ItemIcon={Cloud}
+        item={{ name: intl(keys.myCloudStorge, IntlType.perUpper), data: { bucketName: fakeBucketName, prefix: '' } }}
+        SubItemIcon={Folder}
+        subItems={fakeFolders}
+        onSelect={folderOnSelect}
+        showCreateFolder={true}
+        CreateItemIcon={CreateFolder}
+        createItem={createFolder}
+      ></ItemComponent>
     </div>
   );
 };

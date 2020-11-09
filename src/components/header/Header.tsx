@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { store } from 'src/store/store';
-import { Gear } from 'src/components/icon/Gear';
+import { Gear } from 'src/components/icons/Gear';
 import Menu from './menu/Menu';
 
 import styles from './Header.module.scss';

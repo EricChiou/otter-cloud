@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 
-import { Language } from 'src/components/icon';
+import { Language } from 'src/components/icons';
 import { intl, keys, IntlType } from 'src/i18n';
 import LangList from 'src/components/lang-list/LangList';
 

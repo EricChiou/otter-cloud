@@ -3,3 +3,7 @@ export { Login } from './Login';
 export { Logout } from './Logout';
 export { Language } from './Language';
 export { Cloud } from './Cloud';
+export { Folder } from './Folder';
+export { CreateFolder } from './CreateFolder';
+export { ArrowRight } from './ArrowRight';
+export { ArrowDown } from './ArrowDown';

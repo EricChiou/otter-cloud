@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { logout } from 'src/store/user.slice';
-import { Language, Logout } from 'src/components/icon';
+import { Language, Logout } from 'src/components/icons';
 import LangList from 'src/components/lang-list/LangList';
 
 import styles from './Menu.module.scss';
