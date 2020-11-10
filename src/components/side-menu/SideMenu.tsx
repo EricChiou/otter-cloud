@@ -1,8 +1,10 @@
-import React, { FunctionComponent, useRef, RefObject, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
 import ItemComponent, { Item } from './item/Item';
+import { setPrefix } from 'src/store/system.slice';
 
 import styles from './SideMenu.module.scss';
 
@@ -14,24 +16,11 @@ const SideMenu: FunctionComponent<{}> = () => {
     { name: 'dir3', data: { bucketName: fakeBucketName, prefix: 'dir3/' } },
   ]);
 
-  const sideMenuRef: RefObject<HTMLDivElement> = useRef(null);
+  const dispatch = useDispatch();
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }
-
-    removeActiveEle();
-    ele.classList.add(styles.active);
-
-    console.log(folder);
-  };
-
-  const removeActiveEle = () => {
-    if (!sideMenuRef.current) { return; }
-
-    const avtiveEles = sideMenuRef.current.getElementsByClassName(styles.active);
-    Array.from(avtiveEles).forEach((ele) => {
-      ele.classList.remove(styles.active);
-    });
+    dispatch(setPrefix(folder.data.prefix));
   };
 
   const createFolder = (folderName: string) => {
@@ -48,7 +37,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   };
 
   return (
-    <div ref={sideMenuRef} id={styles.sideMenu}>
+    <div id={styles.sideMenu}>
       <ItemComponent
         ItemIcon={Cloud}
         item={{ name: intl(keys.myCloudStorge, IntlType.perUpper), data: { bucketName: fakeBucketName, prefix: '' } }}

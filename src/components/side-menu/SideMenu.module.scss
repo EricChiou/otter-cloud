@@ -7,11 +7,7 @@
   color: theme(black);
   overflow: auto;
 
-  .active {
-    background-color: theme(pink);
-
-    &:hover {
-      background-color: theme(pink);
-    }
+  @include breakpoint(l) {
+    overflow: visible;
   }
 }

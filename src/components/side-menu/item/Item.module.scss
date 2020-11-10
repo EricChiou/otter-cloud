@@ -2,6 +2,7 @@
 @import 'src/assets/css/rwd.scss';
 
 .itemContainer {
+  position: relative;
   display: block;
   color: theme(black, light);
 
@@ -90,7 +91,23 @@
     overflow: hidden;
 
     @include breakpoint(l) {
-      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      background-color: theme(white, deep);
+    }
+  }
+
+  .boxShadow {
+    box-shadow: 0px 1px 2px 1px theme(gray);
+  }
+
+  .active {
+    background-color: theme(pink);
+
+    &:hover {
+      background-color: theme(pink);
     }
   }
 }

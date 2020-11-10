@@ -1,10 +1,15 @@
 import React, { FunctionComponent } from 'react';
 
-// import styles from './Home.module.scss';
+// import { intl, keys, IntlType } from 'src/i18n';
+import Path from './path/Path';
+
+import styles from './Home.module.scss';
 
 const Home: FunctionComponent<{}> = () => {
   return (
-    <div>Home Page</div>
+    <div id={styles.home}>
+      <Path></Path>
+    </div>
   );
 };
 

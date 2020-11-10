@@ -68,15 +68,15 @@ const Login: FunctionComponent<{}> = () => {
           <Header fontSize={20} showSetting={false}></Header>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.acc, IntlType.beginUpper)}:</span>
+          <span className={styles.title}>{intl(keys.acc, IntlType.firstUpper)}:</span>
           <Input placeholder={intl(keys.account)} style={{ padding: '2px 3px' }}></Input>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.pwd, IntlType.beginUpper)}:</span>
+          <span className={styles.title}>{intl(keys.pwd, IntlType.firstUpper)}:</span>
           <Input type="password" placeholder={intl(keys.password)} style={{ padding: '2px 3px' }}></Input>
         </div>
         <div className={styles.loginBtn}>
-          <Button onClick={login}>{intl(keys.login, IntlType.beginUpper)}</Button>
+          <Button onClick={login}>{intl(keys.login, IntlType.firstUpper)}</Button>
         </div>
         <div className={styles.signUp}>sign up</div>
       </div>

@@ -44,13 +44,13 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
         <li onClick={() => { setShowLangList(!showLangList); }}>
           <div className={'vert-align-mid'}></div>
           <Language></Language>
-          <span className={styles.optionText}>{intl(keys.lang, IntlType.beginUpper)}</span>
+          <span className={styles.optionText}>{intl(keys.lang, IntlType.firstUpper)}</span>
         </li>
         <hr></hr>
         <li onClick={doLogout}>
           <div className={'vert-align-mid'}></div>
           <Logout></Logout>
-          <span className={styles.optionText}>{intl(keys.logout, IntlType.beginUpper)}</span>
+          <span className={styles.optionText}>{intl(keys.logout, IntlType.firstUpper)}</span>
         </li>
       </ul>
       {showLangList ?

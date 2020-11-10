@@ -1,0 +1,43 @@
+@import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
+
+#path {
+  padding: 20px 25px 0px 25px;
+  width: calc(100% - 50px);
+  color: theme(blue, deep);
+  overflow: auto;
+
+  @include breakpoint(l) {
+    padding: 20px 20px 0px 20px;
+    width: calc(100% - 40px);
+  }
+
+  @include breakpoint(s) {
+    padding: 20px 15px 0px 15px;
+    width: calc(100% - 30px);
+  }
+
+  .prefix {
+    padding: 0 2px;
+    cursor: pointer;
+  }
+
+  .backslash {
+    margin: 0 8px;
+    color: theme(gray, deep);
+
+    @include breakpoint(l) {
+      margin: 0 6px;
+    }
+
+    @include breakpoint(s) {
+      margin: 0 4px;
+    }
+  }
+
+  .bottomLine {
+    margin-top: 10px;
+    border-radius: 4px;
+    border-bottom: solid 4px theme(gray);
+  }
+}
