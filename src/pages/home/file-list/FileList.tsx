@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
 import {
-  Setting,
   Folder,
   File,
   FileText,
@@ -208,7 +207,13 @@ const FikeList: FunctionComponent<{}> = () => {
       return (
         <div key={file.name} className={styles.file}>
           <div className={styles.name}>
-            <Icon></Icon> <span className={`${styles.text} ${styles.iconText}`}>{file.name}</span>
+            <Icon></Icon>
+            <span className={`${styles.text} ${styles.iconText}`}>
+              {file.name}
+              <div className={styles.subLine}>
+                {convertFileSize(file)}{file.contentType ? ',' : null} {convertFileLastModified(file)}
+              </div>
+            </span>
           </div>
           <div className={styles.size}>
             <span className={styles.text}>{convertFileSize(file)}</span>
@@ -233,11 +238,9 @@ const FikeList: FunctionComponent<{}> = () => {
           <span className={styles.text}>{intl(keys.fileSize, IntlType.firstUpper)}</span>
         </div>
         <div className={styles.modify}>
-          <span className={styles.text}> {intl(keys.lastModified, IntlType.firstUpper)}</span>
+          <span className={styles.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
         </div>
-        <div className={styles.option}>
-          <Setting></Setting>
-        </div>
+        <div className={styles.option}></div>
       </div>
       <div className={styles.list}>
         {renderFiles(fakeFiles)}

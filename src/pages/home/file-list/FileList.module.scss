@@ -49,12 +49,27 @@
 
       .text {
         display: inline-block;
-        max-width: calc(100% - 4px);
+        width: calc(100% - 4px);
         line-height: 30px;
         white-space: nowrap;
         text-overflow: ellipsis;
         vertical-align: middle;
         overflow: hidden;
+
+        @include breakpoint(m) {
+          line-height: 18px;
+        }
+
+        .subLine {
+          display: none;
+          font-size: 12px;
+          line-height: 12px;
+          color: theme(gray, deep);
+
+          @include breakpoint(m) {
+            display: block;
+          }
+        }
       }
 
       .iconText {
@@ -63,24 +78,39 @@
     }
 
     .name {
-      width: calc(100% - 4px - 120px - 150px - 100px);
-      min-width: calc(65% - 4px);
+      width: calc(100% - 4px - 120px - 150px - 80px);
+      min-width: calc(65% - 4px - 80px);
+
+      @include breakpoint(m) {
+        width: calc(100% - 4px - 80px);
+      }
     }
 
     .size {
       width: calc(120px - 4px);
-      max-width: calc(10% - 4px);
+      max-width: calc(15% - 4px);
+
+      @include breakpoint(m) {
+        display: none;
+      }
     }
 
     .modify {
       width: calc(150px - 4px);
-      max-width: calc(15% - 4px);
+      max-width: calc(20% - 4px);
+
+      @include breakpoint(m) {
+        display: none;
+      }
     }
 
     .option {
-      width: calc(100px - 4px);
-      max-width: calc(10% - 4px);
+      width: calc(80px - 4px);
       text-align: center;
+
+      @include breakpoint(m) {
+        max-width: calc(80px - 4px);
+      }
     }
   }
 

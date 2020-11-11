@@ -30,7 +30,7 @@ const Item: FunctionComponent<Props> = ({
 }) => {
   const prefix = useSelector(selectPrefix);
   const itemRef: RefObject<HTMLDivElement> = useRef(null);
-  const [expand, setExpand] = useState(true);
+  const [expand, setExpand] = useState(false);
 
   useEffect(() => {
     const onResize = () => {
