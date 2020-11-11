@@ -18,4 +18,7 @@ export interface Keys {
   english: string;
   tradChinese: string;
   myCloudStorge: string;
+  fileName: string;
+  fileSize: string;
+  lastModified: string;
 }

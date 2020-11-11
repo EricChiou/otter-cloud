@@ -1,5 +1,7 @@
 @import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
 
 #home {
   color: theme(black, light);
+  overflow: hidden;
 }

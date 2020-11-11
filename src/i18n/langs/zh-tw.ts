@@ -12,4 +12,7 @@ export const zh_tw: Keys = {
   english: '英文',
   tradChinese: '繁體中文',
   myCloudStorge: '我的雲端硬碟',
+  fileName: '檔案名稱',
+  fileSize: '檔案大小',
+  lastModified: '最後修改日期',
 };

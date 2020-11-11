@@ -39,9 +39,9 @@ const Path: FunctionComponent<{}> = () => {
         <span className={styles.prefix} onClick={() => { pathOnClick(''); }}>{intl(keys.myCloudStorge, IntlType.perUpper)}</span>
         <span className={styles.backslash}>/</span>
       </span>
-      { renderPrefix()}
+      {renderPrefix()}
       <div className={styles.bottomLine}></div>
-    </div >
+    </div>
   );
 }
 

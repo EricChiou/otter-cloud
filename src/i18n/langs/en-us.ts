@@ -12,4 +12,7 @@ export const en_us: Keys = {
   english: 'English',
   tradChinese: 'traditional Chinese',
   myCloudStorge: 'my cloud storge',
+  fileName: 'name',
+  fileSize: 'size',
+  lastModified: 'last modified',
 };
