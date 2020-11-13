@@ -41,9 +41,9 @@
 
       svg {
         display: inline-block;
-        padding: 2px;
-        width: 26px;
-        height: 26px;
+        padding: 4px;
+        width: 22px;
+        height: 22px;
         vertical-align: middle;
       }
 
@@ -78,11 +78,11 @@
     }
 
     .name {
-      width: calc(100% - 4px - 120px - 150px - 80px);
-      min-width: calc(65% - 4px - 80px);
+      width: calc(100% - 4px - 120px - 150px - 70px);
+      min-width: calc(65% - 4px - 70px);
 
       @include breakpoint(m) {
-        width: calc(100% - 4px - 80px);
+        width: calc(100% - 4px - 70px);
       }
     }
 
@@ -105,11 +105,21 @@
     }
 
     .option {
-      width: calc(80px - 4px);
+      width: calc(70px - 4px);
       text-align: center;
 
       @include breakpoint(m) {
-        max-width: calc(80px - 4px);
+        max-width: calc(70px - 4px);
+      }
+
+      svg {
+        margin: 0px 0px 0px 3px;
+
+        &:hover {
+          padding: 2px;
+          width: 26px;
+          height: 26px;
+        }
       }
     }
   }

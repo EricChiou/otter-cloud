@@ -1,24 +1,14 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-import {
-  Folder,
-  File,
-  FileText,
-  FileImage,
-  FileAudio,
-  FileVideo,
-  FileArchive,
-  FilePdf,
-  FileWord,
-  FileExcel,
-  FilePPT,
-} from 'src/components/icons';
-import { ContentType } from 'src/constants/file';
+import { File } from 'src/components/icons';
 import { intl, keys, IntlType } from 'src/i18n';
+import FileComponent from './file/File';
+import { selectPrefix } from 'src/store/system.slice';
 
 import styles from './FileList.module.scss';
 
-interface File {
+export interface File {
   contentType: string;
   name: string; // unique key
   size: number;
@@ -27,7 +17,7 @@ interface File {
 }
 
 const FikeList: FunctionComponent<{}> = () => {
-  const fakeFiles: File[] = [
+  const fakeFileList: File[] = [
     {
       contentType: 'application/octet-stream',
       name: 'cat',
@@ -142,89 +132,15 @@ const FikeList: FunctionComponent<{}> = () => {
     },
   ];
 
-  const convertFileSize = (file: File): string => {
-    if (file.contentType === '') { return ''; }
+  const prefix = useSelector(selectPrefix);
+  useEffect(() => {
+    console.log('get file list:', prefix);
+    // get file list
+  }, [prefix]);
 
-    if (file.size < 1024) {
-      return `${getFileSizeRounded(file.size)} Bytes`;
-    } else if (file.size < 1024 * 1024) {
-      return `${getFileSizeRounded(file.size / 1024)} KB`;
-    } else if (file.size < 1024 * 1024 * 1024) {
-      return `${getFileSizeRounded(file.size / (1024 * 1024))} MB`;
-    } else if (file.size < 1024 * 1024 * 1024 * 1024) {
-      return `${getFileSizeRounded(file.size / (1024 * 1024 * 1024))} GB`;
-    }
-    return `${getFileSizeRounded(file.size / (1024 * 1024 * 1024 * 1024))} TB`;
-  };
-
-  const getFileSizeRounded = (size: number): number => {
-    return Math.round(size * 100) / 100;
-  }
-
-  const convertFileLastModified = (file: File): string => {
-    if (file.contentType === '') { return ''; }
-
-    try {
-      const dateTime = new Date(file.lastModified);
-      const month = (dateTime.getMonth() + 1) < 10 ? `0${dateTime.getMonth() + 1}` : (dateTime.getMonth() + 1);
-      const date = dateTime.getDate() < 10 ? `0${dateTime.getDate()}` : dateTime.getDate();
-      const hour = dateTime.getHours() < 10 ? `0${dateTime.getHours()}` : dateTime.getHours();
-      const minute = dateTime.getMinutes() < 10 ? `0${dateTime.getMinutes()}` : dateTime.getMinutes();
-
-      return `${dateTime.getFullYear()}-${month}-${date} ${hour}:${minute}`
-
-    } catch (error) {
-      console.error(error);
-      return file.lastModified;
-    }
-  }
-
-  const renderFiles = (files: File[]) => {
-    return files.map((file) => {
-      let Icon = File;
-      if (file.contentType === '') {
-        Icon = Folder;
-      } else if (file.contentType.indexOf(ContentType.text) > -1) {
-        Icon = FileText;
-      } else if (file.contentType.indexOf(ContentType.image) > -1) {
-        Icon = FileImage;
-      } else if (file.contentType.indexOf(ContentType.audio) > -1) {
-        Icon = FileAudio;
-      } else if (file.contentType.indexOf(ContentType.video) > -1) {
-        Icon = FileVideo;
-      } else if (file.contentType.indexOf(ContentType.zip) > -1) {
-        Icon = FileArchive;
-      } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
-        Icon = FilePdf;
-      } else if (file.contentType.indexOf(ContentType.word) > -1) {
-        Icon = FileWord;
-      } else if (file.contentType.indexOf(ContentType.excel) > -1) {
-        Icon = FileExcel;
-      } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
-        Icon = FilePPT;
-      }
-
-      return (
-        <div key={file.name} className={styles.file}>
-          <div className={styles.name}>
-            <Icon></Icon>
-            <span className={`${styles.text} ${styles.iconText}`}>
-              {file.name}
-              <div className={styles.subLine}>
-                {convertFileSize(file)}{file.contentType ? ',' : null} {convertFileLastModified(file)}
-              </div>
-            </span>
-          </div>
-          <div className={styles.size}>
-            <span className={styles.text}>{convertFileSize(file)}</span>
-          </div>
-          <div className={styles.modify}>
-            <span className={styles.text}>{convertFileLastModified(file)}</span>
-          </div>
-          <div className={styles.option}>
-          </div>
-        </div>
-      );
+  const renderFileList = (fileList: File[]) => {
+    return fileList.map((file) => {
+      return <FileComponent key={file.name} file={file}></FileComponent>
     });
   };
 
@@ -243,7 +159,7 @@ const FikeList: FunctionComponent<{}> = () => {
         <div className={styles.option}></div>
       </div>
       <div className={styles.list}>
-        {renderFiles(fakeFiles)}
+        {renderFileList(fakeFileList)}
       </div>
     </div>
   );

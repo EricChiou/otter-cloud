@@ -18,3 +18,6 @@ export { FilePdf } from './FilePdf';
 export { FileWord } from './FileWord';
 export { FileExcel } from './FileExcel';
 export { FilePPT } from './FilePPT';
+export { FileFolder } from './FileFolder';
+export { More } from './More';
+export { Download } from './Download';
