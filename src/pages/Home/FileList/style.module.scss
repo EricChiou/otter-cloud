@@ -1,0 +1,18 @@
+@import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
+
+#fileList {
+  margin: 40px 0px;
+
+  @include breakpoint(l) {
+    margin: 30px 0px;
+  }
+
+  @include breakpoint(m) {
+    margin: 20px 0px;
+  }
+
+  @include breakpoint(s) {
+    margin: 10px 0px;
+  }
+}

@@ -1,10 +1,10 @@
-import Main from 'src/layout/main/Main';
-import NoSideMenu from 'src/layout/plain/Plain';
+import Main from 'src/layout/Main';
+import Plain from 'src/layout/Plain';
 
 import { Routes } from 'src/constants/routes-url';
 
-import Home from 'src/pages/home/Home';
-import Login from 'src/pages/login/Login';
+import Home from 'src/pages/Home';
+import Login from 'src/pages/Login';
 
 export const routes = [
   {
@@ -14,7 +14,7 @@ export const routes = [
   },
   {
     path: Routes.LOGIN,
-    layout: NoSideMenu,
+    layout: Plain,
     component: Login,
   },
 ];
