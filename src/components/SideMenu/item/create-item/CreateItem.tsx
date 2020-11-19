@@ -1,6 +1,6 @@
 import React, { FunctionComponent, KeyboardEvent } from 'react';
 
-import { Input } from 'src/components/common-components';
+import { Input } from 'src/components/common';
 
 import styles from '../Item.module.scss';
 

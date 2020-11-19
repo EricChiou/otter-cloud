@@ -17,7 +17,7 @@ import {
   Download,
 } from 'src/components/icons';
 import { ContentType } from 'src/constants/file';
-import { Tooltip } from 'src/components/common-components';
+import { Tooltip } from 'src/components/common';
 
 import styles from './style.module.scss';
 

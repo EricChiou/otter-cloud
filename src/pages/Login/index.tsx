@@ -10,7 +10,7 @@ import { StatusService, UserService } from 'src/service';
 
 import Header from 'src/components/Header';
 import Lang from './Lang';
-import { Input, Button } from 'src/components/common-components';
+import { Input, Button } from 'src/components/common';
 
 import styles from './style.module.scss';
 
