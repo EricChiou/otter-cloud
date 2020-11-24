@@ -2,6 +2,7 @@
 @import 'src/assets/css/rwd.scss';
 
 #home {
+  height: 100%;
   color: theme(black, light);
-  overflow: hidden;
+  overflow: auto;
 }

@@ -3,6 +3,7 @@
 
 #path {
   margin: 20px 25px 0px 25px;
+  height: 40px;
   color: theme(blue, deep);
   overflow: auto;
 
@@ -14,25 +15,32 @@
     margin: 20px 15px 0px 15px;
   }
 
-  .prefix {
-    padding: 0 2px;
-    cursor: pointer;
+  .folder {
+    display: inline-block;
+    height: 23px;
+    line-height: 23px;
+    vertical-align: top;
 
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+    .prefix {
+      padding: 0 2px;
+      cursor: pointer;
 
-  .backslash {
-    margin: 0 6px;
-    color: theme(gray, deep);
-
-    @include breakpoint(l) {
-      margin: 0 4px;
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    @include breakpoint(s) {
-      margin: 0 2px;
+    .backslash {
+      margin: 0 6px;
+      color: theme(gray, deep);
+
+      @include breakpoint(l) {
+        margin: 0 4px;
+      }
+
+      @include breakpoint(s) {
+        margin: 0 2px;
+      }
     }
   }
 

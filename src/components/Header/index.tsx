@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { store } from 'src/store/store';
 import { Gear } from 'src/components/icons/Gear';
-import Menu from './Menu';
+import Menu from './HeaderMenu';
 
 import styles from './style.module.scss';
 import logo from 'src/assets/img/logo.png';

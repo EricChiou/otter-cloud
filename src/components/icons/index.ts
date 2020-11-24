@@ -21,3 +21,5 @@ export { FilePPT } from './FilePPT';
 export { FileFolder } from './FileFolder';
 export { More } from './More';
 export { Download } from './Download';
+export { AddCircle } from './AddCircle';
+export { Upload } from './Upload';

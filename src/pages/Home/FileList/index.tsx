@@ -1,8 +1,9 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, DragEvent, RefObject, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import FileTable, { File } from './FileTable';
 import { selectPrefix } from 'src/store/system.slice';
+import { Upload } from 'src/components/icons';
 
 import styles from './style.module.scss';
 
@@ -123,14 +124,41 @@ const FikeList: FunctionComponent<{}> = () => {
   ];
 
   const prefix = useSelector(selectPrefix);
+  const fileListRef: RefObject<HTMLDivElement> = useRef(null);
+
   useEffect(() => {
     console.log('get file list:', prefix);
     // get file list
   }, [prefix]);
 
+  const drop = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // console.log(e.dataTransfer.files);
+    fileListRef.current?.classList.remove(styles.dragOver);
+  };
+
+  const dragOver = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.classList.add(styles.dragOver);
+  };
+
+  const dragLeave = (e: DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    fileListRef.current?.classList.remove(styles.dragOver);
+  }
+
   return (
-    <div id={styles.fileList}>
+    <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver} >
       <FileTable fileList={fakeFileList}></FileTable>
+      <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
+        <div className={styles.icon}>
+          <Upload></Upload>
+        </div>
+      </div>
     </div>
   );
 }

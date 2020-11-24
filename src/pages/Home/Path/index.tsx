@@ -23,7 +23,7 @@ const Path: FunctionComponent<{}> = () => {
       if (path) {
         mergePrefix += `${path}/`
         return (
-          <span key={'path_' + i}>
+          <span key={'path_' + i} className={styles.folder}>
             <span className={styles.prefix} onClick={() => { pathOnClick(mergePrefix); }}>{path}</span>
             <span className={styles.backslash}>/</span>
           </span>
@@ -35,7 +35,7 @@ const Path: FunctionComponent<{}> = () => {
 
   return (
     <div id={styles.path}>
-      <span>
+      <span className={styles.folder}>
         <span className={styles.prefix} onClick={() => { pathOnClick(''); }}>{intl(keys.myCloudStorge, IntlType.perUpper)}</span>
         <span className={styles.backslash}>/</span>
       </span>

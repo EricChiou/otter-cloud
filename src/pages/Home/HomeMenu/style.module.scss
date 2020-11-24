@@ -1,0 +1,22 @@
+@import 'src/assets/css/theme.scss';
+
+#homeMenu {
+  position: fixed;
+  right: 15px;
+  bottom: 10px;
+
+  .icon {
+    color: theme(blue, light);
+    cursor: pointer;
+
+    &:hover {
+      color: theme(blue);
+    }
+
+    svg {
+      display: block;
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
