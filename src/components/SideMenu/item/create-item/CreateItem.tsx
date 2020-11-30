@@ -1,6 +1,6 @@
 import React, { FunctionComponent, KeyboardEvent } from 'react';
 
-import { Input } from 'src/components/common';
+import { BaseInput } from 'src/components/common';
 
 import styles from '../Item.module.scss';
 
@@ -24,7 +24,7 @@ const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }) =>
         {CreateItemIcon ? <CreateItemIcon></CreateItemIcon> : null}
       </span>
       <span className={styles.text}>
-        <Input style={{ width: 'calc(100% - 8px)' }} onKeyUp={onKeyUp}></Input>
+        <BaseInput style={{ width: 'calc(100% - 8px)' }} onKeyUp={onKeyUp}></BaseInput>
       </span>
     </div>
   );

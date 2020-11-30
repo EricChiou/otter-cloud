@@ -3,7 +3,8 @@
 
 #path {
   margin: 20px 25px 0px 25px;
-  height: 40px;
+  height: 36px;
+  white-space: nowrap;
   color: theme(blue, deep);
   overflow: auto;
 
@@ -42,11 +43,5 @@
         margin: 0 2px;
       }
     }
-  }
-
-  .bottomLine {
-    margin-top: 10px;
-    border-radius: 4px;
-    border-bottom: solid 4px theme(gray);
   }
 }

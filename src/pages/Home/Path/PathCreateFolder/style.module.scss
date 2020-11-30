@@ -1,0 +1,26 @@
+.createFolder {
+  display: inline-block;
+  padding: 0 2px;
+  vertical-align: top;
+  cursor: pointer;
+
+  .createInput {
+    input {
+      display: inline-block;
+      height: 17px;
+      vertical-align: top;
+    }
+
+    svg {
+      display: block;
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  svg {
+    display: block;
+    width: 23px;
+    height: 23px;
+  }
+}

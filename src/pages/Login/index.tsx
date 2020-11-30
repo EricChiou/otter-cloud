@@ -10,7 +10,7 @@ import { StatusService, UserService } from 'src/service';
 
 import Header from 'src/components/Header';
 import Lang from './Lang';
-import { Input, Button } from 'src/components/common';
+import { BaseInput, BaseButton } from 'src/components/common';
 
 import styles from './style.module.scss';
 
@@ -69,14 +69,14 @@ const Login: FunctionComponent<{}> = () => {
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.acc, IntlType.firstUpper)}:</span>
-          <Input placeholder={intl(keys.account)} style={{ padding: '2px 3px' }}></Input>
+          <BaseInput placeholder={intl(keys.account)} style={{ padding: '2px 3px' }}></BaseInput>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.pwd, IntlType.firstUpper)}:</span>
-          <Input type="password" placeholder={intl(keys.password)} style={{ padding: '2px 3px' }}></Input>
+          <BaseInput type="password" placeholder={intl(keys.password)} style={{ padding: '2px 3px' }}></BaseInput>
         </div>
         <div className={styles.loginBtn}>
-          <Button onClick={login}>{intl(keys.login, IntlType.firstUpper)}</Button>
+          <BaseButton onClick={login}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
         </div>
         <div className={styles.signUp}>sign up</div>
       </div>

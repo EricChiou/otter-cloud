@@ -13,7 +13,7 @@ interface Props {
   onKeyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Input: FunctionComponent<Props> = ({
+const BaseInput: FunctionComponent<Props> = ({
   type,
   style,
   placeholder,
@@ -37,4 +37,4 @@ const Input: FunctionComponent<Props> = ({
   );
 }
 
-export { Input };
+export { BaseInput };

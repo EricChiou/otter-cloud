@@ -6,17 +6,26 @@
   bottom: 10px;
 
   .icon {
+    padding: 5px;
     color: theme(blue, light);
+    border: 5px solid theme(blue, light);
+    border-radius: 50%;
     cursor: pointer;
 
     &:hover {
       color: theme(blue);
+      border-color: theme(blue);
+    }
+
+    &:active {
+      color: theme(blue, deep);
+      border-color: theme(blue, deep);
     }
 
     svg {
       display: block;
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
     }
   }
 }

@@ -8,7 +8,7 @@ interface Props {
   tooltipStyle?: object;
 }
 
-const Tooltip: FunctionComponent<Props> = ({ children, style, tooltipStyle, content }) => {
+const BaseTooltip: FunctionComponent<Props> = ({ children, style, tooltipStyle, content }) => {
   const [show, setShow] = useState(false);
   const countDown: MutableRefObject<number | null> = useRef(null);
 
@@ -34,4 +34,4 @@ const Tooltip: FunctionComponent<Props> = ({ children, style, tooltipStyle, cont
   );
 };
 
-export { Tooltip };
+export { BaseTooltip };

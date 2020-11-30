@@ -1,5 +1,24 @@
+@import 'src/assets/css/theme.scss';
+
 .vert-align-mid {
   display: inline-block;
   height: 100%;
   vertical-align: middle;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme(gray, light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme(gray, deep);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme(gray, deep);
 }

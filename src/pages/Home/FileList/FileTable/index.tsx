@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { selectPrefix, setPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import {
   File as FileIcon,
@@ -17,7 +19,7 @@ import {
   Download,
 } from 'src/components/icons';
 import { ContentType } from 'src/constants/file';
-import { Tooltip } from 'src/components/common';
+import { BaseTooltip } from 'src/components/common';
 
 import styles from './style.module.scss';
 
@@ -34,6 +36,8 @@ interface Props {
 }
 
 const FileTable: FunctionComponent<Props> = ({ fileList }) => {
+  const dispatch = useDispatch();
+  const prefix = useSelector(selectPrefix);
   const getIcon = (file: File): FunctionComponent<{}> => {
     let Icon = FileIcon;
     if (file.contentType === '') {
@@ -81,14 +85,16 @@ const FileTable: FunctionComponent<Props> = ({ fileList }) => {
   }
 
   const convertFileLastModified = (file: File): string => {
-    if (file.contentType === '') { return ''; }
-
     try {
+      const convertTime = (num: number): string => {
+        return num < 10 ? `0${num}` : `${num}`
+      };
+
       const dateTime = new Date(file.lastModified);
-      const month = (dateTime.getMonth() + 1) < 10 ? `0${dateTime.getMonth() + 1}` : (dateTime.getMonth() + 1);
-      const date = dateTime.getDate() < 10 ? `0${dateTime.getDate()}` : dateTime.getDate();
-      const hour = dateTime.getHours() < 10 ? `0${dateTime.getHours()}` : dateTime.getHours();
-      const minute = dateTime.getMinutes() < 10 ? `0${dateTime.getMinutes()}` : dateTime.getMinutes();
+      const month = convertTime(dateTime.getMonth() + 1);
+      const date = convertTime(dateTime.getDate());
+      const hour = convertTime(dateTime.getHours());
+      const minute = convertTime(dateTime.getMinutes());
 
       return `${dateTime.getFullYear()}-${month}-${date} ${hour}:${minute}`
 
@@ -98,22 +104,28 @@ const FileTable: FunctionComponent<Props> = ({ fileList }) => {
     }
   }
 
-  const renderFiles = () => {
+  const fileNameOnClick = (file: File) => {
+    if (!file.contentType && !file.size) {
+      dispatch(setPrefix(prefix + file.name));
+    }
+  };
 
+  const renderFiles = () => {
     return fileList.map((file) => {
       const Icon = getIcon(file);
       return (
         <div key={file.name} className={styles.file}>
-          <div className={styles.name}>
-            <Tooltip content={file.name}>
+          <div className={styles.name} onClick={() => { fileNameOnClick(file); }}>
+            <BaseTooltip content={file.name}>
               <Icon></Icon>
               <span className={`${styles.text} ${styles.iconText}`}>
                 {file.name}
                 <div className={styles.subLine}>
-                  {convertFileSize(file)}{file.contentType ? ',' : null} {convertFileLastModified(file)}
+                  {convertFileSize(file)}{file.contentType ? ', ' : null}
+                  {convertFileLastModified(file)}
                 </div>
               </span>
-            </Tooltip>
+            </BaseTooltip>
           </div>
           <div className={styles.size}>
             <span className={styles.text}>{convertFileSize(file)}</span>

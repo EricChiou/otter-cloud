@@ -109,16 +109,23 @@ const FikeList: FunctionComponent<{}> = () => {
     },
     {
       contentType: '',
-      name: 'subFolder/',
+      name: 'dir1/',
       size: 0,
-      lastModified: '0001-01-01T00:00:00Z',
+      lastModified: '2020-11-11T09:30:34.4385814+08:00',
       selected: false,
     },
     {
       contentType: '',
-      name: 'subFolder2/',
+      name: 'dir2/',
       size: 0,
-      lastModified: '0001-01-01T00:00:00Z',
+      lastModified: '2020-11-11T09:30:34.4385814+08:00',
+      selected: false,
+    },
+    {
+      contentType: '',
+      name: 'dir3/',
+      size: 0,
+      lastModified: '2020-11-11T09:30:34.4385814+08:00',
       selected: false,
     },
   ];

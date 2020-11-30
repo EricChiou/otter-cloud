@@ -23,7 +23,6 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
         if (ele.className === styles.menu) {
           return;
         }
-
         ele = ele.parentElement;
       }
 

@@ -1,3 +1,3 @@
-export { Input } from './BaseInput';
-export { Button, ButtonType } from './BaseButton';
-export { Tooltip } from './Tooltip';
+export { BaseInput } from './BaseInput';
+export { BaseButton, ButtonType } from './BaseButton';
+export { BaseTooltip } from './BaseTooltip';

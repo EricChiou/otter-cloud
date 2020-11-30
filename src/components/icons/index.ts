@@ -23,3 +23,5 @@ export { More } from './More';
 export { Download } from './Download';
 export { AddCircle } from './AddCircle';
 export { Upload } from './Upload';
+export { Add } from './Add';
+export { Check } from './Check';
