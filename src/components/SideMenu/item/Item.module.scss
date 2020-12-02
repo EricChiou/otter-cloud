@@ -91,12 +91,12 @@
     overflow: hidden;
 
     @include breakpoint(l) {
-      position: absolute;
-      top: 100%;
+      position: fixed;
+      top: 75px;
       right: 0;
       left: 0;
       background-color: theme(white, deep);
-      z-index: 999;
+      z-index: 99;
     }
   }
 

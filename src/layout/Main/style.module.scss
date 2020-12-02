@@ -28,6 +28,7 @@
 
     @include breakpoint(l) {
       display: block;
+      padding-bottom: 4px;
       width: 100%;
       height: 34px;
       border-right: none;
@@ -52,7 +53,7 @@
     }
 
     @include breakpoint(s) {
-      height: calc(100% - 75px);
+      height: calc(100% - 79px);
     }
   }
 }

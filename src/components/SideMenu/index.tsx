@@ -40,7 +40,10 @@ const SideMenu: FunctionComponent<{}> = () => {
     <div id={styles.sideMenu}>
       <ItemComponent
         ItemIcon={Cloud}
-        item={{ name: intl(keys.myCloudStorge, IntlType.perUpper), data: { bucketName: fakeBucketName, prefix: '' } }}
+        item={{
+          name: intl(keys.myCloudStorge, IntlType.perUpper),
+          data: { bucketName: fakeBucketName, prefix: '' },
+        }}
         SubItemIcon={Folder}
         subItems={fakeFolders}
         onSelect={folderOnSelect}
