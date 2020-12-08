@@ -25,3 +25,4 @@ export { AddCircle } from './AddCircle';
 export { Upload } from './Upload';
 export { Add } from './Add';
 export { Check } from './Check';
+export { CheckBox } from './CheckBox';

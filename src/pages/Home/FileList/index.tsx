@@ -1,141 +1,25 @@
-import React, { FunctionComponent, useEffect, DragEvent, RefObject, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { FunctionComponent, useEffect, DragEvent, RefObject, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import FileTable, { File } from './FileTable';
-import { selectPrefix } from 'src/store/system.slice';
-import { Upload } from 'src/components/icons';
+import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { intl, keys, IntlType } from 'src/i18n';
+import FileComponent, { File } from './File';
+import { Upload, Download } from 'src/components/icons';
 
 import styles from './style.module.scss';
+import table from './table.module.scss';
 
 const FikeList: FunctionComponent<{}> = () => {
-  const fakeFileList: File[] = [
-    {
-      contentType: 'application/octet-stream',
-      name: 'cat',
-      size: 5964,
-      lastModified: '2020-11-06T14:40:02.1738874+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'audio/mpeg',
-      name: 'Baby Cats.mp3',
-      size: 5729325,
-      lastModified: '2020-11-11T12:15:57.7300048+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'image/jpeg',
-      name: 'cat.jpg',
-      size: 5964,
-      lastModified: '2020-11-06T10:39:52.4392648+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'image/png',
-      name: 'cat.png',
-      size: 4537,
-      lastModified: '2020-11-06T10:39:52.4412612+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'image/jpeg',
-      name: 'cat2.jpg',
-      size: 7676,
-      lastModified: '2020-11-06T10:39:52.4422566+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'image/jpeg',
-      name: 'cat3.jpg',
-      size: 4023,
-      lastModified: '2020-11-06T10:39:52.4412612+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/octet-stream',
-      name: 'file.7z',
-      size: 90,
-      lastModified: '2020-11-11T09:28:30.0011283+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'text/plain',
-      name: 'file.txt',
-      size: 0,
-      lastModified: '2020-11-11T09:26:26.0100965+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/x-zip-compressed',
-      name: 'file.zip',
-      size: 150,
-      lastModified: '2020-11-11T09:28:00.9691468+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'video/mp4',
-      name: 'mov_bbb.mp4',
-      size: 788493,
-      lastModified: '2020-11-11T09:27:18.0411223+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      name: 'test.docx',
-      size: 12049,
-      lastModified: '2020-11-11T09:30:34.4375835+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/pdf',
-      name: 'test.pdf',
-      size: 29749,
-      lastModified: '2020-11-11T09:30:59.8154661+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      name: 'test.pptx',
-      size: 33656,
-      lastModified: '2020-11-11T09:30:34.4375835+08:00',
-      selected: false,
-    },
-    {
-      contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      name: 'test.xlsx',
-      size: 10052,
-      lastModified: '2020-11-11T09:30:34.4385814+08:00',
-      selected: false,
-    },
-    {
-      contentType: '',
-      name: 'dir1/',
-      size: 0,
-      lastModified: '2020-11-11T09:30:34.4385814+08:00',
-      selected: false,
-    },
-    {
-      contentType: '',
-      name: 'dir2/',
-      size: 0,
-      lastModified: '2020-11-11T09:30:34.4385814+08:00',
-      selected: false,
-    },
-    {
-      contentType: '',
-      name: 'dir3/',
-      size: 0,
-      lastModified: '2020-11-11T09:30:34.4385814+08:00',
-      selected: false,
-    },
-  ];
-
+  const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
+  const [fileList, setFileList] = useState<File[]>([]);
 
   useEffect(() => {
     console.log('get file list:', prefix);
     // get file list
+    setFileList(fakeFileList);
+
   }, [prefix]);
 
   const drop = (e: DragEvent) => {
@@ -158,9 +42,39 @@ const FikeList: FunctionComponent<{}> = () => {
     fileListRef.current?.classList.remove(styles.dragOver);
   }
 
+  const fileOnSelected = (file: File, index: number) => {
+    if (!file.contentType && !file.size) {
+      dispatch(setPrefix(prefix + file.name));
+    } else {
+      const newFileList = [...fileList];
+      newFileList[index].selected = !newFileList[index].selected;
+      setFileList(newFileList);
+    }
+  };
+
+  const renderFiles = () => {
+    return fileList.map((file, index) => {
+      return <FileComponent key={file.name} file={file} index={index} onSelected={fileOnSelected}></FileComponent>;
+    });
+  }
+
   return (
-    <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver} >
-      <FileTable fileList={fakeFileList}></FileTable>
+    <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver}>
+      <div className={table.header}>
+        <div className={table.nameCol}>
+          <span className={table.text}>{intl(keys.fileName, IntlType.firstUpper)}</span>
+        </div>
+        <div className={table.sizeCol}>
+          <span className={table.text}>{intl(keys.fileSize, IntlType.firstUpper)}</span>
+        </div>
+        <div className={table.modifyCol}>
+          <span className={table.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
+        </div>
+        <div className={table.optionCol}></div>
+      </div>
+      <div className={table.list}>
+        {renderFiles()}
+      </div>
       <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
         <div className={styles.icon}>
           <Upload></Upload>
@@ -171,3 +85,125 @@ const FikeList: FunctionComponent<{}> = () => {
 }
 
 export default FikeList;
+
+const fakeFileList: File[] = [
+  {
+    contentType: 'application/octet-stream',
+    name: 'cat',
+    size: 5964,
+    lastModified: '2020-11-06T14:40:02.1738874+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'audio/mpeg',
+    name: 'Baby Cats.mp3',
+    size: 5729325,
+    lastModified: '2020-11-11T12:15:57.7300048+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'image/jpeg',
+    name: 'cat.jpg',
+    size: 5964,
+    lastModified: '2020-11-06T10:39:52.4392648+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'image/png',
+    name: 'cat.png',
+    size: 4537,
+    lastModified: '2020-11-06T10:39:52.4412612+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'image/jpeg',
+    name: 'cat2.jpg',
+    size: 7676,
+    lastModified: '2020-11-06T10:39:52.4422566+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'image/jpeg',
+    name: 'cat3.jpg',
+    size: 4023,
+    lastModified: '2020-11-06T10:39:52.4412612+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/octet-stream',
+    name: 'file.7z',
+    size: 90,
+    lastModified: '2020-11-11T09:28:30.0011283+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'text/plain',
+    name: 'file.txt',
+    size: 0,
+    lastModified: '2020-11-11T09:26:26.0100965+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/x-zip-compressed',
+    name: 'file.zip',
+    size: 150,
+    lastModified: '2020-11-11T09:28:00.9691468+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'video/mp4',
+    name: 'mov_bbb.mp4',
+    size: 788493,
+    lastModified: '2020-11-11T09:27:18.0411223+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    name: 'test.docx',
+    size: 12049,
+    lastModified: '2020-11-11T09:30:34.4375835+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/pdf',
+    name: 'test.pdf',
+    size: 29749,
+    lastModified: '2020-11-11T09:30:59.8154661+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    name: 'test.pptx',
+    size: 33656,
+    lastModified: '2020-11-11T09:30:34.4375835+08:00',
+    selected: false,
+  },
+  {
+    contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    name: 'test.xlsx',
+    size: 10052,
+    lastModified: '2020-11-11T09:30:34.4385814+08:00',
+    selected: false,
+  },
+  {
+    contentType: '',
+    name: 'dir1/',
+    size: 0,
+    lastModified: '2020-11-11T09:30:34.4385814+08:00',
+    selected: false,
+  },
+  {
+    contentType: '',
+    name: 'dir2/',
+    size: 0,
+    lastModified: '2020-11-11T09:30:34.4385814+08:00',
+    selected: false,
+  },
+  {
+    contentType: '',
+    name: 'dir3/',
+    size: 0,
+    lastModified: '2020-11-11T09:30:34.4385814+08:00',
+    selected: false,
+  },
+];

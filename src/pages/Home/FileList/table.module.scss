@@ -2,7 +2,7 @@
 @import 'src/assets/css/rwd.scss';
 
 .header,
-.file {
+.list .file {
   padding: 0px 25px;
 
   @include breakpoint(l) {
@@ -13,24 +13,15 @@
     padding: 0px 15px;
   }
 
-  .name,
-  .size,
-  .modify,
-  .option {
+  .nameCol,
+  .sizeCol,
+  .modifyCol,
+  .optionCol {
     display: inline-block;
-    padding: 3px 2px;
-    height: 30px;
+    padding: 2.5px 2px;
     white-space: nowrap;
     color: theme(black, light);
     vertical-align: middle;
-
-    svg {
-      display: inline-block;
-      padding: 4px;
-      width: 22px;
-      height: 22px;
-      vertical-align: middle;
-    }
 
     .text {
       display: inline-block;
@@ -40,29 +31,10 @@
       text-overflow: ellipsis;
       vertical-align: middle;
       overflow: hidden;
-
-      @include breakpoint(m) {
-        line-height: 18px;
-      }
-
-      .subLine {
-        display: none;
-        font-size: 12px;
-        line-height: 12px;
-        color: theme(gray, deep);
-
-        @include breakpoint(m) {
-          display: block;
-        }
-      }
-    }
-
-    .iconText {
-      max-width: calc(100% - 4px - 4px - 26px);
     }
   }
 
-  .name {
+  .nameCol {
     width: calc(100% - 4px - 120px - 150px - 70px);
     min-width: calc(65% - 4px - 70px);
 
@@ -71,7 +43,7 @@
     }
   }
 
-  .size {
+  .sizeCol {
     width: calc(120px - 4px);
     max-width: calc(15% - 4px);
 
@@ -80,7 +52,7 @@
     }
   }
 
-  .modify {
+  .modifyCol {
     width: calc(150px - 4px);
     max-width: calc(20% - 4px);
 
@@ -89,22 +61,12 @@
     }
   }
 
-  .option {
+  .optionCol {
     width: calc(70px - 4px);
     text-align: center;
 
     @include breakpoint(m) {
       max-width: calc(70px - 4px);
-    }
-
-    svg {
-      margin: 0px 0px 0px 3px;
-
-      &:hover {
-        padding: 2px;
-        width: 26px;
-        height: 26px;
-      }
     }
   }
 }
@@ -116,12 +78,36 @@
   @include breakpoint(m) {
     display: none;
   }
+
+  .nameCol,
+  .sizeCol,
+  .modifyCol,
+  .optionCol {
+    height: 29px;
+  }
 }
 
-.file {
-  cursor: pointer;
+.list {
+  padding-bottom: 70px;
+  height: calc(100% - 70px - 35px);
+  overflow: auto;
 
-  &:hover {
-    background-color: theme(blue, light);
+  @include breakpoint(m) {
+    height: calc(100% - 70px);
+  }
+
+  .file {
+    cursor: pointer;
+
+    &:hover {
+      background-color: theme(blue, light);
+    }
+
+    .nameCol,
+    .sizeCol,
+    .modifyCol,
+    .optionCol {
+      height: 30px;
+    }
   }
 }
