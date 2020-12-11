@@ -26,3 +26,7 @@ export { Upload } from './Upload';
 export { Add } from './Add';
 export { Check } from './Check';
 export { CheckBox } from './CheckBox';
+export { Delete } from './Delete';
+export { Share } from './Share';
+export { Close } from './Close';
+export { Warning } from './Warning';

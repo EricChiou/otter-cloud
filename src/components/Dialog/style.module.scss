@@ -1,0 +1,62 @@
+@import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
+
+.dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  z-index: 9999;
+
+  .mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .block {
+      position: relative;
+      display: inline-block;
+      margin-top: 150px;
+      max-height: calc(100vh - 300px);
+      max-width: calc(100vw - 40px);
+      overflow: auto;
+      background-color: theme(white);
+      border-radius: 2px;
+
+      @include breakpoint(m) {
+        margin-top: 125px;
+        max-height: calc(100vh - 250px);
+        max-width: calc(100vw - 20px);
+      }
+
+      @include breakpoint(s) {
+        margin-top: 100px;
+        max-height: calc(100vh - 200px);
+        max-width: calc(100vw - 10px);
+      }
+
+      .close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: theme(gray, deep);
+        cursor: pointer;
+
+        &:hover {
+          background-color: theme(white, deep);
+        }
+
+        svg {
+          display: block;
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
+}

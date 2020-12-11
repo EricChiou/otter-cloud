@@ -1,11 +1,13 @@
 @import 'src/assets/css/theme.scss';
 
-#homeMenu {
+#fileMenu {
   position: fixed;
   right: 15px;
   bottom: 10px;
 
   .icon {
+    display: inline-block;
+    margin-left: 7px;
     padding: 5px;
     color: theme(blue, light);
     border: 5px solid theme(blue, light);
@@ -26,6 +28,12 @@
       display: block;
       width: 30px;
       height: 30px;
+    }
+
+    .uploadInput {
+      position: fixed;
+      top: 100%;
+      left: 100%;
     }
   }
 }

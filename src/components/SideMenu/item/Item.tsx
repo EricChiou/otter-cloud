@@ -43,7 +43,7 @@ const Item: FunctionComponent<Props> = ({
     return () => { window.removeEventListener('resize', onResize); };
   });
 
-  const itemOnSelect = (e: MouseEvent<HTMLElement>, itemData: Item) => {
+  const itemOnSelect = (e: MouseEvent<HTMLDivElement>, itemData: Item) => {
     removeActiveEle();
     e.currentTarget.classList.add(styles.active);
 

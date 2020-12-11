@@ -21,4 +21,6 @@ export interface Keys {
   fileName: string;
   fileSize: string;
   lastModified: string;
+  checkToDelete: string;
+  cannotUndone: string;
 }

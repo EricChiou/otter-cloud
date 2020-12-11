@@ -15,4 +15,6 @@ export const zh_tw: Keys = {
   fileName: '檔案名稱',
   fileSize: '檔案大小',
   lastModified: '最後修改日期',
+  checkToDelete: '確定要刪除檔案？',
+  cannotUndone: '此動作無法復原！',
 };

@@ -15,4 +15,6 @@ export const keys: Keys = {
   fileName: 'fileName',
   fileSize: 'fileSize',
   lastModified: 'lastModified',
+  checkToDelete: 'checkToDelete',
+  cannotUndone: 'cannotUndone',
 };

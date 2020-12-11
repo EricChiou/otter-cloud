@@ -1,0 +1,44 @@
+@import 'src/assets/css/theme.scss';
+
+.fileOption {
+  position: relative;
+
+  .options {
+    position: absolute;
+    top: -6px;
+    right: calc(100% + 2px);
+    bottom: -9px;
+    background-color: theme(white, deep);
+    border: 1px solid theme(gray, deep);
+    border-radius: 4px;
+    color: theme(blue, deep);
+    overflow: hidden;
+
+    svg {
+      &:hover {
+        background-color: theme(gray, light);
+      }
+    }
+  }
+}
+
+.delete {
+  padding: 25px 30px;
+
+  .icon {
+    display: inline-block;
+    color: theme(pink, deep);
+    text-align: center;
+
+    svg {
+      display: block;
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .text {
+    margin-bottom: 20px;
+    line-height: 25px;
+  }
+}

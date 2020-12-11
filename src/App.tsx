@@ -6,6 +6,7 @@ import { routes } from './routes';
 import { setUserProfile, selectUserProfile, selectLang } from './store/user.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
+import Dialog from 'src/components/Dialog';
 
 import './App.scss';
 
@@ -49,6 +50,7 @@ const App = () => {
           <Redirect to={Routes.HOME} />
         </Route>
       </Switch>
+      <Dialog></Dialog>
     </div>
   );
 }

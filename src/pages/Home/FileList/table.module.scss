@@ -63,7 +63,7 @@
 
   .optionCol {
     width: calc(70px - 4px);
-    text-align: center;
+    text-align: right;
 
     @include breakpoint(m) {
       max-width: calc(70px - 4px);

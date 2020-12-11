@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectPrefix, setPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
-import { Upload, Download } from 'src/components/icons';
+import FileMenu from './FileMenu';
+import { Upload } from 'src/components/icons';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -14,19 +15,28 @@ const FikeList: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const [fileList, setFileList] = useState<File[]>([]);
+  const [showDownload, setShowDownload] = useState<boolean>(false);
 
   useEffect(() => {
     console.log('get file list:', prefix);
     // get file list
     setFileList(fakeFileList);
-
   }, [prefix]);
+
+  useEffect(() => {
+    const result = fileList.find((file) => file.selected);
+    if (result && !showDownload) {
+      setShowDownload(true);
+    } else if (!result && showDownload) {
+      setShowDownload(false);
+    }
+  }, [fileList, showDownload]);
 
   const drop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // console.log(e.dataTransfer.files);
+    console.log('Upload Files', e.dataTransfer.files);
     fileListRef.current?.classList.remove(styles.dragOver);
   };
 
@@ -52,9 +62,26 @@ const FikeList: FunctionComponent<{}> = () => {
     }
   };
 
+  const downloadFiles = () => {
+    const files = fileList.filter((file) => file.selected);
+    console.log('Download Files', files);
+  }
+
+  const deleteFiles = () => {
+    const files = fileList.filter((file) => file.selected);
+    console.log('Delete Files', files);
+  };
+
   const renderFiles = () => {
     return fileList.map((file, index) => {
-      return <FileComponent key={file.name} file={file} index={index} onSelected={fileOnSelected}></FileComponent>;
+      return (
+        <FileComponent
+          key={file.name}
+          file={file}
+          index={index}
+          onSelected={fileOnSelected}
+        ></FileComponent>
+      );
     });
   }
 
@@ -75,6 +102,7 @@ const FikeList: FunctionComponent<{}> = () => {
       <div className={table.list}>
         {renderFiles()}
       </div>
+      <FileMenu showDownload={showDownload} download={downloadFiles} del={deleteFiles}></FileMenu>
       <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
         <div className={styles.icon}>
           <Upload></Upload>
@@ -139,7 +167,7 @@ const fakeFileList: File[] = [
   {
     contentType: 'text/plain',
     name: 'file.txt',
-    size: 0,
+    size: 1,
     lastModified: '2020-11-11T09:26:26.0100965+08:00',
     selected: false,
   },

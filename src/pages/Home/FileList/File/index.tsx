@@ -3,21 +3,11 @@ import React, { FunctionComponent } from 'react';
 import { ContentType } from 'src/constants/file';
 import { BaseTooltip } from 'src/components/common';
 import {
-  File as FileIcon,
-  FileText,
-  FileImage,
-  FileAudio,
-  FileVideo,
-  FileArchive,
-  FilePdf,
-  FileWord,
-  FileExcel,
-  FilePPT,
-  FileFolder,
-  More,
-  Download,
-  CheckBox,
+  File as FileIcon, FileText, FileImage, FileAudio, FileVideo,
+  FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,
+  Download, CheckBox,
 } from 'src/components/icons';
+import FileOption from './FileOption';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -38,12 +28,12 @@ interface Props {
 
 const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) => {
 
-  const convertFileSize = (file: File): string => {
+  const convertFileSize = (): string => {
     if (file.contentType === '') { return ''; }
 
     const rounded = (size: number): number => {
       return Math.round(size * 100) / 100;
-    }
+    };
 
     if (file.size < 1024) {
       return `${rounded(file.size)} Bytes`;
@@ -57,7 +47,7 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
     return `${rounded(file.size / (1024 * 1024 * 1024 * 1024))} TB`;
   };
 
-  const convertFileLastModified = (file: File): string => {
+  const convertFileLastModified = (): string => {
     try {
       const convertTime = (num: number): string => {
         return num < 10 ? `0${num}` : `${num}`
@@ -75,7 +65,11 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
       console.error(error);
       return file.lastModified;
     }
-  }
+  };
+
+  const download = () => {
+    console.log('Download File', file);
+  };
 
   const renderIcon = () => {
     let Icon = FileIcon;
@@ -115,23 +109,23 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
           <span className={`${table.text} ${styles.text} ${styles.iconText}`}>
             {file.name}
             <div className={styles.subLine}>
-              {convertFileSize(file)}{file.contentType ? ', ' : null}
-              {convertFileLastModified(file)}
+              {convertFileSize()}{file.contentType ? ', ' : null}
+              {convertFileLastModified()}
             </div>
           </span>
         </BaseTooltip>
       </div>
       <div className={table.sizeCol}>
-        <span className={table.text}>{convertFileSize(file)}</span>
+        <span className={table.text}>{convertFileSize()}</span>
       </div>
       <div className={table.modifyCol}>
-        <span className={table.text}>{convertFileLastModified(file)}</span>
+        <span className={table.text}>{convertFileLastModified()}</span>
       </div>
       <div className={table.optionCol}>
-        <Download></Download>
-        <More></More>
+        <Download onClick={download}></Download>
+        <FileOption file={file}></FileOption>
       </div>
-    </div>
+    </div >
   );
 }
 

@@ -15,4 +15,6 @@ export const en_us: Keys = {
   fileName: 'name',
   fileSize: 'size',
   lastModified: 'last modified',
+  checkToDelete: 'Are you sure you want to delete?',
+  cannotUndone: 'This cannot be undone!',
 };
