@@ -1,4 +1,4 @@
-import React, { FunctionComponent, MouseEvent } from 'react';
+import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectBuffer, removeDialog } from './dialog.slice';
@@ -10,11 +10,29 @@ export interface DialogData {
   component: JSX.Element;
   closeUI?: boolean;
   closeByClick?: boolean;
+  defaultSize?: boolean;
+  blockStyle?: object;
 }
 
 const Dialog: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const buffer = useSelector(selectBuffer);
+  const [defaultSize, setDefaultSize] = useState(true);
+
+  useEffect(() => {
+    if (!buffer[0]) { return; }
+
+    if (buffer[0].defaultSize === undefined) {
+      if (!defaultSize) {
+        setDefaultSize(true);
+      }
+    } else {
+      if (buffer[0].defaultSize !== defaultSize) {
+        setDefaultSize(buffer[0].defaultSize);
+      }
+    }
+
+  }, [buffer, defaultSize]);
 
   const closeByClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -32,7 +50,11 @@ const Dialog: FunctionComponent<{}> = () => {
       {buffer.length ?
         <div className={styles.dialog}>
           <div className={styles.mask} onClick={closeByClick}>
-            <div className={styles.block} onClick={(e) => { e.stopPropagation(); }}>
+            <div
+              className={`${styles.block}${defaultSize ? ` ${styles.defaultSize}` : ''}`}
+              style={buffer[0].blockStyle}
+              onClick={(e) => { e.stopPropagation(); }}
+            >
               {buffer[0].component}
               {buffer[0].closeUI ?
                 <div className={styles.close}>

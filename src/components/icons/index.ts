@@ -30,3 +30,4 @@ export { Delete } from './Delete';
 export { Share } from './Share';
 export { Close } from './Close';
 export { Warning } from './Warning';
+export { Preview } from './Preview';

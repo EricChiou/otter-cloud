@@ -21,24 +21,9 @@
     .block {
       position: relative;
       display: inline-block;
-      margin-top: 150px;
-      max-height: calc(100vh - 300px);
-      max-width: calc(100vw - 40px);
       overflow: auto;
       background-color: theme(white);
       border-radius: 2px;
-
-      @include breakpoint(m) {
-        margin-top: 125px;
-        max-height: calc(100vh - 250px);
-        max-width: calc(100vw - 20px);
-      }
-
-      @include breakpoint(s) {
-        margin-top: 100px;
-        max-height: calc(100vh - 200px);
-        max-width: calc(100vw - 10px);
-      }
 
       .close {
         position: absolute;
@@ -56,6 +41,24 @@
           width: 25px;
           height: 25px;
         }
+      }
+    }
+
+    .defaultSize {
+      margin-top: 150px;
+      max-height: calc(100vh - 300px);
+      max-width: calc(100vw - 40px);
+
+      @include breakpoint(m) {
+        margin-top: 125px;
+        max-height: calc(100vh - 250px);
+        max-width: calc(100vw - 20px);
+      }
+
+      @include breakpoint(s) {
+        margin-top: 100px;
+        max-height: calc(100vh - 200px);
+        max-width: calc(100vw - 10px);
       }
     }
   }

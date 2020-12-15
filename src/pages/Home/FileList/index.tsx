@@ -5,7 +5,9 @@ import { selectPrefix, setPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
 import FileMenu from './FileMenu';
-import { Upload } from 'src/components/icons';
+import { Upload, Warning } from 'src/components/icons';
+import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
+import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -67,10 +69,37 @@ const FikeList: FunctionComponent<{}> = () => {
     console.log('Download Files', files);
   }
 
+  const showDeleteWarning = () => {
+    const buttonStyle = {
+      width: '80px',
+      textAlign: 'center',
+    };
+
+    const component = (
+      <div className={styles.delete}>
+        <div className={styles.icon}>
+          <Warning></Warning>
+        </div>
+        <div className={styles.text}>
+          {intl(keys.checkToDelete)}
+          <br></br>
+          {intl(keys.cannotUndone)}
+        </div>
+        <BaseButton type={ButtonType.danger} style={buttonStyle} onClick={deleteFiles}>Delete</BaseButton>
+        &nbsp;&nbsp;
+        <BaseButton onClick={() => { dispatch(removeDialog()); }} style={buttonStyle}>Cancel</BaseButton>
+      </div>
+    );
+    dispatch(addDialog({ component }));
+  }
+
   const deleteFiles = () => {
     const files = fileList.filter((file) => file.selected);
     console.log('Delete Files', files);
+    dispatch(removeDialog());
   };
+
+
 
   const renderFiles = () => {
     return fileList.map((file, index) => {
@@ -102,7 +131,7 @@ const FikeList: FunctionComponent<{}> = () => {
       <div className={table.list}>
         {renderFiles()}
       </div>
-      <FileMenu showDownload={showDownload} download={downloadFiles} del={deleteFiles}></FileMenu>
+      <FileMenu showDownload={showDownload} download={downloadFiles} del={showDeleteWarning}></FileMenu>
       <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
         <div className={styles.icon}>
           <Upload></Upload>
