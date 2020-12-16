@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { File } from 'src/pages/Home/FileList/File';
 import { Delete, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
-import { intl, keys } from 'src/i18n';
+import { intl, keys, IntlType } from 'src/i18n';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 
 import styles from './style.module.scss';
@@ -32,9 +32,17 @@ const FileDelete: FunctionComponent<Props> = ({ file }) => {
           <br></br>
           {intl(keys.cannotUndone)}
         </div>
-        <BaseButton type={ButtonType.danger} style={buttonStyle} onClick={deleteFile}>Delete</BaseButton>
+        <BaseButton type={ButtonType.danger} style={buttonStyle} onClick={deleteFile}>
+          {intl(keys.delete, IntlType.perUpper)}
+        </BaseButton>
         &nbsp;&nbsp;
-        <BaseButton onClick={() => { dispatch(removeDialog()); }} style={buttonStyle}>Cancel</BaseButton>
+        <BaseButton
+          type={ButtonType.normal}
+          style={buttonStyle}
+          onClick={() => { dispatch(removeDialog()); }}
+        >
+          {intl(keys.cancel, IntlType.perUpper)}
+        </BaseButton>
       </div>
     );
     dispatch(addDialog({ component }));

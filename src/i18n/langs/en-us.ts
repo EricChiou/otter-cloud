@@ -17,4 +17,10 @@ export const en_us: Keys = {
   lastModified: 'last modified',
   checkToDelete: 'Are you sure you want to delete?',
   cannotUndone: 'This cannot be undone!',
+  previousPage: 'previous page',
+  cancel: 'cancel',
+  email: 'email',
+  name: 'name',
+  confirmPwd: 'confirm password',
+  delete: 'delete',
 };

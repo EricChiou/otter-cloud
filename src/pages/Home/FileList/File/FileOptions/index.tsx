@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useRef, RefObject, useEffect, useState } from 'react';
 
-import { More, Share } from 'src/components/icons';
+import { More } from 'src/components/icons';
 import { File } from 'src/pages/Home/FileList/File';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';

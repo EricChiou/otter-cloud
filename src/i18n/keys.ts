@@ -17,4 +17,10 @@ export const keys: Keys = {
   lastModified: 'lastModified',
   checkToDelete: 'checkToDelete',
   cannotUndone: 'cannotUndone',
+  previousPage: 'previousPage',
+  cancel: 'cancel',
+  email: 'email',
+  name: 'name',
+  confirmPwd: 'confirmPwd',
+  delete: 'delete',
 };

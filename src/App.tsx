@@ -29,9 +29,9 @@ const App = () => {
     }
   }, [token, dispatch]);
 
-  // if not login and not at login page, redirect to login page.
+  // if not login and not at login page or sign up page, redirect to login page.
   useEffect(() => {
-    if (location.pathname !== Routes.LOGIN && !StatusService.isLogin()) {
+    if (location.pathname !== Routes.LOGIN && location.pathname !== Routes.SIGN_UP && !StatusService.isLogin()) {
       history.push(Routes.LOGIN);
     }
   }, [location, history, userProfile]);

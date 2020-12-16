@@ -17,4 +17,10 @@ export const zh_tw: Keys = {
   lastModified: '最後修改日期',
   checkToDelete: '確定要刪除檔案？',
   cannotUndone: '此動作無法復原！',
+  previousPage: '回上一頁',
+  cancel: '取消',
+  email: 'email',
+  name: '名稱',
+  confirmPwd: '確認密碼',
+  delete: '刪除',
 };

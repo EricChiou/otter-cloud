@@ -23,4 +23,10 @@ export interface Keys {
   lastModified: string;
   checkToDelete: string;
   cannotUndone: string;
+  previousPage: string;
+  cancel: string;
+  email: string;
+  name: string;
+  confirmPwd: string;
+  delete: string;
 }

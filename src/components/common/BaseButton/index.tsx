@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 import styles from './style.module.scss';
 
 export enum ButtonType {
+  default = 'default',
   normal = 'normal',
   success = 'success',
   danger = 'danger',
@@ -20,6 +21,10 @@ const BaseButton: FunctionComponent<Props> = ({ children, type, style, onClick }
   let className = styles.btn;
 
   switch (type) {
+    case ButtonType.normal:
+      className += ` ${styles.normal}`;
+      break;
+
     case ButtonType.success:
       className += ` ${styles.success}`;
       break;
@@ -37,7 +42,7 @@ const BaseButton: FunctionComponent<Props> = ({ children, type, style, onClick }
       break;
 
     default:
-      className += ` ${styles.normal}`;
+      className += ` ${styles.default}`;
       break;
   }
 

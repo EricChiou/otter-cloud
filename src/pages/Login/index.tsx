@@ -2,21 +2,19 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
 import { setUserProfile } from 'src/store/user.slice';
-
 import { Routes } from 'src/constants';
 import { intl, keys, IntlType } from 'src/i18n';
-
 import { StatusService, UserService } from 'src/service';
-
 import Header from 'src/components/Header';
-import Lang from './Lang';
+import Lang from 'src/components/Lang';
 import { BaseInput, BaseButton } from 'src/components/common';
 
 import styles from './style.module.scss';
 
 const Login: FunctionComponent<{}> = () => {
   const history = useHistory();
-  const [className, setClassName] = useState(styles.horizontal);
+  const [className, setClassName] =
+    useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
 
   useEffect(() => {
     if (StatusService.isLogin()) {
@@ -40,7 +38,7 @@ const Login: FunctionComponent<{}> = () => {
     return () => {
       window.removeEventListener('resize', onResize);
     };
-  })
+  });
 
   const login = () => {
     const fakeUserData = {
@@ -68,8 +66,8 @@ const Login: FunctionComponent<{}> = () => {
           <Header fontSize={20} showSetting={false}></Header>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.acc, IntlType.firstUpper)}:</span>
-          <BaseInput placeholder={intl(keys.account)} style={{ padding: '2px 3px' }}></BaseInput>
+          <span className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</span>
+          <BaseInput placeholder={intl(keys.email)} style={{ padding: '2px 3px' }}></BaseInput>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.pwd, IntlType.firstUpper)}:</span>
@@ -78,10 +76,15 @@ const Login: FunctionComponent<{}> = () => {
         <div className={styles.loginBtn}>
           <BaseButton onClick={login}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
         </div>
-        <div className={styles.signUp}>sign up</div>
+        <div
+          className={styles.signUp}
+          onClick={() => { history.push(Routes.SIGN_UP); }}
+        >
+          {intl(keys.signUp)}
+        </div>
       </div>
       <Lang></Lang>
-    </div >
+    </div>
   );
 }
 
