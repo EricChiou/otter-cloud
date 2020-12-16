@@ -5,12 +5,12 @@ import { Upload, Download, Delete } from 'src/components/icons';
 import styles from './style.module.scss';
 
 interface Props {
-  showDownload?: boolean;
+  showOtherOptions?: boolean;
   download?: () => void;
   del?: () => void;
 }
 
-const FileMenu: FunctionComponent<Props> = ({ showDownload, download, del }) => {
+const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions, download, del }) => {
   const uploadInputEle: RefObject<HTMLInputElement> = useRef(null);
 
   const uploadOnClick = () => {
@@ -30,7 +30,7 @@ const FileMenu: FunctionComponent<Props> = ({ showDownload, download, del }) => 
 
   return (
     <div id={styles.fileMenu}>
-      {showDownload ?
+      {showOtherOptions ?
         <>
           <div className={styles.icon} onClick={del}>
             <Delete></Delete>
@@ -49,4 +49,4 @@ const FileMenu: FunctionComponent<Props> = ({ showDownload, download, del }) => 
   );
 };
 
-export default FileMenu;
+export default FileListMenu;

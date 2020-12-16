@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectPrefix, setPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
-import FileMenu from './FileMenu';
+import FileListMenu from './FileListMenu';
 import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
@@ -17,7 +17,7 @@ const FikeList: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const [fileList, setFileList] = useState<File[]>([]);
-  const [showDownload, setShowDownload] = useState<boolean>(false);
+  const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
 
   useEffect(() => {
     console.log('get file list:', prefix);
@@ -27,12 +27,12 @@ const FikeList: FunctionComponent<{}> = () => {
 
   useEffect(() => {
     const result = fileList.find((file) => file.selected);
-    if (result && !showDownload) {
-      setShowDownload(true);
-    } else if (!result && showDownload) {
-      setShowDownload(false);
+    if (result && !showOtherOptions) {
+      setShowOtherOptions(true);
+    } else if (!result && showOtherOptions) {
+      setShowOtherOptions(false);
     }
-  }, [fileList, showDownload]);
+  }, [fileList, showOtherOptions]);
 
   const drop = (e: DragEvent) => {
     e.preventDefault();
@@ -131,7 +131,11 @@ const FikeList: FunctionComponent<{}> = () => {
       <div className={table.list}>
         {renderFiles()}
       </div>
-      <FileMenu showDownload={showDownload} download={downloadFiles} del={showDeleteWarning}></FileMenu>
+      <FileListMenu
+        showOtherOptions={showOtherOptions}
+        download={downloadFiles}
+        del={showDeleteWarning}>
+      </FileListMenu>
       <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
         <div className={styles.icon}>
           <Upload></Upload>

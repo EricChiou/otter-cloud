@@ -7,7 +7,7 @@ import {
   FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,
   Download, CheckBox,
 } from 'src/components/icons';
-import FileOption from './FileOption';
+import FileOptions from './FileOptions';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -123,7 +123,7 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
       </div>
       <div className={table.optionCol}>
         <Download onClick={download}></Download>
-        <FileOption file={file}></FileOption>
+        <FileOptions file={file}></FileOptions>
       </div>
     </div >
   );
