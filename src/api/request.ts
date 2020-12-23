@@ -1,24 +1,68 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-const request = axios.create({ timeout: 30000 });
+import { Config } from 'src/constants';
+
+export interface RespVo {
+  status: string;
+  data: any;
+  trace: any;
+}
+
+const request = axios.create({
+  baseURL: Config.API_BASE_URL,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 request.interceptors.response.use(
   (resp) => {
     if (200 <= resp.status && resp.status <= 299) {
       return resp.data;
     } else {
-      return Promise.reject(resp.data);
+      return Promise.reject(resp);
     }
   },
   (error) => {
-    console.error('api error:', error);
-    return Promise.reject(errorHandler(error));
+    const err = errorHandler(error);
+    console.error('api error:', err);
+    return Promise.reject(err);
   }
-)
+);
 
-function errorHandler(error: any): any {
+const errorHandler = (error: any) => {
+  if (error.message) { return error.message; }
   if (error.response && error.response.data) {
     return error.response.data;
   }
   return error;
-}
+};
+
+export const get = (url: string, params?: object, token?: string): Promise<RespVo> => {
+  const config: AxiosRequestConfig = { params };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.get(url, config);
+};
+
+export const post = (url: string, body: object = {}, params?: object, token?: string): Promise<RespVo> => {
+  const config: AxiosRequestConfig = { params };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
+};
+
+export const put = (url: string, body: object = {}, params?: object, token?: string): Promise<RespVo> => {
+  const config: AxiosRequestConfig = { params };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.put(url, body, config);
+};
+
+export const del = (url: string, params?: object, token?: string): Promise<RespVo> => {
+  const config: AxiosRequestConfig = { params };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.delete(url, config);
+};

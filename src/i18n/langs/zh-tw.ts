@@ -23,4 +23,6 @@ export const zh_tw: Keys = {
   name: '名稱',
   confirmPwd: '確認密碼',
   delete: '刪除',
+  confirm: '確認',
+  signInErrorNsg: 'Email 或密碼錯誤',
 };

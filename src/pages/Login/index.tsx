@@ -1,20 +1,26 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, KeyboardEvent } from 'react';
 import { useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 
 import { setUserProfile } from 'src/store/user.slice';
-import { Routes } from 'src/constants';
+import { Routes, ApiResult } from 'src/constants';
 import { intl, keys, IntlType } from 'src/i18n';
 import { StatusService, UserService } from 'src/service';
 import Header from 'src/components/Header';
 import Lang from 'src/components/Lang';
 import { BaseInput, BaseButton } from 'src/components/common';
+import { signIn } from 'src/api/user';
+import { addMessage, MessageType } from 'src/components/Message';
 
 import styles from './style.module.scss';
 
 const Login: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [className, setClassName] =
     useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
+  let acc = '';
+  let pwd = '';
 
   useEffect(() => {
     if (StatusService.isLogin()) {
@@ -40,22 +46,30 @@ const Login: FunctionComponent<{}> = () => {
     };
   });
 
+  const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    acc = e.currentTarget.value;
+    if (e.key === 'Enter') { login(); }
+  }
+
+  const pwdOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    pwd = e.currentTarget.value;
+    if (e.key === 'Enter') { login(); }
+  }
+
   const login = () => {
-    const fakeUserData = {
-      id: 1,
-      acc: 'UserAccount',
-      name: 'UserName 使用者名稱',
-      role: 'normal',
-      exp: new Date().getTime() + (7 * 24 * 60 * 60 * 1000), // 7days
-    };
-    const jsonStr = JSON.stringify(fakeUserData);
-    const fakeToken = `qazwsxedc.${btoa(encodeURIComponent(jsonStr))}.rfvtgbyhn`;
+    signIn(acc, pwd).then((resp) => {
+      if (resp.status === ApiResult.Success) {
+        // console.log('login:', resp);
+        const userProfile = UserService.parseToken(resp.data.token);
+        UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
+        setUserProfile(userProfile);
 
-    const userProfile = UserService.parseToken(fakeToken);
-    UserService.saveToken2Cookie(fakeToken, userProfile.exp);
-    setUserProfile(userProfile);
+        history.push(Routes.HOME);
 
-    history.push(Routes.HOME);
+      } else {
+        addMessage(dispatch, intl(keys.signInErrorNsg, IntlType.firstUpper), MessageType.info);
+      }
+    }).catch((error) => { console.log(error); });
   }
 
   return (
@@ -67,11 +81,20 @@ const Login: FunctionComponent<{}> = () => {
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</span>
-          <BaseInput placeholder={intl(keys.email)} style={{ padding: '2px 3px' }}></BaseInput>
+          <BaseInput
+            placeholder={intl(keys.email)}
+            style={{ padding: '2px 3px' }}
+            onKeyUp={accOnKeyUp}
+          ></BaseInput>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.pwd, IntlType.firstUpper)}:</span>
-          <BaseInput type="password" placeholder={intl(keys.password)} style={{ padding: '2px 3px' }}></BaseInput>
+          <BaseInput
+            type="password"
+            placeholder={intl(keys.password)}
+            style={{ padding: '2px 3px' }}
+            onKeyUp={pwdOnKeyUp}
+          ></BaseInput>
         </div>
         <div className={styles.loginBtn}>
           <BaseButton onClick={login}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>

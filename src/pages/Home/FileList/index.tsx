@@ -2,12 +2,15 @@ import React, { FunctionComponent, useEffect, DragEvent, RefObject, useRef, useS
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
 import FileListMenu from './FileListMenu';
 import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
+import { ApiResult } from 'src/constants';
+import { getFileList } from 'src/api/file';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -15,15 +18,30 @@ import table from './table.module.scss';
 const FikeList: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
+  const userProfile = useSelector(selectUserProfile);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const [fileList, setFileList] = useState<File[]>([]);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('get file list:', prefix);
-    // get file list
-    setFileList(fakeFileList);
-  }, [prefix]);
+    // console.log('get file list:', prefix);
+    getFileList(prefix, userProfile.token).then((resp) => {
+      if (resp.status === ApiResult.Success) {
+        const fileList: File[] = resp.data.map((data) => {
+          return {
+            contentType: data.contentType,
+            name: data.name,
+            size: data.size,
+            lastModified: data.lastModified,
+            selected: false,
+          };
+        });
+        setFileList(fileList);
+      }
+
+    }).catch((error) => { console.log(error); });
+
+  }, [prefix, userProfile]);
 
   useEffect(() => {
     const result = fileList.find((file) => file.selected);
@@ -146,125 +164,3 @@ const FikeList: FunctionComponent<{}> = () => {
 }
 
 export default FikeList;
-
-const fakeFileList: File[] = [
-  {
-    contentType: 'application/octet-stream',
-    name: 'cat',
-    size: 5964,
-    lastModified: '2020-11-06T14:40:02.1738874+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'audio/mpeg',
-    name: 'Baby Cats.mp3',
-    size: 5729325,
-    lastModified: '2020-11-11T12:15:57.7300048+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'image/jpeg',
-    name: 'cat.jpg',
-    size: 5964,
-    lastModified: '2020-11-06T10:39:52.4392648+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'image/png',
-    name: 'cat.png',
-    size: 4537,
-    lastModified: '2020-11-06T10:39:52.4412612+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'image/jpeg',
-    name: 'cat2.jpg',
-    size: 7676,
-    lastModified: '2020-11-06T10:39:52.4422566+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'image/jpeg',
-    name: 'cat3.jpg',
-    size: 4023,
-    lastModified: '2020-11-06T10:39:52.4412612+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/octet-stream',
-    name: 'file.7z',
-    size: 90,
-    lastModified: '2020-11-11T09:28:30.0011283+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'text/plain',
-    name: 'file.txt',
-    size: 1,
-    lastModified: '2020-11-11T09:26:26.0100965+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/x-zip-compressed',
-    name: 'file.zip',
-    size: 150,
-    lastModified: '2020-11-11T09:28:00.9691468+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'video/mp4',
-    name: 'mov_bbb.mp4',
-    size: 788493,
-    lastModified: '2020-11-11T09:27:18.0411223+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    name: 'test.docx',
-    size: 12049,
-    lastModified: '2020-11-11T09:30:34.4375835+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/pdf',
-    name: 'test.pdf',
-    size: 29749,
-    lastModified: '2020-11-11T09:30:59.8154661+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    name: 'test.pptx',
-    size: 33656,
-    lastModified: '2020-11-11T09:30:34.4375835+08:00',
-    selected: false,
-  },
-  {
-    contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    name: 'test.xlsx',
-    size: 10052,
-    lastModified: '2020-11-11T09:30:34.4385814+08:00',
-    selected: false,
-  },
-  {
-    contentType: '',
-    name: 'dir1/',
-    size: 0,
-    lastModified: '2020-11-11T09:30:34.4385814+08:00',
-    selected: false,
-  },
-  {
-    contentType: '',
-    name: 'dir2/',
-    size: 0,
-    lastModified: '2020-11-11T09:30:34.4385814+08:00',
-    selected: false,
-  },
-  {
-    contentType: '',
-    name: 'dir3/',
-    size: 0,
-    lastModified: '2020-11-11T09:30:34.4385814+08:00',
-    selected: false,
-  },
-];

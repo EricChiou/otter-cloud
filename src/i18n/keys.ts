@@ -23,4 +23,6 @@ export const keys: Keys = {
   name: 'name',
   confirmPwd: 'confirmPwd',
   delete: 'delete',
+  confirm: 'confirm',
+  signInErrorNsg: 'signInErrorNsg',
 };

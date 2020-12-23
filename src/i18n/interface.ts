@@ -29,4 +29,6 @@ export interface Keys {
   name: string;
   confirmPwd: string;
   delete: string;
+  confirm: string;
+  signInErrorNsg: string;
 }

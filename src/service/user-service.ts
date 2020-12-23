@@ -6,11 +6,13 @@ import { CookieKeys } from 'src/constants';
 export class UserService {
   public static readonly parseToken = (token: string): UserProfile => {
     const userProfile: UserProfile = {
-      token: null,
+      token: '',
       id: null,
-      acc: null,
-      name: null,
-      role: null,
+      acc: '',
+      name: '',
+      roleCode: '',
+      roleName: '',
+      bucketName: '',
       exp: 0,
     };
 
@@ -29,7 +31,9 @@ export class UserService {
     userProfile.id = parse.id;
     userProfile.acc = parse.acc;
     userProfile.name = parse.name;
-    userProfile.role = parse.role;
+    userProfile.roleCode = parse.roleCode;
+    userProfile.roleName = parse.roleName;
+    userProfile.bucketName = parse.bucketName;
     userProfile.exp = parse.exp;
     return userProfile;
   };

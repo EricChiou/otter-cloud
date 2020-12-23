@@ -31,3 +31,6 @@ export { Share } from './Share';
 export { Close } from './Close';
 export { Warning } from './Warning';
 export { Preview } from './Preview';
+export { Success } from './Success';
+export { Info } from './Info';
+export { Error } from './Error';

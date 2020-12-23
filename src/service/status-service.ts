@@ -8,7 +8,9 @@ export class StatusService {
       userProfile.id !== null &&
       userProfile.acc &&
       userProfile.name &&
-      userProfile.role &&
+      userProfile.roleCode &&
+      userProfile.roleName &&
+      userProfile.bucketName &&
       userProfile.exp) {
 
       return true;

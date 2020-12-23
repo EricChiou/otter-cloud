@@ -23,4 +23,6 @@ export const en_us: Keys = {
   name: 'name',
   confirmPwd: 'confirm password',
   delete: 'delete',
+  confirm: 'confirm',
+  signInErrorNsg: 'email or password incorrect.',
 };

@@ -1,8 +1,10 @@
 export interface UserProfile {
-  token: string | null;
+  token: string;
   id: number | null;
-  acc: string | null;
-  name: string | null;
-  role: string | null;
+  acc: string;
+  name: string;
+  roleCode: string;
+  roleName: string;
+  bucketName: string;
   exp: number;
 }
