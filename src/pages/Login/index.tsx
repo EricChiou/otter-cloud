@@ -9,7 +9,7 @@ import { StatusService, UserService } from 'src/service';
 import Header from 'src/components/Header';
 import Lang from 'src/components/Lang';
 import { BaseInput, BaseButton } from 'src/components/common';
-import { signIn } from 'src/api/user';
+import { login } from 'src/api/user';
 import { addMessage, MessageType } from 'src/components/Message';
 
 import styles from './style.module.scss';
@@ -48,16 +48,16 @@ const Login: FunctionComponent<{}> = () => {
 
   const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     acc = e.currentTarget.value;
-    if (e.key === 'Enter') { login(); }
+    if (e.key === 'Enter') { doLogin(); }
   }
 
   const pwdOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     pwd = e.currentTarget.value;
-    if (e.key === 'Enter') { login(); }
+    if (e.key === 'Enter') { doLogin(); }
   }
 
-  const login = () => {
-    signIn(acc, pwd).then((resp) => {
+  const doLogin = () => {
+    login(acc, pwd).then((resp) => {
       if (resp.status === ApiResult.Success) {
         // console.log('login:', resp);
         const userProfile = UserService.parseToken(resp.data.token);
@@ -97,7 +97,7 @@ const Login: FunctionComponent<{}> = () => {
           ></BaseInput>
         </div>
         <div className={styles.loginBtn}>
-          <BaseButton onClick={login}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
+          <BaseButton onClick={doLogin}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
         </div>
         <div
           className={styles.signUp}

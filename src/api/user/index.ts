@@ -3,7 +3,7 @@ import { SingInReqVo, SingInResVo } from './interface';
 
 const userGroupUrl = '/user';
 
-export const signIn = (acc: string, pwd: string): Promise<SingInResVo> => {
+export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
     const body: SingInReqVo = {
         acc,
         pwd
