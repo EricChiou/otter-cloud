@@ -1,39 +1,49 @@
 import React, { FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { File } from 'src/pages/Home/FileList/File';
 import { ContentType } from 'src/constants/file';
 import { Preview } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
+import { getPreviewUrl } from 'src/api/file';
+import { selectPrefix } from 'src/store/system.slice';
+import { selectUserProfile } from 'src/store/user.slice';
 
 import styles from './style.module.scss';
 
 interface Props {
   file: File;
+  onClick: () => void;
 }
 
-const FilePreview: FunctionComponent<Props> = ({ file }) => {
+const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
+  const userProfile = useSelector(selectUserProfile);
+  const prefix = useSelector(selectPrefix);
 
   const previewFile = () => {
-    const component = (
-      <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-        <div className={"vert-align-mid"}></div>
-        <img
-          src={"https://dummyimage.com/1920X1080/000/fff"}
-          alt="preview"
-          onClick={(e) => { e.stopPropagation(); }}
-        ></img>
-      </div>
-    );
+    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
+      const component = (
+        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
+          <div className={"vert-align-mid"}></div>
+          <img
+            src={resp.data.url}
+            alt="preview"
+            onClick={(e) => { e.stopPropagation(); }}
+          ></img>
+        </div>
+      );
 
-    dispatch(addDialog({
-      component,
-      closeUI: true,
-      closeByClick: true,
-      defaultSize: false,
-      blockStyle: { backgroundColor: 'rgba(0, 0, 0, 0)' },
-    }));
+      dispatch(addDialog({
+        component,
+        closeUI: true,
+        closeByClick: true,
+        defaultSize: false,
+        blockStyle: { backgroundColor: 'rgba(0, 0, 0, 0)' },
+      }));
+    });
+
+    if (onClick) { onClick(); }
   };
 
   const renderPreviewOption = () => {

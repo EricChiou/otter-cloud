@@ -27,7 +27,7 @@ const FileOptions: FunctionComponent<Props> = ({ file }) => {
       }
 
       if (showOptions) {
-        setShowOptions(false)
+        setShowOptions(false);
       };
     };
     window.addEventListener('click', onClick);
@@ -41,14 +41,18 @@ const FileOptions: FunctionComponent<Props> = ({ file }) => {
     setShowOptions(!showOptions);
   };
 
+  const optionOnClick = () => {
+    setShowOptions(false);
+  };
+
   return (
     <span className={styles.fileOption} ref={optionEle}>
       <More onClick={showOptionOnClick}></More>
       {showOptions ?
         <div className={styles.options}>
-          <FilePreview file={file}></FilePreview>
-          <FileShare file={file}></FileShare>
-          <FileDelete file={file}></FileDelete>
+          <FilePreview file={file} onClick={optionOnClick}></FilePreview>
+          <FileShare file={file} onClick={optionOnClick}></FileShare>
+          <FileDelete file={file} onClick={optionOnClick}></FileDelete>
         </div>
         : null
       }

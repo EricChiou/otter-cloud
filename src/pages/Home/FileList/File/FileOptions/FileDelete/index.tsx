@@ -11,9 +11,10 @@ import styles from './style.module.scss';
 
 interface Props {
   file: File;
+  onClick: () => void;
 }
 
-const FileDelete: FunctionComponent<Props> = ({ file }) => {
+const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
 
   const showDeleteWarning = () => {
@@ -46,6 +47,8 @@ const FileDelete: FunctionComponent<Props> = ({ file }) => {
       </div>
     );
     dispatch(addDialog({ component }));
+
+    if (onClick) { onClick(); }
   };
 
   const deleteFile = () => {

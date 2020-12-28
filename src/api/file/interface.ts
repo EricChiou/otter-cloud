@@ -14,3 +14,9 @@ export interface GetFileListResVo extends RespVo {
         lastModified: string;
     }[];
 }
+
+export interface GetPreviewUrlResVo extends RespVo {
+    data: {
+        url: string;
+    };
+}

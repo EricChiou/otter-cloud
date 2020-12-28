@@ -12,7 +12,6 @@ const Path: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
 
   const pathOnClick = (newPrefix: string) => {
-    console.log('11111', newPrefix);
     if (prefix !== newPrefix) {
       dispatch(setPrefix(newPrefix));
     }

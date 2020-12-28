@@ -1,5 +1,5 @@
-import { post, put } from '../request';
-import { GetFileListReqVo, GetFileListResVo } from './interface';
+import { RespVo, get, post, put } from '../request';
+import { GetFileListReqVo, GetFileListResVo, GetPreviewUrlResVo } from './interface';
 import { ApiUrl } from 'src/constants/api-url';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
@@ -20,7 +20,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     });
 };
 
-export const uploadFiles = (files: FileList, prefix: string, token: string) => {
+export const uploadFiles = (files: FileList, prefix: string, token: string): Promise<RespVo> => {
     const search = prefix ? `?prefix=${encodeURIComponent(prefix)}` : '';
 
     const filesFormData = new FormData();
@@ -42,3 +42,23 @@ export const uploadFiles = (files: FileList, prefix: string, token: string) => {
         });
     });
 };
+
+export const getPreviewUrl =
+    (prefix: string, fileName: string, token: string): Promise<GetPreviewUrlResVo> => {
+        let search = `?fileName=${encodeURIComponent(fileName)}`;
+        if (prefix) { search += `&prefix=${encodeURIComponent(prefix)}`; }
+
+        return new Promise((resolve, reject) => {
+            get(
+                ApiUrl.GET_PREVIEW_URL + search,
+                undefined,
+                token
+            ).then((resp: GetPreviewUrlResVo) => {
+                resp.data.url = atob(resp.data.url);
+                resolve(resp);
+
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+    };

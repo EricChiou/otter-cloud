@@ -65,7 +65,7 @@ const Login: FunctionComponent<{}> = () => {
   const doLogin = () => {
     login(acc, pwd).then((resp) => {
       if (resp.status === ApiResult.Success) {
-        // console.log('login:', resp);
+        console.log('login:', resp);
         const userProfile = UserService.parseToken(resp.data.token);
         UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
         setUserProfile(userProfile);
