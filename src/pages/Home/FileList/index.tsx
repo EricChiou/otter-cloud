@@ -1,7 +1,15 @@
-import React, { FunctionComponent, useEffect, DragEvent, RefObject, useRef, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useEffect,
+  DragEvent,
+  RefObject,
+  useRef,
+  useState,
+  useCallback
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { selectPrefix, setPrefix, selectFileList, setFileList } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
@@ -10,7 +18,8 @@ import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { ApiResult } from 'src/constants';
-import { getFileList } from 'src/api/file';
+import { getFileList, uploadFiles } from 'src/api/file';
+import { StatusService } from 'src/service';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -20,28 +29,39 @@ const FikeList: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
   const userProfile = useSelector(selectUserProfile);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
-  const [fileList, setFileList] = useState<File[]>([]);
+  const fileList = useSelector(selectFileList);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
 
+  const refreshFileList = useCallback(
+    () => {
+      getFileList(prefix, userProfile.token).then((resp) => {
+        if (resp.status === ApiResult.Success) {
+          if (resp.data) {
+            const fileList: File[] = resp.data.map((data) => {
+              return {
+                contentType: data.contentType,
+                name: data.name.replace(prefix, ''),
+                size: data.size,
+                lastModified: data.lastModified,
+                selected: false,
+              };
+            });
+            dispatch(setFileList(fileList));
+          } else {
+            dispatch(setFileList([]));
+          }
+        }
+
+      }).catch((error) => { console.log(error); });
+    }, [prefix, userProfile, dispatch]);
+
   useEffect(() => {
+    if (!StatusService.isLogin()) { return; }
     // console.log('get file list:', prefix);
-    getFileList(prefix, userProfile.token).then((resp) => {
-      if (resp.status === ApiResult.Success) {
-        const fileList: File[] = resp.data.map((data) => {
-          return {
-            contentType: data.contentType,
-            name: data.name,
-            size: data.size,
-            lastModified: data.lastModified,
-            selected: false,
-          };
-        });
-        setFileList(fileList);
-      }
 
-    }).catch((error) => { console.log(error); });
+    refreshFileList();
 
-  }, [prefix, userProfile]);
+  }, [refreshFileList]);
 
   useEffect(() => {
     const result = fileList.find((file) => file.selected);
@@ -56,7 +76,7 @@ const FikeList: FunctionComponent<{}> = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('Upload Files', e.dataTransfer.files);
+    doUploadFiles(e.dataTransfer.files);
     fileListRef.current?.classList.remove(styles.dragOver);
   };
 
@@ -70,7 +90,7 @@ const FikeList: FunctionComponent<{}> = () => {
     e.preventDefault();
     e.stopPropagation();
     fileListRef.current?.classList.remove(styles.dragOver);
-  }
+  };
 
   const fileOnSelected = (file: File, index: number) => {
     if (!file.contentType && !file.size) {
@@ -78,14 +98,23 @@ const FikeList: FunctionComponent<{}> = () => {
     } else {
       const newFileList = [...fileList];
       newFileList[index].selected = !newFileList[index].selected;
-      setFileList(newFileList);
+      dispatch(setFileList(newFileList));
     }
+  };
+
+  const doUploadFiles = (files: FileList) => {
+    // console.log('Upload Files', fileList);
+    uploadFiles(files, prefix, userProfile.token).then(() => {
+      refreshFileList();
+    }).catch((error) => {
+      console.log(error);
+    });
   };
 
   const downloadFiles = () => {
     const files = fileList.filter((file) => file.selected);
     console.log('Download Files', files);
-  }
+  };
 
   const showDeleteWarning = () => {
     const buttonStyle = {
@@ -109,15 +138,13 @@ const FikeList: FunctionComponent<{}> = () => {
       </div>
     );
     dispatch(addDialog({ component }));
-  }
+  };
 
   const deleteFiles = () => {
     const files = fileList.filter((file) => file.selected);
     console.log('Delete Files', files);
     dispatch(removeDialog());
   };
-
-
 
   const renderFiles = () => {
     return fileList.map((file, index) => {
@@ -130,7 +157,7 @@ const FikeList: FunctionComponent<{}> = () => {
         ></FileComponent>
       );
     });
-  }
+  };
 
   return (
     <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver}>
@@ -151,8 +178,10 @@ const FikeList: FunctionComponent<{}> = () => {
       </div>
       <FileListMenu
         showOtherOptions={showOtherOptions}
+        uploadFiles={doUploadFiles}
         download={downloadFiles}
-        del={showDeleteWarning}>
+        del={showDeleteWarning}
+      >
       </FileListMenu>
       <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
         <div className={styles.icon}>
@@ -161,6 +190,6 @@ const FikeList: FunctionComponent<{}> = () => {
       </div>
     </div>
   );
-}
+};
 
 export default FikeList;

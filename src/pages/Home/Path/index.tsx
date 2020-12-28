@@ -12,6 +12,7 @@ const Path: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
 
   const pathOnClick = (newPrefix: string) => {
+    console.log('11111', newPrefix);
     if (prefix !== newPrefix) {
       dispatch(setPrefix(newPrefix));
     }
@@ -23,11 +24,12 @@ const Path: FunctionComponent<{}> = () => {
   };
 
   const renderPrefix = () => {
-    let mergePrefix = '';
+    let preMergePrefix = '';
 
     return prefix.split('/').map((path, i) => {
       if (path) {
-        mergePrefix += `${path}/`
+        const mergePrefix = `${preMergePrefix}${path}/`;
+        preMergePrefix += `${path}/`;
         return (
           <span key={'path_' + i} className={styles.folder}>
             <span className={styles.prefix} onClick={() => { pathOnClick(mergePrefix); }}>{path}</span>
@@ -35,7 +37,7 @@ const Path: FunctionComponent<{}> = () => {
           </span>
         );
       }
-      return false;
+      return null;
     });
   }
 

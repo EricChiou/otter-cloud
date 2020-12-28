@@ -50,9 +50,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
   };
 
   const createFolder = () => {
-    console.log(inputValue);
-
-    dispatch(setPrefix(`${prefix}/${inputValue}`));
+    dispatch(setPrefix(`${prefix}${inputValue}/`));
     setIsCreating(false);
   }
 
@@ -60,7 +58,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
     <span ref={createFolderRef} className={styles.createFolder} onClick={createOnClick}>
       {isCreating ?
         <div className={styles.createInput}>
-          <BaseInput onChange={createOnChange} onKeyUp={createOnKeyUp}></BaseInput>
+          <BaseInput onFocus={true} onChange={createOnChange} onKeyUp={createOnKeyUp}></BaseInput>
           <BaseButton style={{ height: '23px' }} onClick={createFolder}>
             <Check></Check>
           </BaseButton>

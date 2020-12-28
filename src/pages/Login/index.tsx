@@ -48,12 +48,18 @@ const Login: FunctionComponent<{}> = () => {
 
   const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     acc = e.currentTarget.value;
-    if (e.key === 'Enter') { doLogin(); }
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+      doLogin();
+    }
   }
 
   const pwdOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     pwd = e.currentTarget.value;
-    if (e.key === 'Enter') { doLogin(); }
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+      doLogin();
+    }
   }
 
   const doLogin = () => {
@@ -67,7 +73,7 @@ const Login: FunctionComponent<{}> = () => {
         history.push(Routes.HOME);
 
       } else {
-        addMessage(dispatch, intl(keys.signInErrorNsg, IntlType.firstUpper), MessageType.info);
+        dispatch(addMessage(intl(keys.signInErrorNsg, IntlType.firstUpper), MessageType.info));
       }
     }).catch((error) => { console.log(error); });
   }

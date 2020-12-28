@@ -12,6 +12,7 @@ interface Props {
   item: Item;
   SubItemIcon: FunctionComponent;
   subItems: Item[];
+  defaultExpand?: boolean;
   onSelect?: (ele: HTMLElement, itemData: Item) => void;
   showCreateFolder?: boolean;
   CreateItemIcon?: FunctionComponent;
@@ -23,6 +24,7 @@ const Item: FunctionComponent<Props> = ({
   item,
   SubItemIcon,
   subItems,
+  defaultExpand,
   onSelect,
   showCreateFolder,
   CreateItemIcon,
@@ -31,6 +33,12 @@ const Item: FunctionComponent<Props> = ({
   const prefix = useSelector(selectPrefix);
   const itemRef: RefObject<HTMLDivElement> = useRef(null);
   const [expand, setExpand] = useState(false);
+
+  useEffect(() => {
+    if (defaultExpand !== undefined) {
+      setExpand(defaultExpand);
+    }
+  }, [defaultExpand]);
 
   useEffect(() => {
     const onResize = () => {

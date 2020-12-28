@@ -1,22 +1,47 @@
-import React, { FunctionComponent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
 import ItemComponent, { Item } from './item/Item';
-import { setPrefix } from 'src/store/system.slice';
+import { setPrefix, selectFileList } from 'src/store/system.slice';
+import { ApiResult } from 'src/constants';
+import { getFileList } from 'src/api/file';
+import { selectUserProfile } from 'src/store/user.slice';
+import { StatusService } from 'src/service';
 
 import styles from './style.module.scss';
 
 const SideMenu: FunctionComponent<{}> = () => {
-  const fakeBucketName = 'myBucket';
-  const [fakeFolders, setFakeFolders] = useState<Item[]>([
-    { name: 'dir1', data: { bucketName: fakeBucketName, prefix: 'dir1/' } },
-    { name: 'dir2', data: { bucketName: fakeBucketName, prefix: 'dir2/' } },
-    { name: 'dir3', data: { bucketName: fakeBucketName, prefix: 'dir3/' } },
-  ]);
+  const [folderList, setFolderList] = useState<Item[]>([]);
 
   const dispatch = useDispatch();
+  const userProfile = useSelector(selectUserProfile);
+  const fileList = useSelector(selectFileList);
+
+  useEffect(() => {
+    if (!StatusService.isLogin()) { return; }
+
+    getFileList("", userProfile.token).then((resp) => {
+      if (resp.status === ApiResult.Success) {
+        const newFolderList: Item[] = resp.data
+          .filter((data) => (!data.contentType && !data.size))
+          .map((data) => {
+            return {
+              name: data.name.substring(0, data.name.length - 1),
+              data: {
+                bucketName: userProfile.bucketName,
+                prefix: data.name,
+              },
+            };
+          });
+
+        setFolderList(newFolderList);
+      }
+
+    }).catch((error) => { console.log(error); });
+
+  }, [userProfile, fileList]);
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }
@@ -27,13 +52,13 @@ const SideMenu: FunctionComponent<{}> = () => {
     const data: Item = {
       name: folderName,
       data: {
-        bucketName: fakeBucketName,
+        bucketName: userProfile.bucketName,
         prefix: folderName + '/'
       }
     };
 
-    const folders = [...fakeFolders, data];
-    setFakeFolders(folders);
+    const folders = [...folderList, data];
+    setFolderList(folders);
   };
 
   return (
@@ -42,10 +67,11 @@ const SideMenu: FunctionComponent<{}> = () => {
         ItemIcon={Cloud}
         item={{
           name: intl(keys.myCloudStorge, IntlType.perUpper),
-          data: { bucketName: fakeBucketName, prefix: '' },
+          data: { bucketName: userProfile.bucketName, prefix: '' },
         }}
         SubItemIcon={Folder}
-        subItems={fakeFolders}
+        subItems={folderList}
+        defaultExpand={true}
         onSelect={folderOnSelect}
         showCreateFolder={true}
         CreateItemIcon={CreateFolder}

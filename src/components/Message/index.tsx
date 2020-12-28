@@ -4,6 +4,7 @@ import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { Success, Info, Warning, Error } from 'src/components/icons';
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
+import { AppThunk } from 'src/store/store';
 
 import styles from './style.module.scss';
 
@@ -13,18 +14,6 @@ export enum MessageType {
     info = 'info',
     warning = 'warning',
     error = 'error',
-}
-
-export const addMessage = (dispatch: any, msg: string, type?: MessageType) => {
-
-    const config = getConfig(type);
-    const component = getComponent(dispatch, msg, config);
-
-    dispatch(addDialog({
-        component,
-        closeUI: config.closeUI,
-        closeByClick: config.closeByClick,
-    }));
 }
 
 interface MsgConfig {
@@ -92,4 +81,15 @@ const getComponent = (dispatch: any, msg: string, config: MsgConfig) => {
             </div>
         </div>
     );
+};
+
+export const addMessage = (msg: string, type?: MessageType): AppThunk => dispatch => {
+    const config = getConfig(type);
+    const component = getComponent(dispatch, msg, config);
+
+    dispatch(addDialog({
+        component,
+        closeUI: config.closeUI,
+        closeByClick: config.closeByClick,
+    }));
 };

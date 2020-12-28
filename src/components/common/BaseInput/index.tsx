@@ -1,4 +1,11 @@
-import React, { FunctionComponent, ChangeEvent, KeyboardEvent } from 'react';
+import React, {
+  FunctionComponent,
+  ChangeEvent,
+  KeyboardEvent,
+  useRef,
+  RefObject,
+  useEffect
+} from 'react';
 
 import styles from './style.module.scss';
 
@@ -7,6 +14,7 @@ interface Props {
   style?: object
   placeholder?: string;
   disabled?: boolean;
+  onFocus?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   onKeyPerss?: (e: KeyboardEvent<HTMLInputElement>) => void;
@@ -18,13 +26,23 @@ const BaseInput: FunctionComponent<Props> = ({
   style,
   placeholder,
   disabled,
+  onFocus,
   onChange,
   onKeyDown,
   onKeyPerss,
   onKeyUp,
 }) => {
+  const inputRef: RefObject<HTMLInputElement> = useRef(null);
+
+  useEffect(() => {
+    if (onFocus) {
+      inputRef.current?.focus();
+    }
+
+  }, [onFocus, inputRef]);
+
   return (
-    <input className={styles.input}
+    <input ref={inputRef} className={styles.input}
       type={type ? type : 'text'}
       style={style}
       placeholder={placeholder ? placeholder : ''}

@@ -6,24 +6,26 @@ import styles from './style.module.scss';
 
 interface Props {
   showOtherOptions?: boolean;
-  download?: () => void;
-  del?: () => void;
+  uploadFiles: (files: FileList) => void;
+  download: () => void;
+  del: () => void;
 }
 
-const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions, download, del }) => {
+const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions, uploadFiles, download, del }) => {
   const uploadInputEle: RefObject<HTMLInputElement> = useRef(null);
 
   const uploadOnClick = () => {
     uploadInputEle.current?.click();
   };
 
-  const uploadFiles = () => {
+  const doUploadFiles = () => {
     if (uploadInputEle.current && uploadInputEle.current.files) {
       const files: File[] = [];
       for (let i = 0; i < uploadInputEle.current.files.length; i++) {
         files.push(uploadInputEle.current.files[i]);
       }
-      console.log('Upload Files', files);
+
+      uploadFiles(uploadInputEle.current.files);
       uploadInputEle.current.value = '';
     }
   };
@@ -43,7 +45,7 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions, download, de
       }
       <div className={styles.icon}>
         <Upload onClick={uploadOnClick}></Upload>
-        <input ref={uploadInputEle} className={styles.uploadInput} type="file" multiple onChange={uploadFiles}></input>
+        <input ref={uploadInputEle} className={styles.uploadInput} type="file" multiple onChange={doUploadFiles}></input>
       </div>
     </div>
   );
