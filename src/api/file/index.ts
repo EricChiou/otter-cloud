@@ -24,9 +24,14 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     });
 };
 
-export const uploadFiles = (files: FileList, prefix: string, token: string): Promise<RespVo | Blob> => {
-    const search = { prefix: encodeURIComponent(prefix) };
+export const uploadFiles = (
+    files: FileList,
+    prefix: string,
+    token: string,
+    progess?: (event: ProgressEvent<EventTarget>) => void
+): Promise<RespVo | Blob> => {
 
+    const search = { prefix: encodeURIComponent(prefix) };
     const formData = new FormData();
     Array.from(files).forEach((file) => {
         formData.append("files", file);
@@ -37,7 +42,8 @@ export const uploadFiles = (files: FileList, prefix: string, token: string): Pro
             ApiUrl.UPLOAD_FILES,
             formData,
             search,
-            token
+            token,
+            progess,
         ).then((resp) => {
             uploadFileNext();
             resolve(resp);
