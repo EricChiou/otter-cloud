@@ -1,4 +1,4 @@
-import { RespVo, get, post, filePost } from '../request';
+import { RespVo, get, filePost } from '../request';
 import {
     GetFileListResVo,
     GetPreviewUrlResVo,
@@ -24,18 +24,18 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     });
 };
 
-export const uploadFiles = (files: FileList, prefix: string, token: string): Promise<RespVo> => {
+export const uploadFiles = (files: FileList, prefix: string, token: string): Promise<RespVo | Blob> => {
     const search = { prefix: encodeURIComponent(prefix) };
 
-    const filesFormData = new FormData();
+    const formData = new FormData();
     Array.from(files).forEach((file) => {
-        filesFormData.append("files", file);
+        formData.append("files", file);
     });
 
     return new Promise((resolve, reject) => {
-        post(
+        filePost(
             ApiUrl.UPLOAD_FILES,
-            filesFormData,
+            formData,
             search,
             token
         ).then((resp) => {
@@ -70,7 +70,13 @@ export const getPreviewUrl =
         });
     };
 
-export const downloadFile = (prefix: string, fileName: string, token: string): Promise<Blob> => {
+export const downloadFile = (
+    prefix: string,
+    fileName: string,
+    token: string,
+    progess?: (event: ProgressEvent<EventTarget>) => void
+): Promise<RespVo | Blob> => {
+
     const body: DownloadFileReqVo = { prefix, fileName };
 
     return new Promise((resolve, reject) => {
@@ -78,7 +84,8 @@ export const downloadFile = (prefix: string, fileName: string, token: string): P
             ApiUrl.DOWNLOAD_FILE,
             body,
             undefined,
-            token
+            token,
+            progess,
         ).then((resp) => {
             resolve(resp);
 

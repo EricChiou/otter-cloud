@@ -76,15 +76,17 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
   const download = () => {
     // console.log('Download File', file);
     downloadFile(prefix, file.name, userProfile.token).then((resp) => {
-      const url = URL.createObjectURL(new Blob([resp], { type: file.contentType }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = file.name;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      link.parentElement?.removeChild(link);
-      URL.revokeObjectURL(url);
+      if (resp instanceof Blob) {
+        const url = URL.createObjectURL(new Blob([resp], { type: file.contentType }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file.name;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        link.parentElement?.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
     });
   };
 

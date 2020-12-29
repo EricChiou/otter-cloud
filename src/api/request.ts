@@ -74,12 +74,13 @@ export const filePost = (
   params?: object,
   token?: string,
   progess?: (event: ProgressEvent<EventTarget>) => void,
-): Promise<Blob> => {
+): Promise<RespVo | Blob> => {
 
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
     onDownloadProgress: progess,
+    onUploadProgress: progess,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
