@@ -1,25 +1,25 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
 import ItemComponent, { Item } from './item/Item';
-import { setPrefix, selectFileList } from 'src/store/system.slice';
+import { setPrefix } from 'src/store/system.slice';
 import { ApiResult } from 'src/constants';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
+import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
 
 const SideMenu: FunctionComponent<{}> = () => {
-  const [folderList, setFolderList] = useState<Item[]>([]);
-
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
-  const fileList = useSelector(selectFileList);
+  const [folderList, setFolderList] = useState<Item[]>([]);
+  // const [subscribe, setSubscribe] = useState<Subscription>();
 
-  useEffect(() => {
+  const refrechFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
 
     getFileList("", userProfile.token).then((resp) => {
@@ -28,7 +28,7 @@ const SideMenu: FunctionComponent<{}> = () => {
           .filter((data) => (!data.contentType && !data.size))
           .map((data) => {
             return {
-              name: data.name.substring(0, data.name.length - 1),
+              name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
               data: {
                 bucketName: userProfile.bucketName,
                 prefix: data.name,
@@ -41,7 +41,18 @@ const SideMenu: FunctionComponent<{}> = () => {
 
     }).catch((error) => { console.log(error); });
 
-  }, [userProfile, fileList]);
+  }, [userProfile]);
+
+  useEffect(() => {
+    refrechFileList();
+    const subscribe = subFileShared((data) => {
+      // console.log('subFileShared:', data);
+      if (data.action === fileSharedActs.uploadFile) { refrechFileList(); }
+    });
+
+    return () => { subscribe.unsubscribe(); }
+
+  }, [refrechFileList]);
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }

@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectPrefix, setPrefix, selectFileList, setFileList } from 'src/store/system.slice';
+import { selectPrefix, setPrefix, selectFileList, setFileList, setFile } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
@@ -96,9 +96,9 @@ const FikeList: FunctionComponent<{}> = () => {
     if (!file.contentType && !file.size) {
       dispatch(setPrefix(prefix + file.name));
     } else {
-      const newFileList = [...fileList];
-      newFileList[index].selected = !newFileList[index].selected;
-      dispatch(setFileList(newFileList));
+      const file = Object.assign({}, fileList[index]);
+      file.selected = !file.selected;
+      dispatch(setFile(file, index));
     }
   };
 

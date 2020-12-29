@@ -67,3 +67,21 @@ export const del = (url: string, params?: object, token?: string): Promise<RespV
 
   return request.delete(url, config);
 };
+
+export const filePost = (
+  url: string,
+  body: object = {},
+  params?: object,
+  token?: string,
+  progess?: (event: ProgressEvent<EventTarget>) => void,
+): Promise<Blob> => {
+
+  const config: AxiosRequestConfig = {
+    params,
+    responseType: 'blob',
+    onDownloadProgress: progess,
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
+};

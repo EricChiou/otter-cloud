@@ -1,15 +1,19 @@
-import { RespVo, get, post, put } from '../request';
-import { GetFileListReqVo, GetFileListResVo, GetPreviewUrlResVo } from './interface';
+import { RespVo, get, post, filePost } from '../request';
+import {
+    GetFileListResVo,
+    GetPreviewUrlResVo,
+    DownloadFileReqVo,
+} from './interface';
 import { ApiUrl } from 'src/constants/api-url';
+import { uploadFileNext } from 'src/shared/file-shared';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
-    const body: GetFileListReqVo = { prefix };
+    const search = { prefix: encodeURIComponent(prefix) };
 
     return new Promise((resolve, reject) => {
-        post(
+        get(
             ApiUrl.GET_FILE_LIST,
-            body,
-            undefined,
+            search,
             token
         ).then((resp) => {
             resolve(resp);
@@ -21,7 +25,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
 };
 
 export const uploadFiles = (files: FileList, prefix: string, token: string): Promise<RespVo> => {
-    const search = prefix ? `?prefix=${encodeURIComponent(prefix)}` : '';
+    const search = { prefix: encodeURIComponent(prefix) };
 
     const filesFormData = new FormData();
     Array.from(files).forEach((file) => {
@@ -29,12 +33,13 @@ export const uploadFiles = (files: FileList, prefix: string, token: string): Pro
     });
 
     return new Promise((resolve, reject) => {
-        put(
-            ApiUrl.UPLOAD_FILES + search,
+        post(
+            ApiUrl.UPLOAD_FILES,
             filesFormData,
-            undefined,
+            search,
             token
         ).then((resp) => {
+            uploadFileNext();
             resolve(resp);
 
         }).catch((error) => {
@@ -45,13 +50,15 @@ export const uploadFiles = (files: FileList, prefix: string, token: string): Pro
 
 export const getPreviewUrl =
     (prefix: string, fileName: string, token: string): Promise<GetPreviewUrlResVo> => {
-        let search = `?fileName=${encodeURIComponent(fileName)}`;
-        if (prefix) { search += `&prefix=${encodeURIComponent(prefix)}`; }
+        const search = {
+            fileName: encodeURIComponent(fileName),
+            prefix: encodeURIComponent(prefix),
+        }
 
         return new Promise((resolve, reject) => {
             get(
-                ApiUrl.GET_PREVIEW_URL + search,
-                undefined,
+                ApiUrl.GET_PREVIEW_URL,
+                search,
                 token
             ).then((resp: GetPreviewUrlResVo) => {
                 resp.data.url = atob(resp.data.url);
@@ -62,3 +69,21 @@ export const getPreviewUrl =
             });
         });
     };
+
+export const downloadFile = (prefix: string, fileName: string, token: string): Promise<Blob> => {
+    const body: DownloadFileReqVo = { prefix, fileName };
+
+    return new Promise((resolve, reject) => {
+        filePost(
+            ApiUrl.DOWNLOAD_FILE,
+            body,
+            undefined,
+            token
+        ).then((resp) => {
+            resolve(resp);
+
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};

@@ -1,7 +1,6 @@
 import { post } from '../request';
 import { SingInReqVo, SingInResVo } from './interface';
-
-const userGroupUrl = '/user';
+import { ApiUrl } from 'src/constants/api-url';
 
 export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
     const body: SingInReqVo = {
@@ -11,7 +10,7 @@ export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
 
     return new Promise((resolve, reject) => {
         post(
-            userGroupUrl + '/signIn',
+            ApiUrl.SIGN_IN,
             body
         ).then((resp) => {
             resolve(resp);

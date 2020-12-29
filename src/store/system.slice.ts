@@ -28,6 +28,9 @@ const systemSlice = createSlice({
     setFileList: (state, action: PayloadAction<File[]>) => {
       state.fileList = action.payload;
     },
+    setFile: (state, action: PayloadAction<{ file: File, index: number }>) => {
+      state.fileList[action.payload.index] = action.payload.file;
+    },
   },
 });
 
@@ -44,6 +47,11 @@ export const setPrefix = (prefix: string): AppThunk => dispatch => {
 export const setFileList = (fileList: File[]): AppThunk => dispatch => {
   const { setFileList } = systemSlice.actions;
   dispatch(setFileList(fileList));
+};
+
+export const setFile = (file: File, index: number): AppThunk => dispatch => {
+  const { setFile } = systemSlice.actions;
+  dispatch(setFile({ file, index }));
 };
 
 export const selectBucket = (state: RootState) => state.system.bucket;

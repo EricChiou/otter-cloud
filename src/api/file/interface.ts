@@ -1,8 +1,9 @@
 import { RespVo } from '../request';
 
 // request vo
-export interface GetFileListReqVo {
+export interface DownloadFileReqVo {
     prefix: string;
+    fileName: string;
 }
 
 // response vo
