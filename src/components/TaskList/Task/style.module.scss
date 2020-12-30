@@ -1,0 +1,74 @@
+@import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
+
+.upload,
+.download {
+  border: solid theme(gray, deep);
+  border-width: 0px 1.5px 1.5px 1.5px;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    .statusIcon {
+      display: none;
+    }
+
+    .cancel {
+      display: inline-block;
+    }
+  }
+
+  .statusIcon,
+  .cancel {
+    margin: 0 2px 0 1px;
+    vertical-align: middle;
+
+    svg {
+      width: 15px;
+      height: 25px;
+      display: block;
+    }
+  }
+
+  .statusIcon {
+    display: inline-block;
+  }
+
+  .cancel {
+    display: none;
+  }
+
+  .fileName {
+    display: inline-block;
+    width: 170px;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: middle;
+
+    @include breakpoint(s) {
+      width: 70px;
+    }
+  }
+
+  .progess {
+    display: inline-block;
+    width: 32px;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: right;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+}
+
+.upload {
+  background-color: theme(pink);
+}
+
+.download {
+  background-color: theme(blue, light);
+}

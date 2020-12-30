@@ -1,0 +1,38 @@
+@import 'src/assets/css/theme.scss';
+@import 'src/assets/css/rwd.scss';
+
+#taskList {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+
+  @include breakpoint(s) {
+    width: 135px;
+  }
+
+  .container {
+    margin: 0 0 10px 10px;
+    background-color: theme(gray, light);
+
+    .topLine {
+      border-bottom: 1.5px solid theme(gray, deep);
+    }
+
+    .list {
+      height: 27.5px;
+      overflow: hidden;
+
+      &:hover {
+        height: auto;
+        max-height: 275px;
+        overflow: auto;
+      }
+
+      @include breakpoint(s) {
+        height: 27.5px !important;
+        overflow: hidden !important;
+      }
+    }
+  }
+}

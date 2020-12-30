@@ -24,5 +24,6 @@ export const keys: Keys = {
   confirmPwd: 'confirmPwd',
   delete: 'delete',
   confirm: 'confirm',
-  signInErrorNsg: 'signInErrorNsg',
+  signInErrorMsg: 'signInErrorMsg',
+  tokenErrorMsg: 'tokenErrorMsg',
 };

@@ -30,5 +30,6 @@ export interface Keys {
   confirmPwd: string;
   delete: string;
   confirm: string;
-  signInErrorNsg: string;
+  signInErrorMsg: string;
+  tokenErrorMsg: string;
 }

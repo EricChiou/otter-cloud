@@ -73,7 +73,7 @@ const Login: FunctionComponent<{}> = () => {
         history.push(Routes.HOME);
 
       } else {
-        dispatch(addMessage(intl(keys.signInErrorNsg, IntlType.firstUpper), MessageType.info));
+        dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.firstUpper), MessageType.info));
       }
     }).catch((error) => { console.log(error); });
   }

@@ -24,5 +24,6 @@ export const en_us: Keys = {
   confirmPwd: 'confirm password',
   delete: 'delete',
   confirm: 'confirm',
-  signInErrorNsg: 'email or password incorrect.',
+  signInErrorMsg: 'email or password incorrect.',
+  tokenErrorMsg: 'login information is invalid or expired, please log in again.',
 };

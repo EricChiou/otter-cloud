@@ -24,5 +24,6 @@ export const zh_tw: Keys = {
   confirmPwd: '確認密碼',
   delete: '刪除',
   confirm: '確認',
-  signInErrorNsg: 'Email 或密碼錯誤',
+  signInErrorMsg: 'Email 或密碼錯誤',
+  tokenErrorMsg: '登入資訊無效或過期，請重新登入',
 };

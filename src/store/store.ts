@@ -12,8 +12,11 @@ export const store = configureStore({
   },
   middleware: getDefaultMiddleware({
     serializableCheck: {
-      ignoredActions: ['dialog/addDialog', 'dialog/removeDialog'],
-    }
+      ignoredActions: [
+        'dialog/addDialog',
+        'dialog/removeDialog',
+      ],
+    },
   }),
 });
 

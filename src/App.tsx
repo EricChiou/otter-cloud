@@ -3,10 +3,13 @@ import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-d
 import { useDispatch, useSelector } from 'react-redux';
 
 import { routes } from './routes';
-import { setUserProfile, selectUserProfile, selectLang } from './store/user.slice';
+import { setUserProfile, selectUserProfile, selectLang, logout } from './store/user.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
 import Dialog from 'src/components/Dialog';
+import { subUserShared, userSharedActs } from 'src/shared/user-shared';
+import { addMessage, MessageType } from 'src/components/Message';
+import { intl, keys, IntlType } from 'src/i18n';
 
 import './App.scss';
 
@@ -35,6 +38,18 @@ const App = () => {
       history.push(Routes.LOGIN);
     }
   }, [location, history, userProfile]);
+
+  // handle token error
+  useEffect(() => {
+    const subscribe = subUserShared((data) => {
+      if (data.action === userSharedActs.tokenError) {
+        dispatch(logout());
+        addMessage(intl(keys.tokenErrorMsg, IntlType.firstUpper), MessageType.info);
+      }
+    });
+
+    return () => { subscribe.unsubscribe(); }
+  }, [history, dispatch]);
 
   return (
     <div id="app">

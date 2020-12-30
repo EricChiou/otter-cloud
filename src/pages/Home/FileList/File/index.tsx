@@ -9,9 +9,8 @@ import {
   Download, CheckBox,
 } from 'src/components/icons';
 import FileOptions from './FileOptions';
-import { downloadFile } from 'src/api/file';
 import { selectPrefix } from 'src/store/system.slice';
-import { selectUserProfile } from 'src/store/user.slice';
+import { TaskType, TaskData, addTask } from 'src/shared/task-shared';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -31,7 +30,6 @@ interface Props {
 }
 
 const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) => {
-  const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {
@@ -75,19 +73,13 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
 
   const download = () => {
     // console.log('Download File', file);
-    downloadFile(prefix, file.name, userProfile.token).then((resp) => {
-      if (resp instanceof Blob) {
-        const url = URL.createObjectURL(new Blob([resp], { type: file.contentType }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = file.name;
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        link.parentElement?.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    });
+    const task: TaskData = {
+      type: TaskType.download,
+      prefix,
+      fileName: file.name,
+    }
+
+    addTask([task]);
   };
 
   const renderIcon = () => {

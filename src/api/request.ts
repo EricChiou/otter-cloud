@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { Config } from 'src/constants';
+import { Config, ApiResult } from 'src/constants';
+import { tokenErrorNext } from 'src/shared/user-shared';
 
 export interface RespVo {
   status: string;
@@ -19,6 +20,11 @@ const request = axios.create({
 request.interceptors.response.use(
   (resp) => {
     if (200 <= resp.status && resp.status <= 299) {
+      if (resp.data && resp.data.status === ApiResult.TokenError) {
+        tokenErrorNext();
+        return Promise.reject(resp);
+      }
+
       return resp.data;
 
     } else {

@@ -24,8 +24,8 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     });
 };
 
-export const uploadFiles = (
-    files: FileList,
+export const uploadFile = (
+    file: File,
     prefix: string,
     token: string,
     progess?: (event: ProgressEvent<EventTarget>) => void
@@ -33,9 +33,7 @@ export const uploadFiles = (
 
     const search = { prefix: encodeURIComponent(prefix) };
     const formData = new FormData();
-    Array.from(files).forEach((file) => {
-        formData.append("files", file);
-    });
+    formData.append('file', file);
 
     return new Promise((resolve, reject) => {
         filePost(

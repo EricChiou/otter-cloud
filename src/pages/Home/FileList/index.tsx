@@ -9,7 +9,13 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { selectPrefix, setPrefix, selectFileList, setFileList, setFile } from 'src/store/system.slice';
+import {
+  selectPrefix,
+  setPrefix,
+  selectFileList,
+  setFileList,
+  setFile,
+} from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
@@ -18,8 +24,9 @@ import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { ApiResult } from 'src/constants';
-import { getFileList, uploadFiles } from 'src/api/file';
+import { getFileList } from 'src/api/file';
 import { StatusService } from 'src/service';
+import { TaskType, TaskData, addTask } from 'src/shared/task-shared';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -57,7 +64,6 @@ const FikeList: FunctionComponent<{}> = () => {
 
   useEffect(() => {
     if (!StatusService.isLogin()) { return; }
-    // console.log('get file list:', prefix);
 
     refreshFileList();
 
@@ -104,16 +110,32 @@ const FikeList: FunctionComponent<{}> = () => {
 
   const doUploadFiles = (files: FileList) => {
     // console.log('Upload Files', fileList);
-    uploadFiles(files, prefix, userProfile.token).then(() => {
-      refreshFileList();
-    }).catch((error) => {
-      console.log(error);
+    const tasks = Array.from(files).map((file) => {
+      const task: TaskData = {
+        type: TaskType.upload,
+        prefix,
+        fileName: file.name,
+        file: file,
+      }
+      return task;
     });
+
+    addTask(tasks);
   };
 
   const downloadFiles = () => {
     const files = fileList.filter((file) => file.selected);
-    console.log('Download Files', files);
+    // console.log('Download Files', files);
+    const tasks = files.map((file) => {
+      const task: TaskData = {
+        type: TaskType.download,
+        prefix,
+        fileName: file.name,
+      }
+      return task;
+    });
+
+    addTask(tasks);
   };
 
   const showDeleteWarning = () => {

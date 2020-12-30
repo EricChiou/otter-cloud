@@ -2,6 +2,7 @@
 @import 'src/assets/css/rwd.scss';
 
 #home {
+  position: relative;
   height: calc(100%);
   color: theme(black, light);
   overflow: auto;
