@@ -7,10 +7,21 @@ export enum TaskType {
     download = 'download',
 }
 
+export enum TaskStatus {
+    waiting = 'waiting',
+    running = 'running',
+    error = 'error',
+    finish = 'finish',
+}
+
 export interface TaskData {
+    id: string;
     type: TaskType;
     prefix: string;
     fileName: string;
+    status: TaskStatus;
+    progess: number;
+    contentType?: string;
     file?: File;
 }
 
@@ -27,8 +38,8 @@ export const subTaskShared = (callback: (data: SharedInput) => void) => {
     return taskShared.subscribe({ next: callback });
 };
 
-export const addTask = (taskDatas: TaskData[]) => {
-    taskShared.next({ action: taskSharedActs.addTask, taskDatas });
+export const addTask = (tasks: TaskData[]) => {
+    taskShared.next({ action: taskSharedActs.addTask, tasks });
 }
 
 export const removeTask = (index: number) => {

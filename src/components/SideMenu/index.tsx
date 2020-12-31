@@ -19,7 +19,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   const [folderList, setFolderList] = useState<Item[]>([]);
   // const [subscribe, setSubscribe] = useState<Subscription>();
 
-  const refrechFileList = useCallback(() => {
+  const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
 
     getFileList("", userProfile.token).then((resp) => {
@@ -44,15 +44,15 @@ const SideMenu: FunctionComponent<{}> = () => {
   }, [userProfile]);
 
   useEffect(() => {
-    refrechFileList();
+    refreshFileList();
     const subscribe = subFileShared((data) => {
       // console.log('subFileShared:', data);
-      if (data.action === fileSharedActs.uploadFile) { refrechFileList(); }
+      if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
     });
 
     return () => { subscribe.unsubscribe(); }
 
-  }, [refrechFileList]);
+  }, [refreshFileList]);
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }

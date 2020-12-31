@@ -10,7 +10,7 @@ import {
 } from 'src/components/icons';
 import FileOptions from './FileOptions';
 import { selectPrefix } from 'src/store/system.slice';
-import { TaskType, TaskData, addTask } from 'src/shared/task-shared';
+import { TaskType, TaskStatus, TaskData, addTask } from 'src/shared/task-shared';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -73,10 +73,15 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
 
   const download = () => {
     // console.log('Download File', file);
+    const timStamp = new Date().getTime();
     const task: TaskData = {
+      id: `${timStamp}_${0}`,
       type: TaskType.download,
       prefix,
       fileName: file.name,
+      status: TaskStatus.waiting,
+      progess: 0,
+      contentType: file.contentType,
     }
 
     addTask([task]);

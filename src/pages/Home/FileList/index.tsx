@@ -26,7 +26,8 @@ import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { ApiResult } from 'src/constants';
 import { getFileList } from 'src/api/file';
 import { StatusService } from 'src/service';
-import { TaskType, TaskData, addTask } from 'src/shared/task-shared';
+import { TaskType, TaskStatus, TaskData, addTask } from 'src/shared/task-shared';
+import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -66,6 +67,11 @@ const FikeList: FunctionComponent<{}> = () => {
     if (!StatusService.isLogin()) { return; }
 
     refreshFileList();
+    const subscribe = subFileShared((data) => {
+      if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
+    });
+
+    return () => { subscribe.unsubscribe(); }
 
   }, [refreshFileList]);
 
@@ -110,11 +116,15 @@ const FikeList: FunctionComponent<{}> = () => {
 
   const doUploadFiles = (files: FileList) => {
     // console.log('Upload Files', fileList);
-    const tasks = Array.from(files).map((file) => {
+    const timStamp = new Date().getTime();
+    const tasks = Array.from(files).map((file, index) => {
       const task: TaskData = {
+        id: `${timStamp}_${index}`,
         type: TaskType.upload,
         prefix,
         fileName: file.name,
+        status: TaskStatus.waiting,
+        progess: 0,
         file: file,
       }
       return task;
@@ -126,11 +136,16 @@ const FikeList: FunctionComponent<{}> = () => {
   const downloadFiles = () => {
     const files = fileList.filter((file) => file.selected);
     // console.log('Download Files', files);
-    const tasks = files.map((file) => {
+    const timStamp = new Date().getTime();
+    const tasks = files.map((file, index) => {
       const task: TaskData = {
+        id: `${timStamp}_${index}`,
         type: TaskType.download,
         prefix,
         fileName: file.name,
+        status: TaskStatus.waiting,
+        progess: 0,
+        contentType: file.contentType,
       }
       return task;
     });

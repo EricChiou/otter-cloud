@@ -85,6 +85,7 @@ export const filePost = (
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
+    timeout: 1000 * 60 * 60 * 24 * 365,
     onDownloadProgress: progess,
     onUploadProgress: progess,
   };
