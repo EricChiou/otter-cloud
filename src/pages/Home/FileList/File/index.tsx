@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import { ContentType } from 'src/constants/file';
 import { BaseTooltip } from 'src/components/common';
@@ -81,6 +82,7 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
       fileName: file.name,
       status: TaskStatus.waiting,
       progess: 0,
+      cancelToken: axios.CancelToken.source(),
       contentType: file.contentType,
     }
 

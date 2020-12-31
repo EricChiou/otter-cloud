@@ -100,11 +100,11 @@ const TaskList: FunctionComponent<{}> = () => {
         <div className={styles.container}>
           <div ref={listRef} className={styles.list} onMouseLeave={onMouseLeave}>
             <div className={styles.topLine}></div>
-            {taskList.current.map((taskData, index) =>
+            {taskList.current.map((task, index) =>
               <Task
-                key={`${index}_${taskData.fileName}`}
+                key={`${index}_${task.fileName}`}
                 index={index}
-                task={taskData}
+                task={task}
                 inErrorList={false}
                 setProgess={setProgess}
                 setStatus={setStatus}
@@ -112,11 +112,11 @@ const TaskList: FunctionComponent<{}> = () => {
                 move2ErrorList={move2ErrorList}
               ></Task>
             )}
-            {errorTaskList.current.map((taskData, index) =>
+            {errorTaskList.current.map((task, index) =>
               <Task
-                key={`${index}_${taskData.fileName}`}
+                key={`${index}_${task.fileName}`}
                 index={index}
-                task={taskData}
+                task={task}
                 inErrorList={true}
                 setProgess={setProgess}
                 setStatus={setStatus}

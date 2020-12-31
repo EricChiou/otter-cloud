@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 
 import { Config, ApiResult } from 'src/constants';
 import { tokenErrorNext } from 'src/shared/user-shared';
@@ -80,6 +80,7 @@ export const filePost = (
   params?: object,
   token?: string,
   progess?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
 ): Promise<RespVo | Blob> => {
 
   const config: AxiosRequestConfig = {
@@ -88,6 +89,7 @@ export const filePost = (
     timeout: 1000 * 60 * 60 * 24 * 365,
     onDownloadProgress: progess,
     onUploadProgress: progess,
+    cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 

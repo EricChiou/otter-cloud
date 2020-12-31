@@ -6,6 +6,7 @@ import {
 } from './interface';
 import { ApiUrl } from 'src/constants/api-url';
 import { uploadFileNext } from 'src/shared/file-shared';
+import { TaskData } from 'src/shared/task-shared';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
     const search = { prefix: encodeURIComponent(prefix) };
@@ -25,13 +26,13 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
 };
 
 export const uploadFile = (
+    task: TaskData,
     file: File,
-    prefix: string,
     token: string,
-    progess?: (event: ProgressEvent<EventTarget>) => void
+    progess?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<RespVo | Blob> => {
 
-    const search = { prefix: encodeURIComponent(prefix) };
+    const search = { prefix: encodeURIComponent(task.prefix) };
     const formData = new FormData();
     formData.append('file', file);
 
@@ -42,6 +43,7 @@ export const uploadFile = (
             search,
             token,
             progess,
+            task.cancelToken,
         ).then((resp) => {
             uploadFileNext();
             resolve(resp);
@@ -75,13 +77,15 @@ export const getPreviewUrl =
     };
 
 export const downloadFile = (
-    prefix: string,
-    fileName: string,
+    task: TaskData,
     token: string,
     progess?: (event: ProgressEvent<EventTarget>) => void
 ): Promise<RespVo | Blob> => {
 
-    const body: DownloadFileReqVo = { prefix, fileName };
+    const body: DownloadFileReqVo = {
+        prefix: task.prefix,
+        fileName: task.fileName
+    };
 
     return new Promise((resolve, reject) => {
         filePost(
@@ -90,6 +94,7 @@ export const downloadFile = (
             undefined,
             token,
             progess,
+            task.cancelToken,
         ).then((resp) => {
             resolve(resp);
 

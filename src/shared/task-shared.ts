@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import { CancelTokenSource } from 'axios';
 
 import { SharedInput } from './interface';
 
@@ -21,6 +22,7 @@ export interface TaskData {
     fileName: string;
     status: TaskStatus;
     progess: number;
+    cancelToken: CancelTokenSource;
     contentType?: string;
     file?: File;
 }

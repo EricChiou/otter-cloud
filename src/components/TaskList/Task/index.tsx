@@ -44,7 +44,7 @@ const Task: FunctionComponent<Props> = ({
 		if (!task.file) { return; }
 
 		setStatus(task.id, TaskStatus.running);
-		uploadFile(task.file, task.prefix, userProfile.token, progess).then((resp) => {
+		uploadFile(task, task.file, userProfile.token, progess).then((resp) => {
 			setStatus(task.id, TaskStatus.finish);
 			uploadFileNext();
 
@@ -56,7 +56,7 @@ const Task: FunctionComponent<Props> = ({
 
 	const doDownloadFile = useCallback(() => {
 		setStatus(task.id, TaskStatus.running);
-		downloadFile(task.prefix, task.fileName, userProfile.token, progess).then((resp) => {
+		downloadFile(task, userProfile.token, progess).then((resp) => {
 			setStatus(task.id, TaskStatus.finish);
 			if (resp instanceof Blob) {
 				const url = URL.createObjectURL(new Blob([resp], { type: task.contentType }));
@@ -77,9 +77,9 @@ const Task: FunctionComponent<Props> = ({
 	}, [task, userProfile, progess, setStatus]);
 
 	const removeTask = useCallback(() => {
-		// if task is running, cancel request before remove task
-		// do somthing
-
+		if (task.status === TaskStatus.running) {
+			task.cancelToken.cancel('The task was canceled.');
+		}
 		remove(task.id);
 
 	}, [task, remove]);

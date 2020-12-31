@@ -8,6 +8,7 @@ import React, {
   useCallback
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 import {
   selectPrefix,
@@ -125,6 +126,7 @@ const FikeList: FunctionComponent<{}> = () => {
         fileName: file.name,
         status: TaskStatus.waiting,
         progess: 0,
+        cancelToken: axios.CancelToken.source(),
         file: file,
       }
       return task;
@@ -145,6 +147,7 @@ const FikeList: FunctionComponent<{}> = () => {
         fileName: file.name,
         status: TaskStatus.waiting,
         progess: 0,
+        cancelToken: axios.CancelToken.source(),
         contentType: file.contentType,
       }
       return task;
