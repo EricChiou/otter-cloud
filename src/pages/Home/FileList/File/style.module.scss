@@ -3,37 +3,12 @@
 
 .file {
 
-  .active {
-    color: theme(blue, deep);
-  }
-
   svg {
     display: inline-block;
     padding: 4px;
     width: 22px;
     height: 22px;
     vertical-align: middle;
-  }
-
-  .text {
-    @include breakpoint(m) {
-      line-height: 18px !important;
-    }
-
-    .subLine {
-      display: none;
-      font-size: 12px;
-      line-height: 12px;
-      color: theme(gray, deep);
-
-      @include breakpoint(m) {
-        display: block;
-      }
-    }
-  }
-
-  .iconText {
-    max-width: calc(100% - 4px - 4px - 26px);
   }
 
 }
