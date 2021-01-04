@@ -1,11 +1,15 @@
 import React, { FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { File } from 'src/pages/Home/FileList/File';
 import { Delete, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { intl, keys, IntlType } from 'src/i18n';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
+import { removeFile, removeFolder } from 'src/api/file';
+import { selectUserProfile } from 'src/store/user.slice';
+import { selectPrefix } from 'src/store/system.slice';
+import { removeFileNext } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
 
@@ -16,6 +20,8 @@ interface Props {
 
 const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
+  const prefix = useSelector(selectPrefix);
+  const userProfile = useSelector(selectUserProfile);
 
   const showDeleteWarning = () => {
     const buttonStyle = {
@@ -52,9 +58,21 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   };
 
   const deleteFile = () => {
-    console.log('Delete File', file);
-    dispatch(removeDialog());
+    // console.log('Delete File', file);
+    if (file.size && file.contentType) {
+      dispatch(removeDialog());
+      removeFile(prefix, file.name, userProfile.token).then(() => { removeFileNext(); });
+
+    } else {
+      deleteFolder();
+    }
   };
+
+  const deleteFolder = () => {
+    // console.log('deleteFolder', file);
+    dispatch(removeDialog());
+    removeFolder(prefix + file.name, userProfile.token).then(() => { removeFileNext(); });
+  }
 
   return <Delete onClick={showDeleteWarning}></Delete>
 }

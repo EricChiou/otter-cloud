@@ -7,6 +7,7 @@ const fileShared = new Subject<SharedInput>();
 /** file shared actions */
 export const fileSharedActs = {
     uploadFile: 'uploadFile',
+    removeFile: 'removeFile',
 }
 
 /** subscribe file shared */
@@ -16,4 +17,8 @@ export const subFileShared = (callback: (data: SharedInput) => void) => {
 
 export const uploadFileNext = () => {
     fileShared.next({ action: fileSharedActs.uploadFile });
+}
+
+export const removeFileNext = () => {
+    fileShared.next({ action: fileSharedActs.removeFile });
 }

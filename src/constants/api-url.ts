@@ -10,4 +10,6 @@ export class ApiUrl {
     public static readonly UPLOAD_FILES = fileGroupUrl + '/upload';
     public static readonly GET_PREVIEW_URL = fileGroupUrl + '/preview';
     public static readonly DOWNLOAD_FILE = fileGroupUrl + '/download';
+    public static readonly REMOVE_FILE = fileGroupUrl + '/remove';
+    public static readonly REMOVE_FOLDER = fileGroupUrl + '/remove/folder';
 };

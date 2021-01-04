@@ -1,15 +1,18 @@
-import { RespVo, get, filePost } from '../request';
+import { RespVo, get, filePost, del } from '../request';
 import {
+    GetFileListReqVo,
     GetFileListResVo,
     GetPreviewUrlResVo,
     DownloadFileReqVo,
+    RemoveFileReqVo,
+    RemoveFolderReqVo,
 } from './interface';
 import { ApiUrl } from 'src/constants/api-url';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
-    const search = { prefix: encodeURIComponent(prefix) };
+    const search: GetFileListReqVo = { prefix: encodeURIComponent(prefix) };
 
     return new Promise((resolve, reject) => {
         get(
@@ -54,27 +57,31 @@ export const uploadFile = (
     });
 };
 
-export const getPreviewUrl =
-    (prefix: string, fileName: string, token: string): Promise<GetPreviewUrlResVo> => {
-        const search = {
-            fileName: encodeURIComponent(fileName),
-            prefix: encodeURIComponent(prefix),
-        }
+export const getPreviewUrl = (
+    prefix: string,
+    fileName: string,
+    token: string,
+): Promise<GetPreviewUrlResVo> => {
 
-        return new Promise((resolve, reject) => {
-            get(
-                ApiUrl.GET_PREVIEW_URL,
-                search,
-                token
-            ).then((resp: GetPreviewUrlResVo) => {
-                resp.data.url = atob(resp.data.url);
-                resolve(resp);
+    const search = {
+        fileName: encodeURIComponent(fileName),
+        prefix: encodeURIComponent(prefix),
+    }
 
-            }).catch((error) => {
-                reject(error);
-            });
+    return new Promise((resolve, reject) => {
+        get(
+            ApiUrl.GET_PREVIEW_URL,
+            search,
+            token
+        ).then((resp: GetPreviewUrlResVo) => {
+            resp.data.url = atob(resp.data.url);
+            resolve(resp);
+
+        }).catch((error) => {
+            reject(error);
         });
-    };
+    });
+};
 
 export const downloadFile = (
     task: TaskData,
@@ -96,6 +103,52 @@ export const downloadFile = (
             progress,
             task.cancelToken,
         ).then((resp) => {
+            resolve(resp);
+
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const removeFile = (
+    prefix: string,
+    fileName: string,
+    token: string,
+): Promise<RespVo> => {
+
+    const search: RemoveFileReqVo = {
+        prefix: encodeURIComponent(prefix),
+        fileName: encodeURIComponent(fileName),
+    };
+
+    return new Promise((resolve, reject) => {
+        del(
+            ApiUrl.REMOVE_FILE,
+            search,
+            token,
+        ).then((resp: RespVo) => {
+            resolve(resp);
+
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const removeFolder = (
+    prefix: string,
+    token: string,
+): Promise<RespVo> => {
+
+    const search: RemoveFolderReqVo = { prefix: encodeURIComponent(prefix) };
+
+    return new Promise((resolve, reject) => {
+        del(
+            ApiUrl.REMOVE_FOLDER,
+            search,
+            token,
+        ).then((resp: RespVo) => {
             resolve(resp);
 
         }).catch((error) => {

@@ -141,7 +141,7 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
         <span className={table.text}>{convertFileLastModified()}</span>
       </div>
       <div className={table.optionCol}>
-        <Download onClick={download}></Download>
+        {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
         <FileOptions file={file}></FileOptions>
       </div>
     </div >

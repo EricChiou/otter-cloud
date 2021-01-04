@@ -25,11 +25,11 @@ import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { ApiResult } from 'src/constants';
-import { getFileList } from 'src/api/file';
+import { getFileList, removeFile } from 'src/api/file';
 import { StatusService } from 'src/service';
 import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
-import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
+import { subFileShared, fileSharedActs, removeFileNext } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -70,7 +70,12 @@ const FikeList: FunctionComponent<{}> = () => {
 
     refreshFileList();
     const subscribe = subFileShared((data) => {
-      if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
+      switch (data.action) {
+        case fileSharedActs.uploadFile:
+        case fileSharedActs.removeFile:
+          refreshFileList();
+          break;
+      }
     });
 
     return () => { subscribe.unsubscribe(); }
@@ -183,8 +188,12 @@ const FikeList: FunctionComponent<{}> = () => {
 
   const deleteFiles = () => {
     const files = fileList.filter((file) => file.selected);
-    console.log('Delete Files', files);
+    // console.log('Delete Files', files);
     dispatch(removeDialog());
+    files.forEach(async (file) => {
+      await removeFile(prefix, file.name, userProfile.token);
+    });
+    removeFileNext();
   };
 
   const renderFiles = () => {

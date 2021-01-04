@@ -53,14 +53,26 @@ export const get = (url: string, params?: object, token?: string): Promise<RespV
   return request.get(url, config);
 };
 
-export const post = (url: string, body: object = {}, params?: object, token?: string): Promise<RespVo> => {
+export const post = (
+  url: string,
+  body?: object,
+  params?: object,
+  token?: string
+): Promise<RespVo> => {
+
   const config: AxiosRequestConfig = { params };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
   return request.post(url, body, config);
 };
 
-export const put = (url: string, body: object = {}, params?: object, token?: string): Promise<RespVo> => {
+export const put = (
+  url: string,
+  body?: object,
+  params?: object,
+  token?: string
+): Promise<RespVo> => {
+
   const config: AxiosRequestConfig = { params };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
@@ -76,7 +88,7 @@ export const del = (url: string, params?: object, token?: string): Promise<RespV
 
 export const filePost = (
   url: string,
-  body: object = {},
+  body?: object,
   params?: object,
   token?: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
