@@ -27,7 +27,8 @@ import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { ApiResult } from 'src/constants';
 import { getFileList } from 'src/api/file';
 import { StatusService } from 'src/service';
-import { TaskType, TaskStatus, TaskData, addTask } from 'src/shared/task-shared';
+import { addTask } from 'src/shared/task-shared';
+import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
@@ -125,7 +126,7 @@ const FikeList: FunctionComponent<{}> = () => {
         prefix,
         fileName: file.name,
         status: TaskStatus.waiting,
-        progess: 0,
+        progress: 0,
         cancelToken: axios.CancelToken.source(),
         file: file,
       }
@@ -146,7 +147,7 @@ const FikeList: FunctionComponent<{}> = () => {
         prefix,
         fileName: file.name,
         status: TaskStatus.waiting,
-        progess: 0,
+        progress: 0,
         cancelToken: axios.CancelToken.source(),
         contentType: file.contentType,
       }

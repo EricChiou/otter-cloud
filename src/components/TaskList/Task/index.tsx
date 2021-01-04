@@ -2,11 +2,10 @@ import React, { FunctionComponent, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 import { UploadArrow, DownloadArrow, Cancel, TaskWaiting, TaskError } from 'src/components/icons';
-import { TaskType } from 'src/shared/task-shared';
+import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { uploadFile, downloadFile } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
-import { TaskStatus, TaskData } from 'src/shared/task-shared';
 
 import styles from './style.module.scss';
 
@@ -14,7 +13,7 @@ interface Props {
 	index: number;
 	task: TaskData;
 	inErrorList: boolean;
-	setProgess: (id: string, progess: number) => void;
+	setProgress: (id: string, progress: number) => void;
 	setStatus: (id: string, status: TaskStatus) => void;
 	remove: (id: string) => void;
 	move2ErrorList: (id: string) => void;
@@ -24,7 +23,7 @@ const Task: FunctionComponent<Props> = ({
 	index,
 	task,
 	inErrorList,
-	setProgess,
+	setProgress,
 	setStatus,
 	remove,
 	move2ErrorList,
@@ -32,19 +31,19 @@ const Task: FunctionComponent<Props> = ({
 
 	const userProfile = useSelector(selectUserProfile);
 
-	const progess = useCallback((event: ProgressEvent<EventTarget>) => {
+	const progress = useCallback((event: ProgressEvent<EventTarget>) => {
 		if (!event.lengthComputable) { return; }
 
 		const percentage = Math.round(event.loaded * 100 / event.total);
-		setProgess(task.id, percentage);
+		setProgress(task.id, percentage);
 
-	}, [task, setProgess]);
+	}, [task, setProgress]);
 
 	const dpUploadFile = useCallback(() => {
 		if (!task.file) { return; }
 
 		setStatus(task.id, TaskStatus.running);
-		uploadFile(task, task.file, userProfile.token, progess).then((resp) => {
+		uploadFile(task, task.file, userProfile.token, progress).then((resp) => {
 			setStatus(task.id, TaskStatus.finish);
 			uploadFileNext();
 
@@ -52,11 +51,11 @@ const Task: FunctionComponent<Props> = ({
 			setStatus(task.id, TaskStatus.error);
 		});
 
-	}, [task, userProfile, progess, setStatus]);
+	}, [task, userProfile, progress, setStatus]);
 
 	const doDownloadFile = useCallback(() => {
 		setStatus(task.id, TaskStatus.running);
-		downloadFile(task, userProfile.token, progess).then((resp) => {
+		downloadFile(task, userProfile.token, progress).then((resp) => {
 			setStatus(task.id, TaskStatus.finish);
 			if (resp instanceof Blob) {
 				const url = URL.createObjectURL(new Blob([resp], { type: task.contentType }));
@@ -74,7 +73,7 @@ const Task: FunctionComponent<Props> = ({
 			setStatus(task.id, TaskStatus.error);
 		});
 
-	}, [task, userProfile, progess, setStatus]);
+	}, [task, userProfile, progress, setStatus]);
 
 	const removeTask = useCallback(() => {
 		if (task.status === TaskStatus.running) {
@@ -141,7 +140,7 @@ const Task: FunctionComponent<Props> = ({
 				<Cancel></Cancel>
 			</div>
 			<div className={styles.fileName}>{task.fileName}</div>
-			<div className={styles.progess}>{task.progess}%</div>
+			<div className={styles.progress}>{task.progress}%</div>
 		</div>
 	);
 };

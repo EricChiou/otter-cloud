@@ -11,7 +11,8 @@ import {
 } from 'src/components/icons';
 import FileOptions from './FileOptions';
 import { selectPrefix } from 'src/store/system.slice';
-import { TaskType, TaskStatus, TaskData, addTask } from 'src/shared/task-shared';
+import { addTask } from 'src/shared/task-shared';
+import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -81,7 +82,7 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) =>
       prefix,
       fileName: file.name,
       status: TaskStatus.waiting,
-      progess: 0,
+      progress: 0,
       cancelToken: axios.CancelToken.source(),
       contentType: file.contentType,
     }

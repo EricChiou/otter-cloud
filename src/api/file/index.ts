@@ -6,7 +6,7 @@ import {
 } from './interface';
 import { ApiUrl } from 'src/constants/api-url';
 import { uploadFileNext } from 'src/shared/file-shared';
-import { TaskData } from 'src/shared/task-shared';
+import { TaskData } from 'src/components/TaskList/reducer';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
     const search = { prefix: encodeURIComponent(prefix) };
@@ -29,7 +29,7 @@ export const uploadFile = (
     task: TaskData,
     file: File,
     token: string,
-    progess?: (event: ProgressEvent<EventTarget>) => void,
+    progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<RespVo | Blob> => {
 
     const search = { prefix: encodeURIComponent(task.prefix) };
@@ -42,7 +42,7 @@ export const uploadFile = (
             formData,
             search,
             token,
-            progess,
+            progress,
             task.cancelToken,
         ).then((resp) => {
             uploadFileNext();
@@ -79,7 +79,7 @@ export const getPreviewUrl =
 export const downloadFile = (
     task: TaskData,
     token: string,
-    progess?: (event: ProgressEvent<EventTarget>) => void
+    progress?: (event: ProgressEvent<EventTarget>) => void
 ): Promise<RespVo | Blob> => {
 
     const body: DownloadFileReqVo = {
@@ -93,7 +93,7 @@ export const downloadFile = (
             body,
             undefined,
             token,
-            progess,
+            progress,
             task.cancelToken,
         ).then((resp) => {
             resolve(resp);

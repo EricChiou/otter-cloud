@@ -1,31 +1,7 @@
 import { Subject } from 'rxjs';
-import { CancelTokenSource } from 'axios';
 
 import { SharedInput } from './interface';
-
-export enum TaskType {
-    upload = 'upload',
-    download = 'download',
-}
-
-export enum TaskStatus {
-    waiting = 'waiting',
-    running = 'running',
-    error = 'error',
-    finish = 'finish',
-}
-
-export interface TaskData {
-    id: string;
-    type: TaskType;
-    prefix: string;
-    fileName: string;
-    status: TaskStatus;
-    progess: number;
-    cancelToken: CancelTokenSource;
-    contentType?: string;
-    file?: File;
-}
+import { TaskData } from 'src/components/TaskList/reducer';
 
 const taskShared = new Subject<SharedInput>();
 

@@ -79,7 +79,7 @@ export const filePost = (
   body: object = {},
   params?: object,
   token?: string,
-  progess?: (event: ProgressEvent<EventTarget>) => void,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
   cancelToken?: CancelTokenSource,
 ): Promise<RespVo | Blob> => {
 
@@ -87,8 +87,8 @@ export const filePost = (
     params,
     responseType: 'blob',
     timeout: 1000 * 60 * 60 * 24 * 365,
-    onDownloadProgress: progess,
-    onUploadProgress: progess,
+    onDownloadProgress: progress,
+    onUploadProgress: progress,
     cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
