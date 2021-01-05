@@ -25,6 +25,8 @@ interface Props {
 const FileName: FunctionComponent<Props> = ({ file, convertFileSize, convertFileLastModified }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
+  const [url, setUrl] = useState('');
+  const [countDown, setCountDown] = useState<number>(0);
 
   const renderIcon = () => {
     let Icon = FileIcon;
@@ -56,16 +58,33 @@ const FileName: FunctionComponent<Props> = ({ file, convertFileSize, convertFile
   const renderTooltipContent = () => {
     if (file.contentType.indexOf(ContentType.image) > -1) {
       const PreviewImage: FunctionComponent<{}> = () => {
-        const [url, setUrl] = useState('');
-
-        useEffect(() => {
+        const getPreview = () => {
           getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
             setUrl(resp.data.url);
+            if (countDown) { window.clearTimeout(countDown); }
+            setCountDown(window.setTimeout(() => {
+              setUrl('');
+            }, 10000));
           });
+        };
+
+        const onError = () => {
+          if (url) { getPreview(); }
+        };
+
+        useEffect(() => {
+          if (!url) {
+            getPreview();
+          }
 
         }, []);
 
-        return <img className={styles.previewImage} src={url} alt="preview"></img>;
+        return <img
+          className={styles.previewImage}
+          src={url}
+          alt="preview"
+          onError={onError}
+        ></img>;
       };
 
       return <PreviewImage></PreviewImage>;
