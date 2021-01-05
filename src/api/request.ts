@@ -86,7 +86,7 @@ export const del = (url: string, params?: object, token?: string): Promise<RespV
   return request.delete(url, config);
 };
 
-export const filePost = (
+export const postFile = (
   url: string,
   body?: object,
   params?: object,
@@ -98,7 +98,7 @@ export const filePost = (
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
-    timeout: 1000 * 60 * 60 * 24 * 365,
+    timeout: 1000 * 60 * 60 * 24 * 365, // 365 days
     onDownloadProgress: progress,
     onUploadProgress: progress,
     cancelToken: cancelToken?.token,
@@ -106,4 +106,15 @@ export const filePost = (
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
   return request.post(url, body, config);
+};
+
+export const getPreview = (url: string, params?: object, token?: string): Promise<Blob> => {
+  const config: AxiosRequestConfig = {
+    params,
+    responseType: 'blob',
+    timeout: 1000 * 60 * 60 * 24, // 1 day
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.get(url, config);
 };

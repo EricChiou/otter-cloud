@@ -1,4 +1,4 @@
-import { RespVo, get, filePost, del } from '../request';
+import { RespVo, get, postFile, del, getPreview } from '../request';
 import {
     GetFileListReqVo,
     GetFileListResVo,
@@ -10,6 +10,7 @@ import {
 import { ApiUrl } from 'src/constants/api-url';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
+import { ApiResult } from 'src/constants';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
     const search: GetFileListReqVo = { prefix: encodeURIComponent(prefix) };
@@ -40,7 +41,7 @@ export const uploadFile = (
     formData.append('file', file);
 
     return new Promise((resolve, reject) => {
-        filePost(
+        postFile(
             ApiUrl.UPLOAD_FILES,
             formData,
             search,
@@ -69,13 +70,18 @@ export const getPreviewUrl = (
     }
 
     return new Promise((resolve, reject) => {
-        get(
+        getPreview(
             ApiUrl.GET_PREVIEW_URL,
             search,
             token
-        ).then((resp: GetPreviewUrlResVo) => {
-            resp.data.url = atob(resp.data.url);
-            resolve(resp);
+        ).then((resp: Blob) => {
+            const urlCreator = window.URL || window.webkitURL;
+            const url = urlCreator.createObjectURL(resp);
+            resolve({
+                status: ApiResult.Success,
+                data: { url },
+                trace: null,
+            });
 
         }).catch((error) => {
             reject(error);
@@ -95,7 +101,7 @@ export const downloadFile = (
     };
 
     return new Promise((resolve, reject) => {
-        filePost(
+        postFile(
             ApiUrl.DOWNLOAD_FILE,
             body,
             undefined,
