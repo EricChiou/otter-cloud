@@ -24,7 +24,6 @@ import FileListMenu from './FileListMenu';
 import { Upload, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
-import { ApiResult } from 'src/constants';
 import { getFileList, removeFile } from 'src/api/file';
 import { StatusService } from 'src/service';
 import { addTask } from 'src/shared/task-shared';
@@ -45,21 +44,19 @@ const FikeList: FunctionComponent<{}> = () => {
   const refreshFileList = useCallback(
     () => {
       getFileList(prefix, userProfile.token).then((resp) => {
-        if (resp.status === ApiResult.Success) {
-          if (resp.data) {
-            const fileList: File[] = resp.data.map((data) => {
-              return {
-                contentType: data.contentType,
-                name: data.name.replace(prefix, ''),
-                size: data.size,
-                lastModified: data.lastModified,
-                selected: false,
-              };
-            });
-            dispatch(setFileList(fileList));
-          } else {
-            dispatch(setFileList([]));
-          }
+        if (resp.data) {
+          const fileList: File[] = resp.data.map((data) => {
+            return {
+              contentType: data.contentType,
+              name: data.name.replace(prefix, ''),
+              size: data.size,
+              lastModified: data.lastModified,
+              selected: false,
+            };
+          });
+          dispatch(setFileList(fileList));
+        } else {
+          dispatch(setFileList([]));
         }
 
       }).catch((error) => { console.log(error); });

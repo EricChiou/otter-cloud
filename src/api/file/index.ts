@@ -21,7 +21,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
             search,
             token
         ).then((resp) => {
-            resolve(resp);
+            resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
         }).catch((error) => {
             reject(error);
@@ -34,7 +34,7 @@ export const uploadFile = (
     file: File,
     token: string,
     progress?: (event: ProgressEvent<EventTarget>) => void,
-): Promise<RespVo | Blob> => {
+): Promise<RespVo> => {
 
     const search = { prefix: encodeURIComponent(task.prefix) };
     const formData = new FormData();
@@ -50,7 +50,11 @@ export const uploadFile = (
             task.cancelToken,
         ).then((resp) => {
             uploadFileNext();
-            resolve(resp);
+            if (!(resp instanceof Blob)) {
+                resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+            } else {
+                reject(resp);
+            }
 
         }).catch((error) => {
             reject(error);
@@ -74,14 +78,19 @@ export const getPreviewUrl = (
             ApiUrl.GET_PREVIEW_URL,
             search,
             token
-        ).then((resp: Blob) => {
-            const urlCreator = window.URL || window.webkitURL;
-            const url = urlCreator.createObjectURL(resp);
-            resolve({
-                status: ApiResult.Success,
-                data: { url },
-                trace: null,
-            });
+        ).then((resp: RespVo | Blob) => {
+            if (resp instanceof Blob) {
+                const urlCreator = window.URL || window.webkitURL;
+                const url = urlCreator.createObjectURL(resp);
+                resolve({
+                    status: ApiResult.Success,
+                    data: { url },
+                    trace: null,
+                });
+
+            } else {
+                reject(resp);
+            }
 
         }).catch((error) => {
             reject(error);
@@ -93,7 +102,7 @@ export const downloadFile = (
     task: TaskData,
     token: string,
     progress?: (event: ProgressEvent<EventTarget>) => void
-): Promise<RespVo | Blob> => {
+): Promise<Blob> => {
 
     const body: DownloadFileReqVo = {
         prefix: task.prefix,
@@ -109,7 +118,11 @@ export const downloadFile = (
             progress,
             task.cancelToken,
         ).then((resp) => {
-            resolve(resp);
+            if (resp instanceof Blob) {
+                resolve(resp);
+            } else {
+                reject(resp);
+            }
 
         }).catch((error) => {
             reject(error);
@@ -134,7 +147,7 @@ export const removeFile = (
             search,
             token,
         ).then((resp: RespVo) => {
-            resolve(resp);
+            resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
         }).catch((error) => {
             reject(error);
@@ -155,7 +168,7 @@ export const removeFolder = (
             search,
             token,
         ).then((resp: RespVo) => {
-            resolve(resp);
+            resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
         }).catch((error) => {
             reject(error);

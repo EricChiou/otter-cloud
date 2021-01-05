@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import { UploadArrow, DownloadArrow, Cancel, TaskWaiting, TaskError } from 'src/components/icons';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
-import { uploadFileNext } from 'src/shared/file-shared';
 import { uploadFile, downloadFile } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 
@@ -43,9 +42,8 @@ const Task: FunctionComponent<Props> = ({
 		if (!task.file) { return; }
 
 		setStatus(task.id, TaskStatus.running);
-		uploadFile(task, task.file, userProfile.token, progress).then((resp) => {
+		uploadFile(task, task.file, userProfile.token, progress).then(() => {
 			setStatus(task.id, TaskStatus.finish);
-			uploadFileNext();
 
 		}).catch(() => {
 			setStatus(task.id, TaskStatus.error);
@@ -57,17 +55,15 @@ const Task: FunctionComponent<Props> = ({
 		setStatus(task.id, TaskStatus.running);
 		downloadFile(task, userProfile.token, progress).then((resp) => {
 			setStatus(task.id, TaskStatus.finish);
-			if (resp instanceof Blob) {
-				const url = URL.createObjectURL(new Blob([resp], { type: task.contentType }));
-				const link = document.createElement('a');
-				link.href = url;
-				link.download = task.fileName;
-				link.style.display = 'none';
-				document.body.appendChild(link);
-				link.click();
-				link.parentElement?.removeChild(link);
-				URL.revokeObjectURL(url);
-			}
+			const url = URL.createObjectURL(new Blob([resp], { type: task.contentType }));
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = task.fileName;
+			link.style.display = 'none';
+			document.body.appendChild(link);
+			link.click();
+			link.parentElement?.removeChild(link);
+			URL.revokeObjectURL(url);
 
 		}).catch(() => {
 			setStatus(task.id, TaskStatus.error);

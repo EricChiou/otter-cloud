@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 
 import { setUserProfile } from 'src/store/user.slice';
-import { Routes, ApiResult } from 'src/constants';
+import { Routes } from 'src/constants';
 import { intl, keys, IntlType } from 'src/i18n';
 import { StatusService, UserService } from 'src/service';
 import Header from 'src/components/Header';
@@ -64,18 +64,17 @@ const Login: FunctionComponent<{}> = () => {
 
   const doLogin = () => {
     login(acc, pwd).then((resp) => {
-      if (resp.status === ApiResult.Success) {
-        // console.log('login:', resp);
-        const userProfile = UserService.parseToken(resp.data.token);
-        UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
-        setUserProfile(userProfile);
+      // console.log('login:', resp);
+      const userProfile = UserService.parseToken(resp.data.token);
+      UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
+      setUserProfile(userProfile);
 
-        history.push(Routes.HOME);
+      history.push(Routes.HOME);
 
-      } else {
-        dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.firstUpper), MessageType.info));
-      }
-    }).catch((error) => { console.log(error); });
+    }).catch((error) => {
+      console.log(error);
+      dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.firstUpper), MessageType.info));
+    });
   }
 
   return (

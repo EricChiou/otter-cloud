@@ -5,7 +5,6 @@ import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
 import ItemComponent, { Item } from './item/Item';
 import { setPrefix } from 'src/store/system.slice';
-import { ApiResult } from 'src/constants';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
@@ -23,21 +22,19 @@ const SideMenu: FunctionComponent<{}> = () => {
     if (!StatusService.isLogin()) { return; }
 
     getFileList("", userProfile.token).then((resp) => {
-      if (resp.status === ApiResult.Success) {
-        const newFolderList: Item[] = resp.data
-          .filter((data) => (!data.contentType && !data.size))
-          .map((data) => {
-            return {
-              name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
-              data: {
-                bucketName: userProfile.bucketName,
-                prefix: data.name,
-              },
-            };
-          });
+      const newFolderList: Item[] = resp.data
+        .filter((data) => (!data.contentType && !data.size))
+        .map((data) => {
+          return {
+            name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
+            data: {
+              bucketName: userProfile.bucketName,
+              prefix: data.name,
+            },
+          };
+        });
 
-        setFolderList(newFolderList);
-      }
+      setFolderList(newFolderList);
 
     }).catch((error) => { console.log(error); });
 
