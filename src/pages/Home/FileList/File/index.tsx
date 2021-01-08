@@ -8,6 +8,7 @@ import { selectPrefix } from 'src/store/system.slice';
 import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import FileName from './FileName';
+import { ViewType } from '../';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -24,9 +25,10 @@ interface Props {
   file: File;
   index: number;
   onSelected: (file: File, index: number) => void;
+  viewType: ViewType;
 }
 
-const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected }) => {
+const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected, viewType }) => {
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {

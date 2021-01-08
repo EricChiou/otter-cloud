@@ -21,17 +21,22 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
 import FileListMenu from './FileListMenu';
-import { Upload, Warning } from 'src/components/icons';
-import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
+import { Upload } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
 import { getFileList, removeFile } from 'src/api/file';
 import { StatusService } from 'src/service';
 import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { subFileShared, fileSharedActs, removeFileNext } from 'src/shared/file-shared';
+import deleteDialog from './deleteDialog';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
+
+export enum ViewType {
+  list = 'list',
+  icon = 'icon',
+}
 
 const FikeList: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -40,6 +45,7 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const fileList = useSelector(selectFileList);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
+  const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
 
   const refreshFileList = useCallback(
     () => {
@@ -92,7 +98,7 @@ const FikeList: FunctionComponent<{}> = () => {
     e.preventDefault();
     e.stopPropagation();
 
-    doUploadFiles(e.dataTransfer.files);
+    uploadFiles(e.dataTransfer.files);
     fileListRef.current?.classList.remove(styles.dragOver);
   };
 
@@ -111,6 +117,7 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileOnSelected = (file: File, index: number) => {
     if (!file.contentType && !file.size) {
       dispatch(setPrefix(prefix + file.name));
+
     } else {
       const file = Object.assign({}, fileList[index]);
       file.selected = !file.selected;
@@ -118,7 +125,7 @@ const FikeList: FunctionComponent<{}> = () => {
     }
   };
 
-  const doUploadFiles = (files: FileList) => {
+  const uploadFiles = (files: FileList) => {
     // console.log('Upload Files', fileList);
     const timStamp = new Date().getTime();
     const tasks = Array.from(files).map((file, index) => {
@@ -160,25 +167,9 @@ const FikeList: FunctionComponent<{}> = () => {
   };
 
   const showDeleteWarning = () => {
-    const buttonStyle = {
-      width: '80px',
-      textAlign: 'center',
-    };
-
-    const component = (
-      <div className={styles.delete}>
-        <div className={styles.icon}>
-          <Warning></Warning>
-        </div>
-        <div className={styles.text}>
-          {intl(keys.checkToDelete)}
-          <br></br>
-          {intl(keys.cannotUndone)}
-        </div>
-        <BaseButton type={ButtonType.danger} style={buttonStyle} onClick={deleteFiles}>Delete</BaseButton>
-        &nbsp;&nbsp;
-        <BaseButton onClick={() => { dispatch(removeDialog()); }} style={buttonStyle}>Cancel</BaseButton>
-      </div>
+    const component = deleteDialog(
+      deleteFiles,
+      () => { dispatch(removeDialog()); }
     );
     dispatch(addDialog({ component }));
   };
@@ -201,6 +192,7 @@ const FikeList: FunctionComponent<{}> = () => {
           file={file}
           index={index}
           onSelected={fileOnSelected}
+          viewType={viewType}
         ></FileComponent>
       );
     });
@@ -208,24 +200,27 @@ const FikeList: FunctionComponent<{}> = () => {
 
   return (
     <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver}>
-      <div className={table.header}>
-        <div className={table.nameCol}>
-          <span className={table.text}>{intl(keys.fileName, IntlType.firstUpper)}</span>
+      {viewType === ViewType.list ?
+        <div className={table.header}>
+          <div className={table.nameCol}>
+            <span className={table.text}>{intl(keys.fileName, IntlType.firstUpper)}</span>
+          </div>
+          <div className={table.sizeCol}>
+            <span className={table.text}>{intl(keys.fileSize, IntlType.firstUpper)}</span>
+          </div>
+          <div className={table.modifyCol}>
+            <span className={table.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
+          </div>
+          <div className={table.optionCol}></div>
         </div>
-        <div className={table.sizeCol}>
-          <span className={table.text}>{intl(keys.fileSize, IntlType.firstUpper)}</span>
-        </div>
-        <div className={table.modifyCol}>
-          <span className={table.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
-        </div>
-        <div className={table.optionCol}></div>
-      </div>
+        : null
+      }
       <div className={table.list}>
         {renderFiles()}
       </div>
       <FileListMenu
         showOtherOptions={showOtherOptions}
-        uploadFiles={doUploadFiles}
+        uploadFiles={uploadFiles}
         download={downloadFiles}
         del={showDeleteWarning}
       >

@@ -128,11 +128,11 @@ const Task: FunctionComponent<Props> = ({
 	};
 
 	return (
-		<div className={getClassName()} onClick={removeTask}>
+		<div className={getClassName()}>
 			<div className={styles.statusIcon}>
 				{renderIcon()}
 			</div>
-			<div className={styles.cancel}>
+			<div className={styles.cancel} onClick={removeTask}>
 				<Cancel></Cancel>
 			</div>
 			<div className={styles.fileName}>{task.fileName}</div>
