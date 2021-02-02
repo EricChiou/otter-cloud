@@ -2,13 +2,14 @@ import React, { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { Download, } from 'src/components/icons';
+import { Download, CheckBox } from 'src/components/icons';
 import FileOptions from './FileOptions';
 import { selectPrefix } from 'src/store/system.slice';
 import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import FileName from './FileName';
 import { ViewType } from '../';
+import FileIcon from './FileIcon';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -28,7 +29,12 @@ interface Props {
   viewType: ViewType;
 }
 
-const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected, viewType }) => {
+const FileComponent: FunctionComponent<Props> = ({
+  file,
+  index,
+  onSelected,
+  viewType,
+}) => {
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {
@@ -88,25 +94,63 @@ const FileComponent: FunctionComponent<Props> = ({ file, index, onSelected, view
   };
 
   return (
-    <div className={`${table.file} ${styles.file}`}>
-      <div className={table.nameCol} onClick={() => { onSelected(file, index); }}>
-        <FileName
-          file={file}
-          convertFileSize={convertFileSize}
-          convertFileLastModified={convertFileLastModified}
-        ></FileName>
-      </div>
-      <div className={table.sizeCol}>
-        <span className={table.text}>{convertFileSize()}</span>
-      </div>
-      <div className={table.modifyCol}>
-        <span className={table.text}>{convertFileLastModified()}</span>
-      </div>
-      <div className={table.optionCol}>
-        {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
-        <FileOptions file={file}></FileOptions>
-      </div>
-    </div >
+    <>
+      { viewType === ViewType.list ?
+        <div className={`${table.file} ${styles.file}`}>
+          <div className={table.nameCol} onClick={() => { onSelected(file, index); }}>
+            <FileName
+              file={file}
+              convertFileSize={convertFileSize}
+              convertFileLastModified={convertFileLastModified}
+              viewType={viewType}
+            ></FileName>
+          </div>
+          <div className={table.sizeCol}>
+            <span className={table.text}>{convertFileSize()}</span>
+          </div>
+          <div className={table.modifyCol}>
+            <span className={table.text}>{convertFileLastModified()}</span>
+          </div>
+          <div className={table.optionCol}>
+            {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
+            <FileOptions
+              file={file}
+              viewType={viewType}
+            ></FileOptions>
+          </div>
+        </div> : null
+      }
+      { viewType === ViewType.icon ?
+        <div className={`${styles.icon}`}>
+          {file.selected ?
+            <div className={styles.selected}>
+              <CheckBox></CheckBox>
+            </div> : null
+          }
+          <div className={styles.iconContainer} onClick={() => { onSelected(file, index); }}>
+            <div className={styles.svg}>
+              <div className={'vert-align-mid'}></div>
+              <FileIcon file={file} viewType={viewType}></FileIcon>
+            </div>
+          </div>
+          <div className={styles.secondLine}>
+            <FileName
+              file={file}
+              convertFileSize={convertFileSize}
+              convertFileLastModified={convertFileLastModified}
+              viewType={viewType}
+            ></FileName>
+            <div className={styles.options}>
+              {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
+              <FileOptions
+                file={file}
+                viewType={viewType}
+              ></FileOptions>
+            </div>
+          </div>
+        </div> : null
+      }
+    </>
   );
 }
 

@@ -26,6 +26,17 @@
   max-width: calc(100% - 4px - 4px - 26px);
 }
 
+.iconFileName {
+  display: inline-block;
+  margin: 0 3.5px;
+  width: calc(100% - 7px);
+  height: 30px;
+  line-height: 30px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
 .previewImage {
   display: block;
   max-width: 264px;

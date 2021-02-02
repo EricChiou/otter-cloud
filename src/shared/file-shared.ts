@@ -8,6 +8,7 @@ const fileShared = new Subject<SharedInput>();
 export const fileSharedActs = {
     uploadFile: 'uploadFile',
     removeFile: 'removeFile',
+    fileListOnScroll: 'fileListOnScroll',
 }
 
 /** subscribe file shared */
@@ -21,4 +22,8 @@ export const uploadFileNext = () => {
 
 export const removeFileNext = () => {
     fileShared.next({ action: fileSharedActs.removeFile });
+}
+
+export const fileListOnScroll = () => {
+    fileShared.next({ action: fileSharedActs.fileListOnScroll });
 }

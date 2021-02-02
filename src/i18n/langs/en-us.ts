@@ -26,4 +26,5 @@ export const en_us: Keys = {
   confirm: 'confirm',
   signInErrorMsg: 'email or password incorrect.',
   tokenErrorMsg: 'login information is invalid or expired, please log in again.',
+  fileList: 'file list',
 };

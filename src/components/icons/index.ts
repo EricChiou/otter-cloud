@@ -40,3 +40,5 @@ export { Cancel } from './Cancel';
 export { ArrowUp } from './ArrowUp';
 export { TaskError } from './TaskError';
 export { TaskWaiting } from './TaskWaiting';
+export { List } from './List';
+export { Photo } from './Photo';

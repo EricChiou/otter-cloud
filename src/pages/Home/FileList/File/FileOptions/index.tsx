@@ -5,14 +5,17 @@ import { File } from 'src/pages/Home/FileList/File';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
+import { ViewType } from '../../';
+import { ContentType } from 'src/constants/file';
 
 import styles from './style.module.scss';
 
 interface Props {
   file: File;
+  viewType: ViewType;
 }
 
-const FileOptions: FunctionComponent<Props> = ({ file }) => {
+const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
   const optionEle: RefObject<HTMLSpanElement> = useRef(null);
   const [showOptions, setShowOptions] = useState(false);
 
@@ -37,6 +40,47 @@ const FileOptions: FunctionComponent<Props> = ({ file }) => {
     };
   });
 
+  const getOptionsClassName = (): string => {
+    switch (viewType) {
+      case ViewType.list:
+        return styles.options;
+
+      case ViewType.icon:
+        return styles.iconOptions;
+    }
+  }
+
+  const getOptionsStyle = (): Object => {
+    switch (viewType) {
+      case ViewType.list:
+        return {};
+
+      case ViewType.icon:
+        if (file.contentType === '') {
+          return { width: '26px' };
+        } else if (file.contentType.indexOf(ContentType.text) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.image) > -1) {
+          return { width: '78px' };
+        } else if (file.contentType.indexOf(ContentType.audio) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.video) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.zip) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.word) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.excel) > -1) {
+          return { width: '52px' };
+        } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
+          return { width: '52px' };
+        }
+        return { width: '78px' };
+    }
+  }
+
   const showOptionOnClick = () => {
     setShowOptions(!showOptions);
   };
@@ -49,7 +93,7 @@ const FileOptions: FunctionComponent<Props> = ({ file }) => {
     <span className={styles.fileOption} ref={optionEle}>
       <More onClick={showOptionOnClick}></More>
       {showOptions ?
-        <div className={styles.options}>
+        <div className={getOptionsClassName()} style={getOptionsStyle()}>
           <FilePreview file={file} onClick={optionOnClick}></FilePreview>
           <FileShare file={file} onClick={optionOnClick}></FileShare>
           <FileDelete file={file} onClick={optionOnClick}></FileDelete>

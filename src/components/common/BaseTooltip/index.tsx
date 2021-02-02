@@ -1,4 +1,6 @@
-import React, { FunctionComponent, useState, useRef, MutableRefObject } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+
+import { DeviceInfo, getDeviceInfo } from 'src/util/device-detector.util';
 
 import styles from './style.module.scss';
 
@@ -10,15 +12,21 @@ interface Props {
 
 const BaseTooltip: FunctionComponent<Props> = ({ children, style, tooltipStyle, content }) => {
   const [show, setShow] = useState(false);
-  const countDown: MutableRefObject<number | null> = useRef(null);
+  const [countDown, setCountDown] = useState<number | null>(null);
 
   const startCountDown = () => {
+    const deviceInfo: DeviceInfo | null = getDeviceInfo();
+    if (!deviceInfo || deviceInfo.mobile) { return; }
+
     clearCountDown();
-    countDown.current = window.setTimeout(() => { setShow(true); }, 500);
+    setCountDown(window.setTimeout(() => { setShow(true); }, 500));
   };
 
   const clearCountDown = () => {
-    if (countDown.current) { clearTimeout(countDown.current); }
+    const deviceInfo: DeviceInfo | null = getDeviceInfo();
+    if (!deviceInfo || deviceInfo.mobile) { return; }
+
+    if (countDown) { clearTimeout(countDown); }
     setShow(false);
   };
 

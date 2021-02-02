@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
-import ItemComponent, { Item } from './item/Item';
+import ItemComponent, { Item } from './item';
 import { setPrefix } from 'src/store/system.slice';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
+import { getDeviceInfo } from 'src/util/device-detector.util';
 
 import styles from './style.module.scss';
 
@@ -16,7 +17,6 @@ const SideMenu: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
   const [folderList, setFolderList] = useState<Item[]>([]);
-  // const [subscribe, setSubscribe] = useState<Subscription>();
 
   const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
@@ -79,7 +79,7 @@ const SideMenu: FunctionComponent<{}> = () => {
         }}
         SubItemIcon={Folder}
         subItems={folderList}
-        defaultExpand={true}
+        defaultExpand={getDeviceInfo()?.mobile ? false : true}
         onSelect={folderOnSelect}
         showCreateFolder={true}
         CreateItemIcon={CreateFolder}

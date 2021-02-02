@@ -20,6 +20,24 @@
       }
     }
   }
+
+  .iconOptions {
+    position: absolute;
+    top: -17px;
+    right: calc(100% + 2px);
+    bottom: 2px;
+    background-color: theme(white, deep);
+    border: 1px solid theme(gray, deep);
+    border-radius: 4px;
+    color: theme(blue, deep);
+    overflow: hidden;
+
+    svg {
+      &:hover {
+        background-color: theme(gray, light);
+      }
+    }
+  }
 }
 
 .delete {

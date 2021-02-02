@@ -2,7 +2,8 @@
 @import 'src/assets/css/rwd.scss';
 
 .header,
-.list .file {
+.list .file,
+.icon {
   padding: 0px 25px;
 
   @include breakpoint(l) {
@@ -12,6 +13,10 @@
   @include breakpoint(s) {
     padding: 0px 15px;
   }
+}
+
+.header,
+.list .file {
 
   .nameCol,
   .sizeCol,
@@ -75,15 +80,30 @@
   font-weight: bold;
   border-bottom: 1px solid theme(gray, light);
 
-  @include breakpoint(m) {
-    display: none;
-  }
-
   .nameCol,
   .sizeCol,
   .modifyCol,
   .optionCol {
     height: 29px;
+  }
+
+  .nameCol {
+    .viewType {
+      display: inline-block;
+      margin: 0.5px 2px 0 -2px;
+      height: 24px;
+      vertical-align: top;
+
+      svg {
+        display: block;
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    .text {
+      width: calc(100% - 4px - 26px);
+    }
   }
 }
 
@@ -91,10 +111,6 @@
   padding-bottom: 70px;
   height: calc(100% - 70px - 35px);
   overflow: auto;
-
-  @include breakpoint(m) {
-    height: calc(100% - 70px);
-  }
 
   .file {
     cursor: pointer;
@@ -110,4 +126,10 @@
       height: 30px;
     }
   }
+}
+
+.icon {
+  padding-bottom: 70px;
+  height: calc(100% - 70px - 35px);
+  overflow: auto;
 }

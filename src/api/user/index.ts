@@ -3,20 +3,20 @@ import { SingInReqVo, SingInResVo } from './interface';
 import { ApiUrl } from 'src/constants/api-url';
 
 export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
-    const body: SingInReqVo = {
-        acc,
-        pwd
-    };
+  const body: SingInReqVo = {
+    acc,
+    pwd
+  };
 
-    return new Promise((resolve, reject) => {
-        post(
-            ApiUrl.SIGN_IN,
-            body
-        ).then((resp) => {
-            resolve(resp);
+  return new Promise((resolve, reject) => {
+    post(
+      ApiUrl.SIGN_IN,
+      body
+    ).then((resp) => {
+      resolve(resp);
 
-        }).catch((error) => {
-            reject(error);
-        });
+    }).catch((error) => {
+      reject(error);
     });
+  });
 };

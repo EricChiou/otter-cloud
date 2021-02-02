@@ -26,4 +26,5 @@ export const keys: Keys = {
   confirm: 'confirm',
   signInErrorMsg: 'signInErrorMsg',
   tokenErrorMsg: 'tokenErrorMsg',
+  fileList: 'fileList',
 };

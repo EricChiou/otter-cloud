@@ -32,4 +32,5 @@ export interface Keys {
   confirm: string;
   signInErrorMsg: string;
   tokenErrorMsg: string;
+  fileList: string;
 }

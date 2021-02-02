@@ -18,7 +18,6 @@ import {
   setFile,
 } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import { intl, keys, IntlType } from 'src/i18n';
 import FileComponent, { File } from './File';
 import FileListMenu from './FileListMenu';
 import { Upload } from 'src/components/icons';
@@ -29,6 +28,8 @@ import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { subFileShared, fileSharedActs, removeFileNext } from 'src/shared/file-shared';
 import deleteDialog from './deleteDialog';
+import Header from './Header';
+import { fileListOnScroll } from 'src/shared/file-shared';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -105,7 +106,10 @@ const FikeList: FunctionComponent<{}> = () => {
   const dragOver = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    e.currentTarget.classList.add(styles.dragOver);
+
+    if (e.dataTransfer.types.find((type) => type === 'Files')) {
+      e.currentTarget.classList.add(styles.dragOver);
+    }
   };
 
   const dragLeave = (e: DragEvent) => {
@@ -113,6 +117,17 @@ const FikeList: FunctionComponent<{}> = () => {
     e.stopPropagation();
     fileListRef.current?.classList.remove(styles.dragOver);
   };
+
+  const changeViewType = () => {
+    switch (viewType) {
+      case ViewType.list:
+        setViewType(ViewType.icon);
+        break;
+      case ViewType.icon:
+        setViewType(ViewType.list);
+        break;
+    }
+  }
 
   const fileOnSelected = (file: File, index: number) => {
     if (!file.contentType && !file.size) {
@@ -184,6 +199,19 @@ const FikeList: FunctionComponent<{}> = () => {
     removeFileNext();
   };
 
+  const getFilesClassName = (): string => {
+    switch (viewType) {
+      case ViewType.list:
+        return table.list;
+
+      case ViewType.icon:
+        return table.icon;
+
+      default:
+        return table.list;
+    }
+  };
+
   const renderFiles = () => {
     return fileList.map((file, index) => {
       return (
@@ -200,22 +228,8 @@ const FikeList: FunctionComponent<{}> = () => {
 
   return (
     <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver}>
-      {viewType === ViewType.list ?
-        <div className={table.header}>
-          <div className={table.nameCol}>
-            <span className={table.text}>{intl(keys.fileName, IntlType.firstUpper)}</span>
-          </div>
-          <div className={table.sizeCol}>
-            <span className={table.text}>{intl(keys.fileSize, IntlType.firstUpper)}</span>
-          </div>
-          <div className={table.modifyCol}>
-            <span className={table.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
-          </div>
-          <div className={table.optionCol}></div>
-        </div>
-        : null
-      }
-      <div className={table.list}>
+      <Header viewType={viewType} changeViewType={changeViewType}></Header>
+      <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
         {renderFiles()}
       </div>
       <FileListMenu

@@ -2,35 +2,35 @@ import { RespVo } from '../request';
 
 // request vo
 export interface GetFileListReqVo {
-    prefix: string;
+  prefix: string;
 }
 
 export interface DownloadFileReqVo {
-    prefix: string;
-    fileName: string;
+  prefix: string;
+  fileName: string;
 }
 
 export interface RemoveFileReqVo {
-    prefix: string;
-    fileName: string;
+  prefix: string;
+  fileName: string;
 }
 
 export interface RemoveFolderReqVo {
-    prefix: string;
+  prefix: string;
 }
 
 // response vo
 export interface GetFileListResVo extends RespVo {
-    data: {
-        contentType: string;
-        name: string;
-        size: number;
-        lastModified: string;
-    }[];
+  data: {
+    contentType: string;
+    name: string;
+    size: number;
+    lastModified: string;
+  }[];
 }
 
 export interface GetPreviewUrlResVo extends RespVo {
-    data: {
-        url: string;
-    };
+  data: {
+    url: string;
+  };
 }

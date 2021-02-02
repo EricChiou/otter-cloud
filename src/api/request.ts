@@ -86,21 +86,40 @@ export const del = (url: string, params?: object, token?: string): Promise<RespV
   return request.delete(url, config);
 };
 
-export const postFile = (
+export const uploadPostFile = (
   url: string,
   body?: object,
   params?: object,
   token?: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
   cancelToken?: CancelTokenSource,
-): Promise<RespVo | Blob> => {
+): Promise<RespVo> => {
+
+  const config: AxiosRequestConfig = {
+    params,
+    timeout: 1000 * 60 * 60 * 24 * 365, // 365 days
+    onUploadProgress: progress,
+    cancelToken: cancelToken?.token,
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
+};
+
+export const downloadPostFile = (
+  url: string,
+  body?: object,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<Blob> => {
 
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
     timeout: 1000 * 60 * 60 * 24 * 365, // 365 days
     onDownloadProgress: progress,
-    onUploadProgress: progress,
     cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
