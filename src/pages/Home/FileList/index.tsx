@@ -110,35 +110,39 @@ const FikeList: FunctionComponent<{}> = () => {
       file.selected = !file.selected;
       dispatch(setFile(file, index));
 
-      if (file.selected && !e.shiftKey) {
-        setAnchorPoint(index);
-      }
-
-      if (!file.selected && !e.shiftKey) {
-        setAnchorPoint(null);
-      }
-
-      if (e.shiftKey && anchorPoint !== null) {
-        for (let i = 0; i < fileList.length; i++) {
-          const file: File = { ...fileList[i] };
-
-          if (i < anchorPoint && i < index) {
-            file.selected = false;
-
-          } else if (i > anchorPoint && i > index) {
-            file.selected = false;
-
-          } else if (i === anchorPoint) {
-            file.selected = true;
-
-          } else {
-            file.selected = !file.selected;
-          }
-          dispatch(setFile(file, i));
-        }
-      }
+      rangeSelection(e, file, index);
     }
   };
+
+  const rangeSelection = (e: MouseEvent, file: File, index: number) => {
+    if (file.selected && !e.shiftKey) {
+      setAnchorPoint(index);
+    }
+
+    if (!file.selected && !e.shiftKey) {
+      setAnchorPoint(null);
+    }
+
+    if (e.shiftKey && anchorPoint !== null) {
+      for (let i = 0; i < fileList.length; i++) {
+        const targetFile: File = { ...fileList[i] };
+
+        if (i < anchorPoint && i < index) {
+          targetFile.selected = false;
+
+        } else if (i > anchorPoint && i > index) {
+          targetFile.selected = false;
+
+        } else if (i === anchorPoint) {
+          targetFile.selected = true;
+
+        } else {
+          targetFile.selected = !targetFile.selected;
+        }
+        dispatch(setFile(targetFile, i));
+      }
+    }
+  }
 
   const getFilesClassName = (): string => {
     switch (viewType) {
