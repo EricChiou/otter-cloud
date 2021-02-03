@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
@@ -18,7 +18,7 @@ import table from '../table.module.scss';
 interface Props {
   file: File;
   index: number;
-  onSelected: (file: File, index: number) => void;
+  onSelected: (e: MouseEvent, file: File, index: number) => void;
   viewType: ViewType;
 }
 
@@ -90,7 +90,7 @@ const FileComponent: FunctionComponent<Props> = ({
     <>
       { viewType === ViewType.list ?
         <div className={`${table.file} ${styles.file}`}>
-          <div className={table.nameCol} onClick={() => { onSelected(file, index); }}>
+          <div className={table.nameCol} onClick={(e) => { onSelected(e, file, index); }}>
             <FileName
               file={file}
               convertFileSize={convertFileSize}
@@ -120,7 +120,7 @@ const FileComponent: FunctionComponent<Props> = ({
               <CheckBox></CheckBox>
             </div> : null
           }
-          <div className={styles.iconContainer} onClick={() => { onSelected(file, index); }}>
+          <div className={styles.iconContainer} onClick={(e) => { onSelected(e, file, index); }}>
             <div className={styles.svg}>
               <div className={'vert-align-mid'}></div>
               <FileIcon file={file} viewType={viewType}></FileIcon>

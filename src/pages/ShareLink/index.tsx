@@ -63,7 +63,7 @@ const ShareLink: FunctionComponent<{}> = () => {
       history.push(Routes.LOGIN);
     });
 
-  }, [search]);
+  }, [search, history]);
 
   return (
     <div></div>

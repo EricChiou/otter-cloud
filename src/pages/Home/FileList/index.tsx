@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
   useCallback,
+  MouseEvent,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -41,6 +42,7 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileList = useSelector(selectFileList);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
+  const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
 
   const refreshFileList = useCallback(() => {
     getFileList(prefix, userProfile.token).then((resp) => {
@@ -99,7 +101,7 @@ const FikeList: FunctionComponent<{}> = () => {
     }
   }
 
-  const fileOnSelected = (file: File, index: number) => {
+  const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
     if (!file.contentType && !file.size) {
       dispatch(setPrefix(prefix + file.name));
 
@@ -107,6 +109,30 @@ const FikeList: FunctionComponent<{}> = () => {
       const file = Object.assign({}, fileList[index]);
       file.selected = !file.selected;
       dispatch(setFile(file, index));
+
+      if (file.selected && !e.shiftKey) {
+        setAnchorPoint(index);
+      }
+
+      if (e.shiftKey && anchorPoint !== null) {
+        for (let i = 0; i < fileList.length; i++) {
+          const file: File = { ...fileList[i] };
+
+          if (i < anchorPoint && i < index) {
+            file.selected = false;
+
+          } else if (i > anchorPoint && i > index) {
+            file.selected = false;
+
+          } else if (i === anchorPoint) {
+            file.selected = true;
+
+          } else {
+            file.selected = !file.selected;
+          }
+          dispatch(setFile(file, i));
+        }
+      }
     }
   };
 
