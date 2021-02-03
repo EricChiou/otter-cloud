@@ -42,3 +42,6 @@ export { TaskError } from './TaskError';
 export { TaskWaiting } from './TaskWaiting';
 export { List } from './List';
 export { Photo } from './Photo';
+export { Copy } from './Copy';
+export { ChevronUp } from './ChevronUp';
+export { ChevronDown } from './ChevronDown';

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import { File } from '../../';
+import { File } from 'src/vo/common';
 import { getPreviewUrl } from 'src/api/file';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 

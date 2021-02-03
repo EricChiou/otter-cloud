@@ -8,3 +8,11 @@ export interface UserProfile {
   bucketName: string;
   exp: number;
 }
+
+export interface File {
+  contentType: string;
+  name: string; // unique key
+  size: number;
+  lastModified: string;
+  selected: boolean;
+}

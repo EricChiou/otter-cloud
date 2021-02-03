@@ -24,6 +24,7 @@
       overflow: auto;
       background-color: theme(white);
       border-radius: 2px;
+      animation: fadeIn 0.5s;
 
       .close {
         position: absolute;
@@ -61,5 +62,15 @@
         max-width: calc(100vw - 10px);
       }
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }

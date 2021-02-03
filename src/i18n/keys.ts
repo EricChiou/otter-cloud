@@ -27,4 +27,12 @@ export const keys: Keys = {
   signInErrorMsg: 'signInErrorMsg',
   tokenErrorMsg: 'tokenErrorMsg',
   fileList: 'fileList',
+  shareLink: 'shareLink',
+  shareableLink: 'shareableLink',
+  permanentLink: 'permanentLink',
+  bewarePermanentLinkRisk: 'bewarePermanentLinkRisk',
+  expiresInMaxDay: 'expiresInMaxDay',
+  days: 'days',
+  hours: 'hours',
+  minutes: 'minutes',
 };

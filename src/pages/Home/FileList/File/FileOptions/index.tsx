@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useRef, RefObject, useEffect, useState } from 'react';
 
 import { More } from 'src/components/icons';
-import { File } from 'src/pages/Home/FileList/File';
+import { File } from 'src/vo/common';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
 import { ViewType } from '../../';
-import { ContentType } from 'src/constants/file';
+import { ContentType } from 'src/constants';
 
 import styles from './style.module.scss';
 

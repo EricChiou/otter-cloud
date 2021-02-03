@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { intl, keys, IntlType, langs } from 'src/i18n';
+import { intl, keys, langs } from 'src/i18n';
 import { setLang } from 'src/store/user.slice';
 import { UserService } from 'src/service/user-service';
 
@@ -25,9 +25,9 @@ const LangList: FunctionComponent<Props> = ({ onSelect }) => {
 
   return (
     <ul className={styles.langList}>
-      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english, IntlType.firstUpper)}</li>
+      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english)}</li>
       <hr></hr>
-      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese, IntlType.firstUpper)}</li>
+      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese)}</li>
     </ul>
   );
 };

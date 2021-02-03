@@ -4,8 +4,8 @@ import {
   File as FileSvg, FileText, FileImage, FileAudio, FileVideo,
   FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,
 } from 'src/components/icons';
-import { File } from '../';
-import { ContentType } from 'src/constants/file';
+import { File } from 'src/vo/common';
+import { ContentType } from 'src/constants';
 import PreviewImg from './FileIconPreviewImg';
 
 interface Props {

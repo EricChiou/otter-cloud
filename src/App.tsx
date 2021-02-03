@@ -6,10 +6,10 @@ import { routes } from './routes';
 import { setUserProfile, selectUserProfile, selectLang, logout } from './store/user.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
-import Dialog from 'src/components/Dialog';
+import { Dialog } from 'src/components/common';
 import { subUserShared, userSharedActs } from 'src/shared/user-shared';
 import { addMessage, MessageType } from 'src/components/Message';
-import { intl, keys, IntlType } from 'src/i18n';
+import { intl, keys } from 'src/i18n';
 
 import './App.scss';
 
@@ -32,9 +32,14 @@ const App = () => {
     }
   }, [token, dispatch]);
 
-  // if not login and not at login page or sign up page, redirect to login page.
+  // if not login and not at login page or sign up page or share link page, redirect to login page.
   useEffect(() => {
-    if (location.pathname !== Routes.LOGIN && location.pathname !== Routes.SIGN_UP && !StatusService.isLogin()) {
+    if (
+      location.pathname !== Routes.LOGIN &&
+      location.pathname !== Routes.SIGN_UP &&
+      location.pathname !== Routes.SHARE_LINK &&
+      !StatusService.isLogin()
+    ) {
       history.push(Routes.LOGIN);
     }
   }, [location, history, userProfile]);
@@ -44,7 +49,7 @@ const App = () => {
     const subscribe = subUserShared((data) => {
       if (data.action === userSharedActs.tokenError) {
         dispatch(logout());
-        addMessage(intl(keys.tokenErrorMsg, IntlType.firstUpper), MessageType.info);
+        addMessage(intl(keys.tokenErrorMsg), MessageType.info);
       }
     });
 

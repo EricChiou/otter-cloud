@@ -34,3 +34,9 @@ export interface GetPreviewUrlResVo extends RespVo {
     url: string;
   };
 }
+
+export interface GetShareableLinkResVo extends RespVo {
+  data: {
+    shareableLink: string;
+  };
+}

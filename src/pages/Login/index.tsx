@@ -73,7 +73,7 @@ const Login: FunctionComponent<{}> = () => {
 
     }).catch((error) => {
       console.log(error);
-      dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.firstUpper), MessageType.info));
+      dispatch(addMessage(intl(keys.signInErrorMsg), MessageType.info));
     });
   }
 

@@ -1,0 +1,68 @@
+@import 'src/assets/css/theme.scss';
+
+.shareLinkBlock {
+  width: 300px;
+
+  .header {
+    padding: 0 8px;
+    height: 35px;
+    font-size: 18px;
+    line-height: 35px;
+    text-align: left;
+    color: theme(white, deep);
+    background-color: theme(blue);
+  }
+
+  .container {
+    padding: 12px 15px 20px 15px;
+    color: theme(black);
+
+    .shareableLink {
+      text-align: left;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    .expires {
+      margin-top: 15px;
+      text-align: left;
+
+      .expiresSelectorBlock {
+        text-align: center;
+
+        .expiresSelector {
+          display: inline-block;
+          margin: 0 10px;
+
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+
+          .expiresValueBlock {
+            padding: 5px 0;
+            border: 1px solid theme(gray);
+
+            .expiresValue {
+              font-size: 20px;
+              color: theme(black, light);
+            }
+
+            .expiresUnit {
+              font-size: 20px;
+              color: theme(gray, deep);
+            }
+          }
+        }
+      }
+    }
+
+
+    .note {
+      color: theme(pink, deep);
+    }
+  }
+}

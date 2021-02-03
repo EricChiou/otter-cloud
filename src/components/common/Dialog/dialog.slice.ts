@@ -27,6 +27,8 @@ const dialogSlice = createSlice({
   },
 });
 
+const dialogReducer = dialogSlice.reducer;
+
 export const addDialog = (dialogData: DialogData): AppThunk => dispatch => {
   const { addDialog } = dialogSlice.actions;
   dispatch(addDialog(dialogData));
@@ -39,4 +41,4 @@ export const removeDialog = (): AppThunk => dispatch => {
 
 export const selectBuffer = (state: RootState) => state.dialog.buffer;
 
-export default dialogSlice.reducer;
+export { dialogReducer };

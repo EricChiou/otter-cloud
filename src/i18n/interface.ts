@@ -33,4 +33,12 @@ export interface Keys {
   signInErrorMsg: string;
   tokenErrorMsg: string;
   fileList: string;
+  shareLink: string;
+  shareableLink: string;
+  permanentLink: string;
+  bewarePermanentLinkRisk: string;
+  expiresInMaxDay: string;
+  days: string;
+  hours: string;
+  minutes: string;
 }

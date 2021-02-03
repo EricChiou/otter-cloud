@@ -10,17 +10,10 @@ import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer'
 import FileName from './FileName';
 import { ViewType } from '../';
 import FileIcon from './FileIcon';
+import { File } from 'src/vo/common';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
-
-export interface File {
-  contentType: string;
-  name: string; // unique key
-  size: number;
-  lastModified: string;
-  selected: boolean;
-}
 
 interface Props {
   file: File;

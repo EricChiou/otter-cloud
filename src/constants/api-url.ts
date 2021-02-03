@@ -12,4 +12,6 @@ export class ApiUrl {
     public static readonly DOWNLOAD_FILE = fileGroupUrl + '/download';
     public static readonly REMOVE_FILE = fileGroupUrl + '/remove';
     public static readonly REMOVE_FOLDER = fileGroupUrl + '/remove/folder';
+    public static readonly GET_SHAREABLE_LINK_URL = fileGroupUrl + '/shareableLink';
+    public static readonly GET_OBJECT_BY_SHAREABLE_LINK_URL = fileGroupUrl + '/object/shareableLink';
 };

@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ContentType } from 'src/constants/file';
+import { ContentType } from 'src/constants';
 import { BaseTooltip } from 'src/components/common';
 import { CheckBox } from 'src/components/icons';
-import { File } from '../';
+import { File } from 'src/vo/common';
 import { getPreviewUrl } from 'src/api/file';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';

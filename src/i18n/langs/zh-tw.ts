@@ -27,4 +27,12 @@ export const zh_tw: Keys = {
   signInErrorMsg: 'Email 或密碼錯誤',
   tokenErrorMsg: '登入資訊無效或過期，請重新登入',
   fileList: '檔案列表',
+  shareLink: '分享連結',
+  shareableLink: '暫享連結',
+  permanentLink: '永久連結',
+  bewarePermanentLinkRisk: '注意！提供永久連結可能會有洩漏其他檔案的風險。',
+  expiresInMaxDay: '有效期限（最多７天）',
+  days: '天',
+  hours: '時',
+  minutes: '分',
 };

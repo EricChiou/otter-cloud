@@ -10,8 +10,8 @@ export enum IntlType {
   normal = 'normal',
   upper = 'upper',
   lower = 'lower',
-  firstUpper = 'firstUpper',
-  perUpper = 'perUpper',
+  firstUpper = 'firstUpper', // only first char to be upper
+  perUpper = 'perUpper', // first char to be upper of every words
 }
 
 export type { Langs, Keys } from './interface';

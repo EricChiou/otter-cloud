@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { File } from 'src/pages/Home/FileList/File';
-import { ContentType } from 'src/constants/file';
+import { File } from 'src/vo/common';
+import { ContentType } from 'src/constants';
 import { Preview } from 'src/components/icons';
-import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
+import { addDialog, removeDialog } from 'src/components/common';
 import { getPreviewUrl } from 'src/api/file';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';

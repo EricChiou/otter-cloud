@@ -1,6 +1,6 @@
 import { post } from '../request';
 import { SingInReqVo, SingInResVo } from './interface';
-import { ApiUrl } from 'src/constants/api-url';
+import { ApiUrl } from 'src/constants';
 
 export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
   const body: SingInReqVo = {

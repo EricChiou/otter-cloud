@@ -12,7 +12,7 @@ export interface DialogData {
   closeByClick?: boolean;
   defaultSize?: boolean;
   blockStyle?: object;
-}
+};
 
 const Dialog: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -71,4 +71,4 @@ const Dialog: FunctionComponent<{}> = () => {
   );
 };
 
-export default Dialog;
+export { Dialog };

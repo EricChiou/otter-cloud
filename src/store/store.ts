@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@redu
 
 import userReducer from './user.slice';
 import systemReducer from './system.slice';
-import dialogReducer from 'src/components/Dialog/dialog.slice';
+import { dialogReducer } from 'src/components/common';
 
 export const store = configureStore({
   reducer: {

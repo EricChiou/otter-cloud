@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
-import { File } from 'src/pages/Home/FileList/File';
+import { File } from 'src/vo/common';
 
 interface SystemState {
   bucket: string;

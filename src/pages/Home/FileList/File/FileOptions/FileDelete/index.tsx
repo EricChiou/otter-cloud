@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { File } from 'src/pages/Home/FileList/File';
+import { File } from 'src/vo/common';
 import { Delete, Warning } from 'src/components/icons';
 import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import { intl, keys, IntlType } from 'src/i18n';
-import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
+import { addDialog, removeDialog } from 'src/components/common';
 import { removeFile, removeFolder } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix } from 'src/store/system.slice';

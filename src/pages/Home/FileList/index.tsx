@@ -1,14 +1,12 @@
 import React, {
   FunctionComponent,
   useEffect,
-  DragEvent,
   RefObject,
   useRef,
   useState,
-  useCallback
+  useCallback,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 
 import {
   selectPrefix,
@@ -18,18 +16,14 @@ import {
   setFile,
 } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import FileComponent, { File } from './File';
+import FileComponent from './File';
+import { File } from 'src/vo/common';
 import FileListMenu from './FileListMenu';
-import { Upload } from 'src/components/icons';
-import { addDialog, removeDialog } from 'src/components/Dialog/dialog.slice';
-import { getFileList, removeFile } from 'src/api/file';
+import { getFileList } from 'src/api/file';
 import { StatusService } from 'src/service';
-import { addTask } from 'src/shared/task-shared';
-import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
-import { subFileShared, fileSharedActs, removeFileNext } from 'src/shared/file-shared';
-import deleteDialog from './deleteDialog';
+import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file-shared';
 import Header from './Header';
-import { fileListOnScroll } from 'src/shared/file-shared';
+import FileListDropFile from './FileListDropFile';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -48,26 +42,25 @@ const FikeList: FunctionComponent<{}> = () => {
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
 
-  const refreshFileList = useCallback(
-    () => {
-      getFileList(prefix, userProfile.token).then((resp) => {
-        if (resp.data) {
-          const fileList: File[] = resp.data.map((data) => {
-            return {
-              contentType: data.contentType,
-              name: data.name.replace(prefix, ''),
-              size: data.size,
-              lastModified: data.lastModified,
-              selected: false,
-            };
-          });
-          dispatch(setFileList(fileList));
-        } else {
-          dispatch(setFileList([]));
-        }
+  const refreshFileList = useCallback(() => {
+    getFileList(prefix, userProfile.token).then((resp) => {
+      if (resp.data) {
+        const fileList: File[] = resp.data.map((data) => {
+          return {
+            contentType: data.contentType,
+            name: data.name.replace(prefix, ''),
+            size: data.size,
+            lastModified: data.lastModified,
+            selected: false,
+          };
+        });
+        dispatch(setFileList(fileList));
+      } else {
+        dispatch(setFileList([]));
+      }
 
-      }).catch((error) => { console.log(error); });
-    }, [prefix, userProfile, dispatch]);
+    }).catch((error) => { console.log(error); });
+  }, [prefix, userProfile, dispatch]);
 
   useEffect(() => {
     if (!StatusService.isLogin()) { return; }
@@ -95,29 +88,6 @@ const FikeList: FunctionComponent<{}> = () => {
     }
   }, [fileList, showOtherOptions]);
 
-  const drop = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    uploadFiles(e.dataTransfer.files);
-    fileListRef.current?.classList.remove(styles.dragOver);
-  };
-
-  const dragOver = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (e.dataTransfer.types.find((type) => type === 'Files')) {
-      e.currentTarget.classList.add(styles.dragOver);
-    }
-  };
-
-  const dragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    fileListRef.current?.classList.remove(styles.dragOver);
-  };
-
   const changeViewType = () => {
     switch (viewType) {
       case ViewType.list:
@@ -138,65 +108,6 @@ const FikeList: FunctionComponent<{}> = () => {
       file.selected = !file.selected;
       dispatch(setFile(file, index));
     }
-  };
-
-  const uploadFiles = (files: FileList) => {
-    // console.log('Upload Files', fileList);
-    const timStamp = new Date().getTime();
-    const tasks = Array.from(files).map((file, index) => {
-      const task: TaskData = {
-        id: `${timStamp}_${index}`,
-        type: TaskType.upload,
-        prefix,
-        fileName: file.name,
-        status: TaskStatus.waiting,
-        progress: 0,
-        cancelToken: axios.CancelToken.source(),
-        file: file,
-      }
-      return task;
-    });
-
-    addTask(tasks);
-  };
-
-  const downloadFiles = () => {
-    const files = fileList.filter((file) => file.selected);
-    // console.log('Download Files', files);
-    const timStamp = new Date().getTime();
-    const tasks = files.map((file, index) => {
-      const task: TaskData = {
-        id: `${timStamp}_${index}`,
-        type: TaskType.download,
-        prefix,
-        fileName: file.name,
-        status: TaskStatus.waiting,
-        progress: 0,
-        cancelToken: axios.CancelToken.source(),
-        contentType: file.contentType,
-      }
-      return task;
-    });
-
-    addTask(tasks);
-  };
-
-  const showDeleteWarning = () => {
-    const component = deleteDialog(
-      deleteFiles,
-      () => { dispatch(removeDialog()); }
-    );
-    dispatch(addDialog({ component }));
-  };
-
-  const deleteFiles = () => {
-    const files = fileList.filter((file) => file.selected);
-    // console.log('Delete Files', files);
-    dispatch(removeDialog());
-    files.forEach(async (file) => {
-      await removeFile(prefix, file.name, userProfile.token);
-    });
-    removeFileNext();
   };
 
   const getFilesClassName = (): string => {
@@ -227,24 +138,14 @@ const FikeList: FunctionComponent<{}> = () => {
   };
 
   return (
-    <div ref={fileListRef} id={styles.fileList} onDragOver={dragOver}>
+    <div ref={fileListRef} id={styles.fileList}>
       <Header viewType={viewType} changeViewType={changeViewType}></Header>
       <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
         {renderFiles()}
       </div>
-      <FileListMenu
-        showOtherOptions={showOtherOptions}
-        uploadFiles={uploadFiles}
-        download={downloadFiles}
-        del={showDeleteWarning}
-      >
-      </FileListMenu>
-      <div className={styles.mask} onDrop={drop} onDragLeave={dragLeave}>
-        <div className={styles.icon}>
-          <Upload></Upload>
-        </div>
-      </div>
-    </div>
+      <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
+      <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
+    </div >
   );
 };
 

@@ -127,7 +127,7 @@ export const downloadPostFile = (
   return request.post(url, body, config);
 };
 
-export const getPreview = (url: string, params?: object, token?: string): Promise<RespVo | Blob> => {
+export const getBlob = (url: string, params?: object, token?: string): Promise<RespVo | Blob> => {
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
