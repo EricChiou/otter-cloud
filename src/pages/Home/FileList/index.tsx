@@ -114,6 +114,10 @@ const FikeList: FunctionComponent<{}> = () => {
         setAnchorPoint(index);
       }
 
+      if (!file.selected && !e.shiftKey) {
+        setAnchorPoint(null);
+      }
+
       if (e.shiftKey && anchorPoint !== null) {
         for (let i = 0; i < fileList.length; i++) {
           const file: File = { ...fileList[i] };
