@@ -115,12 +115,12 @@ const FileComponent: FunctionComponent<Props> = ({
       }
       { viewType === ViewType.icon ?
         <div className={`${styles.icon}`}>
-          {file.selected ?
-            <div className={styles.selected}>
-              <CheckBox></CheckBox>
-            </div> : null
-          }
           <div className={styles.iconContainer} onClick={(e) => { onSelected(e, file, index); }}>
+            {file.selected ?
+              <div className={styles.selected}>
+                <CheckBox></CheckBox>
+              </div> : null
+            }
             <div className={styles.svg}>
               <div className={'vert-align-mid'}></div>
               <FileIcon file={file} viewType={viewType}></FileIcon>

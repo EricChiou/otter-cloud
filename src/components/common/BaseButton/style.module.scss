@@ -7,7 +7,14 @@
   border: none;
   border-radius: 4px;
   outline: none;
+}
+
+.active {
   cursor: pointer;
+}
+
+.inactive {
+  cursor: not-allowed;
 }
 
 .default {

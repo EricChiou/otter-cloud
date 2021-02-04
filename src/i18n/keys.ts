@@ -35,4 +35,7 @@ export const keys: Keys = {
   days: 'days',
   hours: 'hours',
   minutes: 'minutes',
+  signUpSuccess: 'signUpSuccess',
+  signUpDuplicate: 'signUpDuplicate',
+  signUpFail: 'signUpFail',
 };

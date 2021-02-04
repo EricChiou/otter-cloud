@@ -30,9 +30,12 @@ export const zh_tw: Keys = {
   shareLink: '分享連結',
   shareableLink: '暫享連結',
   permanentLink: '永久連結',
-  bewarePermanentLinkRisk: '注意！提供永久連結可能會有洩漏其他檔案的風險。',
+  bewarePermanentLinkRisk: '注意！提供永久連結可能會有洩漏其他檔案的風險',
   expiresInMaxDay: '有效期限（最多７天）',
   days: '天',
   hours: '時',
   minutes: '分',
+  signUpSuccess: '註冊成功，請返回登入頁面登入',
+  signUpDuplicate: 'Email 已存在',
+  signUpFail: '註冊失敗，請再試一次',
 };

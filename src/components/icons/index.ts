@@ -45,3 +45,5 @@ export { Photo } from './Photo';
 export { Copy } from './Copy';
 export { ChevronUp } from './ChevronUp';
 export { ChevronDown } from './ChevronDown';
+export { CheckCircle } from './CheckCircle';
+export { ErrorCircle } from './ErrorCircle';

@@ -17,10 +17,11 @@ export enum MessageType {
 }
 
 interface MsgConfig {
-  Icon: FunctionComponent | null,
-  iconClassName: string,
-  closeUI: boolean,
-  closeByClick: boolean
+  Icon: FunctionComponent | null;
+  iconClassName: string;
+  closeUI: boolean;
+  closeByClick: boolean;
+  callback?: () => void;
 }
 
 const getConfig = (type?: MessageType): MsgConfig => {
@@ -53,7 +54,7 @@ const getConfig = (type?: MessageType): MsgConfig => {
       break;
   }
 
-  return { Icon, iconClassName, closeUI, closeByClick, };
+  return { Icon, iconClassName, closeUI, closeByClick };
 };
 
 const getComponent = (dispatch: any, msg: string, config: MsgConfig) => {
@@ -73,7 +74,10 @@ const getComponent = (dispatch: any, msg: string, config: MsgConfig) => {
       <BaseButton
         type={ButtonType.default}
         style={buttonStyle}
-        onClick={() => { dispatch(removeDialog()); }}
+        onClick={() => {
+          if (config.callback) { config.callback(); }
+          dispatch(removeDialog());
+        }}
       >
         {intl(keys.confirm, IntlType.perUpper)}
       </BaseButton>
@@ -81,13 +85,20 @@ const getComponent = (dispatch: any, msg: string, config: MsgConfig) => {
   );
 };
 
-export const addMessage = (msg: string, type?: MessageType): AppThunk => dispatch => {
+export const addMessage = (
+  msg: string,
+  type?: MessageType,
+  callback?: () => void,
+): AppThunk => dispatch => {
+
   const config = getConfig(type);
+  config.callback = callback;
   const component = getComponent(dispatch, msg, config);
 
   dispatch(addDialog({
     component,
     closeUI: config.closeUI,
     closeByClick: config.closeByClick,
+    callback: config.callback,
   }));
 };

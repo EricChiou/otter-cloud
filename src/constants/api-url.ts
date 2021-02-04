@@ -3,6 +3,7 @@ const fileGroupUrl = '/file';
 
 export class ApiUrl {
     // user
+    public static readonly SIGN_UP = userGroupUrl + '/signUp';
     public static readonly SIGN_IN = userGroupUrl + '/signIn';
 
     // file

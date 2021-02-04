@@ -19,6 +19,13 @@
     width: calc(100% - 6px);
     list-style-type: none;
 
+    .userName {
+      max-width: 290px;
+      font-size: 17px;
+      line-height: 30px;
+      text-overflow: ellipsis;
+    }
+
     li {
       margin: 0;
       padding: 2px;

@@ -12,6 +12,7 @@ export interface DialogData {
   closeByClick?: boolean;
   defaultSize?: boolean;
   blockStyle?: object;
+  callback?: () => void;
 };
 
 const Dialog: FunctionComponent<{}> = () => {
@@ -42,6 +43,7 @@ const Dialog: FunctionComponent<{}> = () => {
   }
 
   const close = () => {
+    if (buffer[0].callback) { buffer[0].callback(); }
     dispatch(removeDialog());
   }
 

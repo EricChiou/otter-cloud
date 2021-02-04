@@ -49,6 +49,24 @@
         .infoTitle {
           padding: 0 2px;
           font-weight: bold;
+
+          svg {
+            width: 22px;
+            height: 22px;
+            vertical-align: bottom;
+          }
+        }
+
+        .ok {
+          svg {
+            color: theme(green);
+          }
+        }
+
+        .error {
+          svg {
+            color: theme(red);
+          }
         }
       }
     }

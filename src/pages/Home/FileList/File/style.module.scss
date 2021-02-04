@@ -14,7 +14,6 @@
 
 .icon {
   display: inline-block;
-  position: relative;
   margin: 3px 2px;
   width: calc(100% / 8 - 4px);
   box-shadow: 1px 1px 1px 1px theme(gray);
@@ -35,19 +34,19 @@
     width: calc(100% / 2 - 4px);
   }
 
-  .selected {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: theme(blue);
-    z-index: 1;
-  }
-
   .iconContainer {
     position: relative;
     width: 100%;
     padding-top: 100%;
     cursor: pointer;
+
+    .selected {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: theme(blue);
+      z-index: 1;
+    }
 
     .svg {
       position: absolute;

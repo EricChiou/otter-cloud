@@ -49,7 +49,7 @@ const App = () => {
     const subscribe = subUserShared((data) => {
       if (data.action === userSharedActs.tokenError) {
         dispatch(logout());
-        addMessage(intl(keys.tokenErrorMsg), MessageType.info);
+        dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
       }
     });
 

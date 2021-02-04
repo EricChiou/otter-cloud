@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
 import Header from 'src/components/Header';
@@ -6,25 +7,26 @@ import { intl, keys, IntlType } from 'src/i18n';
 import { BaseInput, BaseButton, ButtonType } from 'src/components/common';
 import Lang from 'src/components/Lang';
 import { Routes } from 'src/constants';
+import { CheckCircle, ErrorCircle } from 'src/components/icons';
+import { signUp } from 'src/api/user';
+import { ApiResult } from 'src/constants';
+import { addMessage, MessageType } from 'src/components/Message';
 
 import styles from './style.module.scss';
 
 const SignUp: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [className, setClassName] =
     useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
-  const inputStyle = {
-    width: '252px',
-  }
-  const btnStyle = {
-    width: '75px',
-  }
-  const userData = {
+  const [userData, setUserData] = useState({
     email: '',
     name: '',
     password: '',
     confirmPassword: '',
-  };
+  });
+  const inputStyle = { width: '252px' };
+  const btnStyle = { width: '75px' };
 
   useEffect(() => {
     const onResize = () => {
@@ -44,24 +46,71 @@ const SignUp: FunctionComponent<{}> = () => {
     };
   });
 
-  const signUp = () => {
-    console.log('Sign Up', userData);
+  const doSignUp = () => {
+    signUp(userData.email, userData.name, userData.password).then((resp) => {
+      console.log(resp);
+      if (resp.status === ApiResult.Success) {
+        dispatch(addMessage(
+          intl(keys.signUpSuccess),
+          MessageType.info,
+          () => { history.push(Routes.LOGIN); },
+        ));
+      } else if (resp.status === ApiResult.Duplicate) {
+        dispatch(addMessage(intl(keys.signUpDuplicate), MessageType.warning));
+      } else {
+        dispatch(addMessage(intl(keys.signUpFail), MessageType.error));
+      }
+
+    }).catch(() => {
+      dispatch(addMessage(intl(keys.signUpFail), MessageType.error));
+    });
+  };
+
+  const checkUserData = (): boolean => {
+    if (!userData.email) { return false; }
+    if (!userData.name) { return false; }
+    if (!userData.password) { return false; }
+    if (!userData.confirmPassword) { return false; }
+    if (userData.password !== userData.confirmPassword) { return false; }
+
+    return true;
+  };
+
+  const checkPassword = (): boolean | null => {
+    if (!userData.password || !userData.confirmPassword) {
+      return null;
+    }
+
+    if (userData.password === userData.confirmPassword) {
+      return true;
+
+    } else {
+      return false;
+    }
   };
 
   const eMailOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    userData.email = e.target.value;
+    const newUserData = { ...userData };
+    newUserData.email = e.target.value;
+    setUserData(newUserData);
   }
 
   const nameOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    userData.name = e.target.value;
+    const newUserData = { ...userData };
+    newUserData.name = e.target.value;
+    setUserData(newUserData);
   }
 
   const pwdOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    userData.password = e.target.value;
+    const newUserData = { ...userData };
+    newUserData.password = e.target.value;
+    setUserData(newUserData);
   }
 
   const confirmPwdOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    userData.confirmPassword = e.target.value;
+    const newUserData = { ...userData };
+    newUserData.confirmPassword = e.target.value;
+    setUserData(newUserData);
   }
 
   return (
@@ -81,11 +130,23 @@ const SignUp: FunctionComponent<{}> = () => {
             <BaseInput style={inputStyle} onChange={nameOnChange}></BaseInput>
           </span>
           <span className={styles.info}>
-            <div className={styles.infoTitle}>{intl(keys.pwd, IntlType.perUpper)}:</div>
+            <div className={`${styles.infoTitle} ${checkPassword() ? styles.ok : styles.error}`}>
+              {intl(keys.pwd, IntlType.perUpper)}:
+              {checkPassword() !== null ?
+                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>)
+                : null
+              }
+            </div>
             <BaseInput type={"password"} style={inputStyle} onChange={pwdOnChange}></BaseInput>
           </span>
           <span className={styles.info}>
-            <div className={styles.infoTitle}>{intl(keys.confirmPwd, IntlType.perUpper)}:</div>
+            <div className={`${styles.infoTitle} ${checkPassword() ? styles.ok : styles.error}`}>
+              {intl(keys.confirmPwd, IntlType.perUpper)}:
+              {checkPassword() !== null ?
+                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>)
+                : null
+              }
+            </div>
             <BaseInput type={"password"} style={inputStyle} onChange={confirmPwdOnChange}></BaseInput>
           </span>
         </div>
@@ -93,7 +154,8 @@ const SignUp: FunctionComponent<{}> = () => {
           <div className={styles.confirmBtn}>
             <BaseButton
               style={btnStyle}
-              onClick={signUp}
+              disabled={!checkUserData()}
+              onClick={doSignUp}
             >
               {intl(keys.signUp, IntlType.perUpper)}
             </BaseButton>

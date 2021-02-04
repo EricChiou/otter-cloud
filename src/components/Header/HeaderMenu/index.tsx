@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { logout } from 'src/store/user.slice';
 import { Language, Logout } from 'src/components/icons';
 import LangList from 'src/components/LangList';
+import { selectUserProfile } from 'src/store/user.slice';
 
 import styles from './style.module.scss';
 
@@ -14,6 +15,7 @@ interface Props {
 
 const Menu: FunctionComponent<Props> = ({ close }) => {
   const dispatch = useDispatch();
+  const userProfile = useSelector(selectUserProfile);
   const [showLangList, setShowLangList] = useState(false);
 
   useEffect(() => {
@@ -40,6 +42,12 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
   return (
     <div className={styles.menu}>
       <ul>
+        {window.innerWidth < 480 ?
+          <>
+            <li className={styles.userName}>{userProfile.name}</li>
+            <hr></hr>
+          </> : null
+        }
         <li onClick={() => { setShowLangList(!showLangList); }}>
           <div className={'vert-align-mid'}></div>
           <Language></Language>

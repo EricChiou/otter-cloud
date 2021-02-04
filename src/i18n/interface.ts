@@ -41,4 +41,7 @@ export interface Keys {
   days: string;
   hours: string;
   minutes: string;
+  signUpSuccess: string;
+  signUpDuplicate: string;
+  signUpFail: string;
 }
