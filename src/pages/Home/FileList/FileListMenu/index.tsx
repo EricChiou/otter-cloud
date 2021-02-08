@@ -8,9 +8,7 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix, selectFileList } from 'src/store/system.slice';
 import { addDialog, removeDialog } from 'src/components/common';
 import { removeFile } from 'src/api/file';
-import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
-import { intl, keys, IntlType } from 'src/i18n';
-import { Warning } from 'src/components/icons';
+import DeleteFileDialog from 'src/components/DeleteFileDialog';
 
 import styles from './style.module.scss';
 
@@ -41,47 +39,19 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
     }
   };
 
-  const deleteDialog = (del: () => void, cancel: () => void): JSX.Element => {
-    const buttonStyle = {
-      width: '80px',
-      textAlign: 'center',
-    };
-
-    return (
-      <div className={styles.delete}>
-        <div className={styles.icon}>
-          <Warning></Warning>
-        </div>
-        <div className={styles.text}>
-          {intl(keys.checkToDelete)}
-          <br></br>
-          {intl(keys.cannotUndone)}
-        </div>
-        <BaseButton type={ButtonType.danger} style={buttonStyle} onClick={del}>
-          {intl(keys.delete, IntlType.firstUpper)}
-        </BaseButton>
-            &nbsp;&nbsp;
-        <BaseButton style={buttonStyle} onClick={cancel} >
-          {intl(keys.cancel, IntlType.firstUpper)}
-        </BaseButton>
-      </div>
-    );
-  };
-
   const showDeleteWarning = () => {
-    const component = deleteDialog(
-      () => {
-        dispatch(removeDialog());
+    const confirm = () => {
+      dispatch(removeDialog());
 
-        const files = fileList.filter((file) => file.selected);
-        files.forEach(async (file) => {
-          await removeFile(prefix, file.name, userProfile.token);
-        });
+      const files = fileList.filter((file) => file.selected);
+      const removeAllFiles = files.map((file) => removeFile(prefix, file.name, userProfile.token));
 
-        removeFileNext();
-      },
-      () => { dispatch(removeDialog()); },
-    );
+      Promise.all(removeAllFiles).then(() => { removeFileNext(); });
+    };
+    const cancel = () => { dispatch(removeDialog()); };
+
+    const component = <DeleteFileDialog confirm={confirm} cancel={cancel}></DeleteFileDialog>;
+
     dispatch(addDialog({ component }));
   };
 

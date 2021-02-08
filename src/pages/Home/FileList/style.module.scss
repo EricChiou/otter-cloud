@@ -54,24 +54,3 @@
     background-color: rgba(0, 0, 0, 0.15);
   }
 }
-
-.delete {
-  padding: 25px 30px;
-
-  .icon {
-    display: inline-block;
-    color: theme(pink, deep);
-    text-align: center;
-
-    svg {
-      display: block;
-      width: 100px;
-      height: 100px;
-    }
-  }
-
-  .text {
-    margin-bottom: 20px;
-    line-height: 25px;
-  }
-}
