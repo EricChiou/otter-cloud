@@ -6,10 +6,9 @@ import Header from 'src/components/Header';
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseInput, BaseButton, ButtonType } from 'src/components/common';
 import Lang from 'src/components/Lang';
-import { Routes } from 'src/constants';
+import { Routes, ApiResult } from 'src/constants';
 import { CheckCircle, ErrorCircle } from 'src/components/icons';
 import { signUp } from 'src/api/user';
-import { ApiResult } from 'src/constants';
 import { addMessage, MessageType } from 'src/components/Message';
 
 import styles from './style.module.scss';

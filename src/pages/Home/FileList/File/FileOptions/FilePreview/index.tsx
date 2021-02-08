@@ -8,6 +8,8 @@ import { addDialog, removeDialog } from 'src/components/common';
 import { getPreviewUrl } from 'src/api/file';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
+import TextFilePreview from 'src/components/TextFilePreview';
+import ImageFilePreview from 'src/components/ImageFilePreview';
 
 import styles from './style.module.scss';
 
@@ -21,39 +23,61 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
 
-  const previewFile = () => {
+  const previewText = () => {
     getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
       const component = (
         <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-          <div className={"vert-align-mid"}></div>
-          <img
-            src={resp.data.url}
-            alt="preview"
-            onClick={(e) => { e.stopPropagation(); }}
-          ></img>
+          <TextFilePreview
+            textBlob={resp}
+            close={() => { dispatch(removeDialog()); }}
+          ></TextFilePreview>
         </div>
       );
 
-      dispatch(addDialog({
-        component,
-        closeUI: true,
-        closeByClick: true,
-        defaultSize: false,
-        blockStyle: { backgroundColor: 'rgba(0, 0, 0, 0)' },
-      }));
+      showPreviewDialog(component);
     });
 
     if (onClick) { onClick(); }
+  };
+
+  const previewImg = () => {
+    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
+      const urlCreator = window.URL || window.webkitURL;
+      const url = urlCreator.createObjectURL(resp);
+
+      const component = (
+        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
+          <ImageFilePreview
+            url={url}
+            close={() => { dispatch(removeDialog()); }}
+          ></ImageFilePreview>
+        </div>
+      );
+
+      showPreviewDialog(component);
+    });
+
+    if (onClick) { onClick(); }
+  };
+
+  const showPreviewDialog = (component: JSX.Element) => {
+    dispatch(addDialog({
+      component,
+      closeUI: true,
+      closeByClick: true,
+      defaultSize: false,
+      blockStyle: { backgroundColor: 'rgba(0, 0, 0, 0)' },
+    }));
   };
 
   const renderPreviewOption = () => {
     if (file.contentType === '') {
 
     } else if (file.contentType.indexOf(ContentType.text) > -1) {
-      return null;
+      return <Preview onClick={previewText}></Preview>;
 
     } else if (file.contentType.indexOf(ContentType.image) > -1) {
-      return <Preview onClick={previewFile}></Preview>
+      return <Preview onClick={previewImg}></Preview>
 
     } else if (file.contentType.indexOf(ContentType.audio) > -1) {
       return null;

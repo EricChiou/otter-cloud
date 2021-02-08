@@ -59,7 +59,7 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
         if (file.contentType === '') {
           return { width: '26px' };
         } else if (file.contentType.indexOf(ContentType.text) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.image) > -1) {
           return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.audio) > -1) {

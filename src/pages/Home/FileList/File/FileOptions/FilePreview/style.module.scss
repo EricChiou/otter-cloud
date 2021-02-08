@@ -3,6 +3,7 @@
   width: calc(100vw - 14px);
   height: calc(100vh - 10px);
   background-size: cover;
+  overflow: auto;
 
   img {
     display: inline-block;

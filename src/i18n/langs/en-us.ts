@@ -38,4 +38,5 @@ export const en_us: Keys = {
   signUpSuccess: 'Sign up is successful, please return to the login page to log in.',
   signUpDuplicate: 'Email duplicated.',
   signUpFail: 'Sign up is failed, please try again.',
+  shareableLinkInvalid: 'The shareable link is invalid.',
 };

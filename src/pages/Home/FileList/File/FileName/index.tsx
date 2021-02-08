@@ -36,7 +36,9 @@ const FileName: FunctionComponent<Props> = ({
       const PreviewImage: FunctionComponent<{}> = () => {
         const getPreview = () => {
           getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
-            setUrl(resp.data.url);
+            const urlCreator = window.URL || window.webkitURL;
+            const url = urlCreator.createObjectURL(resp);
+            setUrl(url);
           });
         };
 
@@ -66,7 +68,7 @@ const FileName: FunctionComponent<Props> = ({
       return <PreviewImage></PreviewImage>;
     }
 
-    return file.name;
+    return <div style={{ whiteSpace: 'nowrap' }}>{file.name}</div>;
   }
 
   return (
@@ -89,11 +91,14 @@ const FileName: FunctionComponent<Props> = ({
         </BaseTooltip> : null
       }
       {viewType === ViewType.icon ?
-        <BaseTooltip content={file.name} style={{
-          display: 'inline-block',
-          width: 'calc(100% - 52px)',
-          height: '30px',
-        }}>
+        <BaseTooltip
+          content={<div style={{ whiteSpace: 'nowrap' }}>{file.name}</div>}
+          style={{
+            display: 'inline-block',
+            width: 'calc(100% - 52px)',
+            height: '30px',
+          }}
+        >
           <div className={styles.iconFileName}>
             {file.name}
           </div>

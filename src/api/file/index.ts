@@ -2,17 +2,14 @@ import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob } from '../
 import {
   GetFileListReqVo,
   GetFileListResVo,
-  GetPreviewUrlResVo,
   DownloadFileReqVo,
   RemoveFileReqVo,
   RemoveFolderReqVo,
   GetShareableLinkResVo,
 } from './interface';
-import { ApiUrl } from 'src/constants';
+import { ApiUrl, ApiResult, Config } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
-import { ApiResult } from 'src/constants';
-import { Config } from 'src/constants';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
   const search: GetFileListReqVo = { prefix: encodeURIComponent(prefix) };
@@ -63,7 +60,7 @@ export const getPreviewUrl = (
   prefix: string,
   fileName: string,
   token: string,
-): Promise<GetPreviewUrlResVo> => {
+): Promise<Blob> => {
 
   const search = {
     fileName: encodeURIComponent(fileName),
@@ -77,13 +74,7 @@ export const getPreviewUrl = (
       token
     ).then((resp: RespVo | Blob) => {
       if (resp instanceof Blob) {
-        const urlCreator = window.URL || window.webkitURL;
-        const url = urlCreator.createObjectURL(resp);
-        resolve({
-          status: ApiResult.Success,
-          data: { url },
-          trace: null,
-        });
+        resolve(resp);
 
       } else {
         reject(resp);
@@ -210,7 +201,7 @@ export const getShareableLinkUrl = (
 };
 
 export const getObjectByShareableLinkUrl = (url: string): Promise<Blob> => {
-  const search = { url: encodeURIComponent(url) }
+  const search = { url: btoa(url) };
 
   return new Promise((resolve, reject) => {
     getBlob(

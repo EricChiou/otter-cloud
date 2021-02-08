@@ -1,28 +1,47 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { Routes } from 'src/constants';
-import { getObjectByShareableLinkUrl } from 'src/api/file';
+import { Routes, ContentType } from 'src/constants';
+import { intl, keys } from 'src/i18n';
+import { addMessage, MessageType } from 'src/components/Message';
+import ShareLinkDownload from './ShareLinkDownload';
+import ShareLinkImage from './ShareLinkImage';
+import ShareLinkAudio from './ShareLinkAudio';
+import ShareLinkVideo from './ShareLinkVideo';
+
+export interface Search {
+  fileName: string;
+  contentType: string;
+  url: string;
+};
 
 const ShareLink: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const [search, setSearch] = useState<{ [key: string]: string }>({
+  const [search, setSearch] = useState<Search>({
     fileName: '',
     contentType: '',
     url: '',
   });
+
+  const showLinkInvalidMessage = useCallback(() => {
+    dispatch(addMessage(intl(keys.shareableLinkInvalid,), MessageType.warning, () => {
+      history.push(Routes.LOGIN);
+    }));
+  }, [dispatch, history]);
 
   useEffect(() => {
     try {
       const newSearch: { [key: string]: string } = {};
       location.search.slice(1).split('&').forEach((keyValueStr) => {
         const keyValue = keyValueStr.split('=');
-        newSearch[keyValue[0]] = keyValue[1];
+        newSearch[keyValue[0]] = atob(keyValue[1]);
       });
 
       if (!newSearch.fileName || !newSearch.contentType || !newSearch.url) {
-        history.push(Routes.LOGIN);
+        showLinkInvalidMessage();
         return;
       }
 
@@ -39,34 +58,50 @@ const ShareLink: FunctionComponent<{}> = () => {
       }
 
     } catch (error) {
-      history.push(Routes.LOGIN);
+      showLinkInvalidMessage();
     }
 
-  }, [location, history, search]);
+  }, [location, search, showLinkInvalidMessage]);
 
-  useEffect(() => {
+  const renderShareLink = () => {
     if (!search.fileName || !search.contentType || !search.url) { return; }
 
-    console.log(search);
-    getObjectByShareableLinkUrl(search.url).then((resp) => {
-      const url = URL.createObjectURL(new Blob([resp], { type: atob(search.contentType) }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = atob(search.fileName);
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      link.parentElement?.removeChild(link);
-      URL.revokeObjectURL(url);
+    // console.log('renderShareLink', search);
+    if (search.contentType.indexOf(ContentType.image) > -1) {
+      return (
+        <ShareLinkImage
+          search={search}
+          showLinkInvalidMessage={showLinkInvalidMessage}
+        ></ShareLinkImage>
+      );
 
-    }).catch(() => {
-      history.push(Routes.LOGIN);
-    });
+    } else if (search.contentType.indexOf(ContentType.audio) > -1) {
+      return (
+        <ShareLinkAudio
+          search={search}
+          showLinkInvalidMessage={showLinkInvalidMessage}
+        ></ShareLinkAudio>
+      );
 
-  }, [search, history]);
+    } else if (search.contentType.indexOf(ContentType.video) > -1) {
+      return (
+        <ShareLinkVideo
+          search={search}
+          showLinkInvalidMessage={showLinkInvalidMessage}
+        ></ShareLinkVideo>
+      );
+    }
+
+    return (
+      <ShareLinkDownload
+        search={search}
+        showLinkInvalidMessage={showLinkInvalidMessage}
+      ></ShareLinkDownload>
+    );
+  };
 
   return (
-    <div></div>
+    <div>{renderShareLink()}</div>
   );
 };
 

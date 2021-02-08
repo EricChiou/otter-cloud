@@ -29,12 +29,6 @@ export interface GetFileListResVo extends RespVo {
   }[];
 }
 
-export interface GetPreviewUrlResVo extends RespVo {
-  data: {
-    url: string;
-  };
-}
-
 export interface GetShareableLinkResVo extends RespVo {
   data: {
     shareableLink: string;

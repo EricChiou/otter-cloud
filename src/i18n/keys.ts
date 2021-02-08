@@ -38,4 +38,5 @@ export const keys: Keys = {
   signUpSuccess: 'signUpSuccess',
   signUpDuplicate: 'signUpDuplicate',
   signUpFail: 'signUpFail',
+  shareableLinkInvalid: 'shareableLinkInvalid',
 };

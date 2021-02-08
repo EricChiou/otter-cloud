@@ -44,4 +44,5 @@ export interface Keys {
   signUpSuccess: string;
   signUpDuplicate: string;
   signUpFail: string;
+  shareableLinkInvalid: string;
 }

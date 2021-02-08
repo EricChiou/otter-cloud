@@ -32,7 +32,9 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   const getPreview = useCallback(() => {
     onLoading.current = true;
     getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
-      setUrl(resp.data.url);
+      const urlCreator = window.URL || window.webkitURL;
+      const url = urlCreator.createObjectURL(resp);
+      setUrl(url);
 
     }).finally(() => {
       onLoading.current = false;

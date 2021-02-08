@@ -38,4 +38,5 @@ export const zh_tw: Keys = {
   signUpSuccess: '註冊成功，請返回登入頁面登入',
   signUpDuplicate: 'Email 已存在',
   signUpFail: '註冊失敗，請再試一次',
+  shareableLinkInvalid: '此分享連結已失效',
 };
