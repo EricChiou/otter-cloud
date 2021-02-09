@@ -30,6 +30,7 @@ const FileName: FunctionComponent<Props> = ({
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const [url, setUrl] = useState('');
+  const [retry, setRetry] = useState(0);
 
   const renderTooltipContent = () => {
     if (file.contentType.indexOf(ContentType.image) > -1) {
@@ -39,11 +40,14 @@ const FileName: FunctionComponent<Props> = ({
             const urlCreator = window.URL || window.webkitURL;
             const url = urlCreator.createObjectURL(resp);
             setUrl(url);
+
+          }).finally(() => {
+            setRetry(retry + 1);
           });
         };
 
         const onError = () => {
-          if (url) {
+          if (url && retry < 3) {
             setTimeout(() => {
               getPreview();
             }, 3000);

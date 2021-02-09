@@ -39,4 +39,10 @@ export const en_us: Keys = {
   signUpDuplicate: 'Email duplicated.',
   signUpFail: 'Sign up is failed, please try again.',
   shareableLinkInvalid: 'The shareable link is invalid.',
+  rename: 'rename',
+  newFilename: 'new file name',
+  renameDuplicate: 'The file name is existing.',
+  renameFailed: 'Rename file was failed, please try again.',
+  moveTo: 'Move to',
+  move: ' move',
 };

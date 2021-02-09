@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { UploadArrow, DownloadArrow, Cancel, TaskWaiting, TaskError } from 'src/components/icons';
+import { FileUpload, FileDownload, Cancel, TaskWaiting, TaskError } from 'src/components/icons';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { uploadFile, downloadFile } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
@@ -120,10 +120,10 @@ const Task: FunctionComponent<Props> = ({
 
     switch (task.type) {
       case TaskType.upload:
-        return <UploadArrow></UploadArrow>;
+        return <FileUpload></FileUpload>;
 
       case TaskType.download:
-        return <DownloadArrow></DownloadArrow>;
+        return <FileDownload></FileDownload>;
     }
   };
 

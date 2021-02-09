@@ -72,6 +72,7 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
 
   const renderPreviewOption = () => {
     if (file.contentType === '') {
+      return null;
 
     } else if (file.contentType.indexOf(ContentType.text) > -1) {
       return <Preview onClick={previewText}></Preview>;
@@ -100,6 +101,8 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
     } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
       return null;
     }
+
+    return null;
   }
 
   return <>{renderPreviewOption()}</>;

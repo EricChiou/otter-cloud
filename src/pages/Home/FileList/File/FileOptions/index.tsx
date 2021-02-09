@@ -2,6 +2,7 @@ import React, { FunctionComponent, useRef, RefObject, useEffect, useState } from
 
 import { More } from 'src/components/icons';
 import { File } from 'src/vo/common';
+import FileRename from './FileRename';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
@@ -59,23 +60,23 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
         if (file.contentType === '') {
           return { width: '26px' };
         } else if (file.contentType.indexOf(ContentType.text) > -1) {
-          return { width: '78px' };
+          return { width: '104px' };
         } else if (file.contentType.indexOf(ContentType.image) > -1) {
-          return { width: '78px' };
+          return { width: '104px' };
         } else if (file.contentType.indexOf(ContentType.audio) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.video) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.zip) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.word) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.excel) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
-          return { width: '52px' };
+          return { width: '78px' };
         }
         return { width: '78px' };
     }
@@ -94,6 +95,7 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
       <More onClick={showOptionOnClick}></More>
       {showOptions ?
         <div className={getOptionsClassName()} style={getOptionsStyle()}>
+          <FileRename file={file} onClick={optionOnClick}></FileRename>
           <FilePreview file={file} onClick={optionOnClick}></FilePreview>
           <FileShare file={file} onClick={optionOnClick}></FileShare>
           <FileDelete file={file} onClick={optionOnClick}></FileDelete>

@@ -49,7 +49,7 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
     removeFolder(prefix + file.name, userProfile.token).then(() => { removeFileNext(); });
   }
 
-  return <Delete onClick={showDeleteWarning}></Delete>
+  return <Delete onClick={showDeleteWarning}></Delete>;
 }
 
 export default FileDelete;

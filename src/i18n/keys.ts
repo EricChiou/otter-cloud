@@ -39,4 +39,10 @@ export const keys: Keys = {
   signUpDuplicate: 'signUpDuplicate',
   signUpFail: 'signUpFail',
   shareableLinkInvalid: 'shareableLinkInvalid',
+  rename: 'rename',
+  newFilename: 'newFilename',
+  renameDuplicate: 'renameDuplicate',
+  renameFailed: 'renameFailed',
+  moveTo: 'moveTo',
+  move: 'move',
 };

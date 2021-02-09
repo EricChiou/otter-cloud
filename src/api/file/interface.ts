@@ -19,6 +19,18 @@ export interface RemoveFolderReqVo {
   prefix: string;
 }
 
+export interface RenameFileReqVo {
+  prefix: string;
+  filename: string;
+  newFilename: string;
+}
+
+export interface MoveFilesReqVo {
+  prefix: string;
+  targetPrefix: string;
+  filenames: string[];
+}
+
 // response vo
 export interface GetFileListResVo extends RespVo {
   data: {

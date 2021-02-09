@@ -1,4 +1,4 @@
-import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob } from '../request';
+import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob, put } from '../request';
 import {
   GetFileListReqVo,
   GetFileListResVo,
@@ -6,6 +6,8 @@ import {
   RemoveFileReqVo,
   RemoveFolderReqVo,
   GetShareableLinkResVo,
+  RenameFileReqVo,
+  MoveFilesReqVo,
 } from './interface';
 import { ApiUrl, ApiResult, Config } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
@@ -213,6 +215,54 @@ export const getObjectByShareableLinkUrl = (url: string): Promise<Blob> => {
       } else {
         reject(resp);
       }
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const renameFile = (
+  prefix: string,
+  filename: string,
+  newFilename: string,
+  token: string,
+): Promise<GetFileListResVo> => {
+
+  const data: RenameFileReqVo = { prefix, filename, newFilename };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.RENAME_FILE_URL,
+      data,
+      undefined,
+      token,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const moveFiles = (
+  prefix: string,
+  targetPrefix: string,
+  filenames: string[],
+  token: string,
+): Promise<GetFileListResVo> => {
+
+  const data: MoveFilesReqVo = { prefix, targetPrefix, filenames };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.MOVE_FILES_URL,
+      data,
+      undefined,
+      token,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
     }).catch((error) => {
       reject(error);

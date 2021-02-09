@@ -39,4 +39,10 @@ export const zh_tw: Keys = {
   signUpDuplicate: 'Email 已存在',
   signUpFail: '註冊失敗，請再試一次',
   shareableLinkInvalid: '此分享連結已失效',
+  rename: '重新命名',
+  newFilename: '新檔案名稱',
+  renameDuplicate: '該檔名已存在',
+  renameFailed: '重新命名失敗，請再試一次',
+  moveTo: '移至',
+  move: '移動',
 };

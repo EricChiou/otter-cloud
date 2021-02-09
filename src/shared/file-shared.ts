@@ -9,6 +9,8 @@ const fileShared = new Subject<SharedInput>();
 export const fileSharedActs = {
     uploadFile: 'uploadFile',
     removeFile: 'removeFile',
+    renameFile: 'renameFile',
+    moveFiles: 'moveFiles',
     fileListOnScroll: 'fileListOnScroll',
     showShareLinkDialog: 'createShareLink',
 };
@@ -24,6 +26,14 @@ export const uploadFileNext = () => {
 
 export const removeFileNext = () => {
     fileShared.next({ action: fileSharedActs.removeFile });
+};
+
+export const renameFileNext = () => {
+    fileShared.next({ action: fileSharedActs.renameFile });
+};
+
+export const moveFilesNext = () => {
+    fileShared.next({ action: fileSharedActs.moveFiles });
 };
 
 export const fileListOnScroll = () => {

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useRef, RefObject } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Upload, Download, Delete } from 'src/components/icons';
+import { Upload, Download, Delete, Move } from 'src/components/icons';
 import { FileService } from 'src/service';
 import { removeFileNext } from 'src/shared/file-shared';
 import { selectUserProfile } from 'src/store/user.slice';
@@ -9,6 +9,7 @@ import { selectPrefix, selectFileList } from 'src/store/system.slice';
 import { addDialog, removeDialog } from 'src/components/common';
 import { removeFile } from 'src/api/file';
 import DeleteFileDialog from 'src/components/DeleteFileDialog';
+import MoveFile from './MoveFile';
 
 import styles from './style.module.scss';
 
@@ -22,6 +23,13 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
   const userProfile = useSelector(selectUserProfile);
   const fileList = useSelector(selectFileList);
   const uploadInputEle: RefObject<HTMLInputElement> = useRef(null);
+
+  const showMoveFileDialog = () => {
+    dispatch(addDialog({
+      component: <MoveFile></MoveFile>,
+      closeUI: true,
+    }));
+  };
 
   const uploadOnClick = () => {
     uploadInputEle.current?.click();
@@ -67,6 +75,9 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
             onClick={() => { FileService.downloadFiles(prefix, fileList); }}
           >
             <Download></Download>
+          </div>
+          <div className={styles.icon} onClick={showMoveFileDialog}>
+            <Move></Move>
           </div>
         </>
         : null

@@ -72,6 +72,8 @@ const FikeList: FunctionComponent<{}> = () => {
       switch (data.action) {
         case fileSharedActs.uploadFile:
         case fileSharedActs.removeFile:
+        case fileSharedActs.renameFile:
+        case fileSharedActs.moveFiles:
           refreshFileList();
           break;
       }

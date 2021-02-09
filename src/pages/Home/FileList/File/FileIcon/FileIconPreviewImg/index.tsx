@@ -26,6 +26,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const [url, setUrl] = useState<string>();
+  const [retry, setRetry] = useState(0);
   const imgRef: RefObject<HTMLImageElement> = useRef(null);
   const onLoading: MutableRefObject<boolean> = useRef(false);
 
@@ -37,10 +38,11 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
       setUrl(url);
 
     }).finally(() => {
+      setRetry(retry + 1);
       onLoading.current = false;
     });
 
-  }, [prefix, userProfile, file]);
+  }, [prefix, userProfile, file, retry]);
 
   useEffect(() => {
     const detectInViewport = () => {
@@ -64,7 +66,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   }, [url, getPreview]);
 
   const onError = () => {
-    if (url) {
+    if (url && !onLoading.current && retry < 3) {
       getPreview();
     }
   };

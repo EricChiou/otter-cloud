@@ -45,4 +45,10 @@ export interface Keys {
   signUpDuplicate: string;
   signUpFail: string;
   shareableLinkInvalid: string;
+  rename: string;
+  newFilename: string;
+  renameDuplicate: string;
+  renameFailed: string;
+  moveTo: string;
+  move: string;
 }
