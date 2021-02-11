@@ -6,7 +6,6 @@ import React,
   useRef,
   useCallback,
   RefObject,
-  MutableRefObject,
 } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -15,6 +14,8 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { File } from 'src/vo/common';
 import { getPreviewUrl } from 'src/api/file';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
+
+import loading from '../../../../../../assets/img/loading.gif';
 
 import styles from './style.module.scss';
 
@@ -28,10 +29,10 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   const [url, setUrl] = useState<string>();
   const [retry, setRetry] = useState(0);
   const imgRef: RefObject<HTMLImageElement> = useRef(null);
-  const onLoading: MutableRefObject<boolean> = useRef(false);
+  const [onLoading, setOnloading] = useState(false);
 
   const getPreview = useCallback(() => {
-    onLoading.current = true;
+    setOnloading(true);
     getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
       const url = urlCreator.createObjectURL(resp);
@@ -39,7 +40,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
 
     }).finally(() => {
       setRetry(retry + 1);
-      onLoading.current = false;
+      setOnloading(false);
     });
 
   }, [prefix, userProfile, file, retry]);
@@ -48,7 +49,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
     const detectInViewport = () => {
       if (imgRef.current) {
         const rect = imgRef.current.getBoundingClientRect();
-        if (rect.top < window.innerHeight && !url && !onLoading.current) {
+        if (rect.top < window.innerHeight && !url && !onLoading) {
           getPreview();
         }
       }
@@ -66,19 +67,24 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   }, [url, getPreview]);
 
   const onError = () => {
-    if (url && !onLoading.current && retry < 3) {
+    if (url && !onLoading && retry < 3) {
       getPreview();
     }
   };
 
   return (
-    <img
-      ref={imgRef}
-      className={styles.previewImg}
-      src={url}
-      alt="preview"
-      onError={onError}
-    ></img>
+    <>
+      {onLoading ?
+        <img className={styles.onLoading} src={loading} alt="loading"></img> :
+        <img
+          ref={imgRef}
+          className={styles.previewImg}
+          src={url}
+          alt="preview"
+          onError={onError}
+        ></img>
+      }
+    </>
   );
 }
 
