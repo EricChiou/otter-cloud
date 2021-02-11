@@ -15,7 +15,7 @@ import { File } from 'src/vo/common';
 import { getPreviewUrl } from 'src/api/file';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 
-import loading from '../../../../../../assets/img/loading.gif';
+import loading from 'src/assets/img/loading.gif';
 
 import styles from './style.module.scss';
 
@@ -64,7 +64,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
 
     return () => { subscribe.unsubscribe(); };
 
-  }, [url, getPreview]);
+  }, [url, getPreview, onLoading]);
 
   const onError = () => {
     if (url && !onLoading && retry < 3) {

@@ -57,7 +57,7 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
         return {};
 
       case ViewType.icon:
-        if (file.contentType === '') {
+        if (!file.contentType && !file.size) {
           return { width: '26px' };
         } else if (file.contentType.indexOf(ContentType.text) > -1) {
           return { width: '104px' };

@@ -71,7 +71,7 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   };
 
   const renderPreviewOption = () => {
-    if (file.contentType === '') {
+    if (!file.contentType && !file.size) {
       return null;
 
     } else if (file.contentType.indexOf(ContentType.text) > -1) {
