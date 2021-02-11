@@ -25,6 +25,7 @@ import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file-shared';
 import Header from './Header';
 import FileListDropFile from './FileListDropFile';
+import loading from 'src/assets/img/loading2.gif';
 
 import styles from './style.module.scss';
 import table from './table.module.scss';
@@ -41,10 +42,12 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const fileList = useSelector(selectFileList);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
+  const [onLoading, setOnloading] = useState(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
 
   const refreshFileList = useCallback(() => {
+    setOnloading(true);
     getFileList(prefix, userProfile.token).then((resp) => {
       if (resp.data) {
         const fileList: File[] = resp.data.map((data) => {
@@ -61,7 +64,13 @@ const FikeList: FunctionComponent<{}> = () => {
         dispatch(setFileList([]));
       }
 
-    }).catch((error) => { console.log(error); });
+    }).catch((error) => {
+      console.log(error);
+
+    }).finally(() => {
+      setOnloading(false);
+    });
+
   }, [prefix, userProfile, dispatch]);
 
   useEffect(() => {
@@ -176,11 +185,18 @@ const FikeList: FunctionComponent<{}> = () => {
   return (
     <div ref={fileListRef} id={styles.fileList}>
       <Header viewType={viewType} changeViewType={changeViewType}></Header>
-      <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
-        {renderFiles()}
-      </div>
-      <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
-      <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
+      {onLoading ?
+        <div className={styles.onLoadingContainer}>
+          <img className={styles.onLoading} src={loading} alt="loading"></img>
+        </div> :
+        <>
+          <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
+            {renderFiles()}
+          </div>
+          <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
+          <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
+        </>
+      }
     </div >
   );
 };
