@@ -31,7 +31,7 @@ const FileComponent: FunctionComponent<Props> = ({
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {
-    if (file.contentType === '') { return ''; }
+    if (!file.contentType && !file.size) { return ''; }
 
     const rounded = (size: number): number => {
       return Math.round(size * 100) / 100;

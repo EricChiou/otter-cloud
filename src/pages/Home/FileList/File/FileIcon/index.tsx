@@ -17,7 +17,7 @@ const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
 
   const renderIcon = () => {
     let icon = <FileSvg></FileSvg>;
-    if (file.contentType === '') {
+    if (!file.contentType && !file.size) {
       icon = <FileFolder></FileFolder>;
     } else if (file.contentType.indexOf(ContentType.text) > -1) {
       icon = <FileText></FileText>;
