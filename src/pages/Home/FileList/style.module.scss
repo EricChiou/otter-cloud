@@ -23,6 +23,11 @@
     height: calc(100% - 70px);
   }
 
+  .fileListContainer {
+    height: 100%;
+    overflow: auto;
+  }
+
   .onLoadingContainer {
     display: none;
     position: absolute;
