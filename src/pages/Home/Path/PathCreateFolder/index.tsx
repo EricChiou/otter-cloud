@@ -49,7 +49,9 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
     inputValue = e.currentTarget.value;
   };
 
-  const createFolder = () => {
+  const createFolder = (e?: MouseEvent) => {
+    if (e) { e.stopPropagation(); }
+
     dispatch(setPrefix(`${prefix}${inputValue}/`));
     setIsCreating(false);
   }
