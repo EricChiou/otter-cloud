@@ -1,7 +1,6 @@
 import React,
 {
   FunctionComponent,
-  useState,
   useEffect,
   useRef,
   useCallback,
@@ -26,30 +25,34 @@ interface Props {
 const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
-  const [url, setUrl] = useState<string>();
-  const [retry, setRetry] = useState(0);
+  const url = useRef('');
+  const onLoading = useRef(false);
+  const retry = useRef(0);
   const imgRef: RefObject<HTMLImageElement> = useRef(null);
-  const [onLoading, setOnloading] = useState(false);
 
   const getPreview = useCallback(() => {
-    setOnloading(true);
+    setOnLoading(true);
+
     getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
-      const url = urlCreator.createObjectURL(resp);
-      setUrl(url);
+      url.current = urlCreator.createObjectURL(resp);
+
+    }).catch(() => {
+      url.current = '';
 
     }).finally(() => {
-      setRetry(retry + 1);
-      setOnloading(false);
+      retry.current += 1;
+      if (imgRef.current) { imgRef.current.src = url.current; }
+      setOnLoading(false);
     });
 
-  }, [prefix, userProfile, file, retry]);
+  }, [prefix, userProfile, file]);
 
   useEffect(() => {
     const detectInViewport = () => {
       if (imgRef.current) {
         const rect = imgRef.current.getBoundingClientRect();
-        if (rect.top < window.innerHeight && !url && !onLoading) {
+        if (rect.top < window.innerHeight && !url.current && !onLoading.current) {
           getPreview();
         }
       }
@@ -64,27 +67,35 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
 
     return () => { subscribe.unsubscribe(); };
 
-  }, [url, getPreview, onLoading]);
+  }, [getPreview]);
+
+  const setOnLoading = (isOnloading: boolean) => {
+    onLoading.current = isOnloading;
+
+    if (imgRef.current) {
+      if (isOnloading) {
+        imgRef.current.src = loading;
+        imgRef.current.classList.add(styles.onLoading);
+
+      } else {
+        imgRef.current.classList.remove(styles.onLoading);
+      }
+    }
+  };
 
   const onError = () => {
-    if (url && !onLoading && retry < 3) {
+    if (url.current && !onLoading.current && retry.current < 3) {
       getPreview();
     }
   };
 
   return (
-    <>
-      {onLoading ?
-        <img className={styles.onLoading} src={loading} alt="loading"></img> :
-        <img
-          ref={imgRef}
-          className={styles.previewImg}
-          src={url}
-          alt="preview"
-          onError={onError}
-        ></img>
-      }
-    </>
+    <img
+      ref={imgRef}
+      className={styles.previewImg}
+      alt="preview"
+      onError={onError}
+    ></img>
   );
 }
 
