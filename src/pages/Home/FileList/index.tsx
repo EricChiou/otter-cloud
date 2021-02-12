@@ -43,12 +43,12 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const fileList = useSelector(selectFileList);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
-  const [onLoading, setOnloading] = useState(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
+  const onLoadingRef: RefObject<HTMLDivElement> = useRef(null);
 
   const refreshFileList = useCallback(() => {
-    setOnloading(true);
+    onLoadingRef.current?.classList.add(styles.active);
     getFileList(prefix, userProfile.token).then((resp) => {
       if (resp.data) {
         const fileList: File[] = resp.data.map((data) => {
@@ -69,7 +69,7 @@ const FikeList: FunctionComponent<{}> = () => {
       console.log(error);
 
     }).finally(() => {
-      setOnloading(false);
+      onLoadingRef.current?.classList.remove(styles.active);
     });
 
   }, [prefix, userProfile, dispatch]);
@@ -184,21 +184,19 @@ const FikeList: FunctionComponent<{}> = () => {
   };
 
   return (
-    <div ref={fileListRef} id={styles.fileList}>
+    <div id={styles.fileList}>
       <Header viewType={viewType} changeViewType={changeViewType}></Header>
-      {onLoading ?
-        <div className={styles.onLoadingContainer}>
-          <img className={styles.onLoading} src={loading} alt="loading"></img>
-        </div> :
-        <>
-          <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
-            {renderFiles()}
-          </div>
-          <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
-          <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
-        </>
-      }
-    </div >
+      <div ref={fileListRef}>
+        <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
+          {renderFiles()}
+        </div>
+        <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
+        <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
+      </div>
+      <div ref={onLoadingRef} className={`${styles.onLoadingContainer}`}>
+        <img className={styles.onLoading} src={loading} alt="loading"></img>
+      </div>
+    </div>
   );
 };
 
