@@ -46,7 +46,9 @@ const FileListDropFile: FunctionComponent<Props> = ({ fileListRef }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    FileService.uploadFiles(prefix, e.dataTransfer.files);
+    if (e.dataTransfer.files && e.dataTransfer.files.length) {
+      FileService.uploadFiles(prefix, e.dataTransfer.files);
+    }
     fileListRef.current?.classList.remove(styles.dragOver);
   };
 

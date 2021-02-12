@@ -10,6 +10,7 @@ import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import TextFilePreview from 'src/components/TextFilePreview';
 import ImageFilePreview from 'src/components/ImageFilePreview';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
 
@@ -71,7 +72,7 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   };
 
   const renderPreviewOption = () => {
-    if (!file.contentType && !file.size) {
+    if (!FileService.isFile(file)) {
       return null;
 
     } else if (file.contentType.indexOf(ContentType.text) > -1) {

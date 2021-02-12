@@ -16,9 +16,10 @@ import { addMessage, MessageType } from 'src/components/Message';
 import { intl, keys, IntlType } from 'src/i18n';
 import { renameFile } from 'src/api/file';
 import { renameFileNext } from 'src/shared/file-shared';
+import { ApiResult } from 'src/constants';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
-import { ApiResult } from 'src/constants';
 
 interface Props {
   file: File;
@@ -91,7 +92,7 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
 
   return (
     <>
-      {file.size && file.contentType ?
+      {FileService.isFile(file) ?
         <Rename
           onClick={rename}
         ></Rename> : null

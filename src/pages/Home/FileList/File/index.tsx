@@ -11,6 +11,7 @@ import FileName from './FileName';
 import { ViewType } from '../';
 import FileIcon from './FileIcon';
 import { File } from 'src/vo/common';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
 import table from '../table.module.scss';
@@ -31,7 +32,7 @@ const FileComponent: FunctionComponent<Props> = ({
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {
-    if (!file.contentType && !file.size) { return ''; }
+    if (!FileService.isFile(file)) { return ''; }
 
     const rounded = (size: number): number => {
       return Math.round(size * 100) / 100;
@@ -39,13 +40,17 @@ const FileComponent: FunctionComponent<Props> = ({
 
     if (file.size < 1024) {
       return `${rounded(file.size)} Bytes`;
+
     } else if (file.size < 1024 * 1024) {
       return `${rounded(file.size / 1024)} KB`;
+
     } else if (file.size < 1024 * 1024 * 1024) {
       return `${rounded(file.size / (1024 * 1024))} MB`;
+
     } else if (file.size < 1024 * 1024 * 1024 * 1024) {
       return `${rounded(file.size / (1024 * 1024 * 1024))} GB`;
     }
+
     return `${rounded(file.size / (1024 * 1024 * 1024 * 1024))} TB`;
   };
 
@@ -71,9 +76,9 @@ const FileComponent: FunctionComponent<Props> = ({
 
   const download = () => {
     // console.log('Download File', file);
-    const timStamp = new Date().getTime();
+    const timeStamp = new Date().getTime();
     const task: TaskData = {
-      id: `${timStamp}_${0}`,
+      id: `${timeStamp}_${0}`,
       type: TaskType.download,
       prefix,
       fileName: file.name,
@@ -105,7 +110,7 @@ const FileComponent: FunctionComponent<Props> = ({
             <span className={table.text}>{convertFileLastModified()}</span>
           </div>
           <div className={table.optionCol}>
-            {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
+            {FileService.isFile(file) ? <Download onClick={download}></Download> : null}
             <FileOptions
               file={file}
               viewType={viewType}
@@ -134,7 +139,7 @@ const FileComponent: FunctionComponent<Props> = ({
               viewType={viewType}
             ></FileName>
             <div className={styles.options}>
-              {(file.size && file.contentType) ? <Download onClick={download}></Download> : null}
+              {FileService.isFile(file) ? <Download onClick={download}></Download> : null}
               <FileOptions
                 file={file}
                 viewType={viewType}
