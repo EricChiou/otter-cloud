@@ -186,7 +186,7 @@ const FikeList: FunctionComponent<{}> = () => {
   return (
     <div id={styles.fileList}>
       <Header viewType={viewType} changeViewType={changeViewType}></Header>
-      <div ref={fileListRef}>
+      <div ref={fileListRef} className={styles.fileListContainer}>
         <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
           {renderFiles()}
         </div>
