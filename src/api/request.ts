@@ -11,7 +11,7 @@ export interface RespVo {
 
 const request = axios.create({
   baseURL: Config.API_BASE_URL,
-  timeout: 3600,
+  timeout: 1000 * 60 * 5, // 5 min
   headers: {
     'Content-Type': 'application/json',
   },

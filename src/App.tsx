@@ -41,7 +41,7 @@ const App = () => {
       dispatch(setPrefix(search.prefix ? search.prefix : ''));
     }
 
-  }, [location, prefix]);
+  }, [dispatch, location, prefix]);
 
   // if not login and not at login page or sign up page or share link page, redirect to login page.
   useEffect(() => {
