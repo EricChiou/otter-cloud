@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
-
 import { UserProfile } from 'src/vo/common';
 import { Cookie } from 'src/util/cookie.util';
 import { CookieKeys } from 'src/constants';
 import { UserService } from 'src/service/user-service';
-import { setPrefix } from 'src/store/system.slice';
 
 interface UseState {
   profile: UserProfile;
@@ -65,7 +63,6 @@ export const logout = (): AppThunk => dispatch => {
   };
   const { setProfile } = userSlice.actions;
   dispatch(setProfile(userProfile));
-  dispatch(setPrefix(''));
 }
 
 export const selectUserProfile = (state: RootState) => state.user.profile;

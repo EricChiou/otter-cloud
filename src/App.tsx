@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { routes } from './routes';
 import { setUserProfile, selectUserProfile, selectLang, logout } from './store/user.slice';
+import { selectPrefix, setPrefix } from 'src/store/system.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
 import { Dialog } from 'src/components/common';
 import { subUserShared, userSharedActs } from 'src/shared/user-shared';
 import { addMessage, MessageType } from 'src/components/Message';
 import { intl, keys } from 'src/i18n';
+import { getSearch } from 'src/util/location.util';
 
 import './App.scss';
 
@@ -17,6 +19,7 @@ const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const prefix = useSelector(selectPrefix);
   const userProfile = useSelector(selectUserProfile);
   useSelector(selectLang);
   const token = UserService.getTokenFrCookie();
@@ -32,6 +35,14 @@ const App = () => {
     }
   }, [token, dispatch]);
 
+  useEffect(() => {
+    const search = getSearch();
+    if (search.prefix !== prefix) {
+      dispatch(setPrefix(search.prefix ? search.prefix : ''));
+    }
+
+  }, [location, prefix]);
+
   // if not login and not at login page or sign up page or share link page, redirect to login page.
   useEffect(() => {
     if (
@@ -40,7 +51,7 @@ const App = () => {
       location.pathname !== Routes.SHARE_LINK &&
       !StatusService.isLogin()
     ) {
-      history.push(Routes.LOGIN);
+      history.push({ pathname: Routes.LOGIN, search: '' });
     }
   }, [location, history, userProfile]);
 

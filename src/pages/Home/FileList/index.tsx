@@ -8,11 +8,11 @@ import React, {
   useCallback,
   MouseEvent,
 } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectPrefix,
-  setPrefix,
   selectFileList,
   setFileList,
   setFile,
@@ -38,6 +38,7 @@ export enum ViewType {
 }
 
 const FikeList: FunctionComponent<{}> = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
   const userProfile = useSelector(selectUserProfile);
@@ -121,7 +122,10 @@ const FikeList: FunctionComponent<{}> = () => {
 
   const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
     if (!FileService.isFile(file)) {
-      dispatch(setPrefix(prefix + file.name));
+      history.push({
+        pathname: history.location.pathname,
+        search: prefix + file.name ? `?prefix=${encodeURIComponent(prefix + file.name)}` : '',
+      });
 
     } else {
       const file = Object.assign({}, fileList[index]);

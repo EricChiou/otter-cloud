@@ -28,7 +28,7 @@ const ShareLink: FunctionComponent<{}> = () => {
 
   const showLinkInvalidMessage = useCallback(() => {
     dispatch(addMessage(intl(keys.shareableLinkInvalid,), MessageType.warning, () => {
-      history.push(Routes.LOGIN);
+      history.push({ pathname: Routes.LOGIN, search: '' });
     }));
   }, [dispatch, history]);
 
