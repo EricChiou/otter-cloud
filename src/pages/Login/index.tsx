@@ -24,7 +24,7 @@ const Login: FunctionComponent<{}> = () => {
 
   useEffect(() => {
     if (StatusService.isLogin()) {
-      history.push(Routes.HOME);
+      history.push({ pathname: Routes.HOME, search: '' });
     }
   });
 
@@ -69,7 +69,7 @@ const Login: FunctionComponent<{}> = () => {
       UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
       setUserProfile(userProfile);
 
-      history.push(Routes.HOME);
+      history.push({ pathname: Routes.HOME, search: '' });
 
     }).catch((error) => {
       console.log(error);
@@ -106,7 +106,7 @@ const Login: FunctionComponent<{}> = () => {
         </div>
         <div
           className={styles.signUp}
-          onClick={() => { history.push(Routes.SIGN_UP); }}
+          onClick={() => { history.push({ pathname: Routes.SIGN_UP, search: '' }); }}
         >
           {intl(keys.signUp)}
         </div>

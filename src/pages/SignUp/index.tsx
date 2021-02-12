@@ -52,7 +52,7 @@ const SignUp: FunctionComponent<{}> = () => {
         dispatch(addMessage(
           intl(keys.signUpSuccess),
           MessageType.info,
-          () => { history.push(Routes.LOGIN); },
+          () => { history.push({ pathname: Routes.LOGIN, search: '' }); },
         ));
       } else if (resp.status === ApiResult.Duplicate) {
         dispatch(addMessage(intl(keys.signUpDuplicate), MessageType.warning));
@@ -163,7 +163,7 @@ const SignUp: FunctionComponent<{}> = () => {
             <BaseButton
               type={ButtonType.normal}
               style={btnStyle}
-              onClick={() => { history.push(Routes.LOGIN); }}
+              onClick={() => { history.push({ pathname: Routes.LOGIN, search: '' }); }}
             >
               {intl(keys.cancel, IntlType.perUpper)}
             </BaseButton>

@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
 import ItemComponent, { Item } from './item';
-import { setPrefix } from 'src/store/system.slice';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
@@ -15,7 +15,7 @@ import { FileService } from 'src/service';
 import styles from './style.module.scss';
 
 const SideMenu: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const userProfile = useSelector(selectUserProfile);
   const [folderList, setFolderList] = useState<Item[]>([]);
 
@@ -54,7 +54,10 @@ const SideMenu: FunctionComponent<{}> = () => {
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }
-    dispatch(setPrefix(folder.data.prefix));
+    history.push({
+      pathname: history.location.pathname,
+      search: folder.data.prefix ? `?prefix=${encodeURIComponent(folder.data.prefix)}` : '',
+    });
   };
 
   const createFolder = (folderName: string) => {

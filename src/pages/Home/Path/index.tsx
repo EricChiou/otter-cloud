@@ -1,19 +1,23 @@
 import React, { FunctionComponent, WheelEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { selectPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import CreateFolder from './PathCreateFolder';
 
 import styles from './style.module.scss';
 
 const Path: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const prefix = useSelector(selectPrefix);
 
   const pathOnClick = (newPrefix: string) => {
     if (prefix !== newPrefix) {
-      dispatch(setPrefix(newPrefix));
+      history.push({
+        pathname: history.location.pathname,
+        search: newPrefix ? `?prefix=${encodeURIComponent(newPrefix)}` : '',
+      });
     }
   };
 

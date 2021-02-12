@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect, RefObject, useRef, KeyboardEvent, ChangeEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectPrefix } from 'src/store/system.slice';
 
 import { CreateFolder, Check } from 'src/components/icons';
 import { BaseInput, BaseButton } from 'src/components/common/';
@@ -8,7 +9,7 @@ import { BaseInput, BaseButton } from 'src/components/common/';
 import styles from './style.module.scss';
 
 const PathCreateFolder: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const prefix = useSelector(selectPrefix);
   const createFolderRef: RefObject<HTMLSpanElement> = useRef(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -40,7 +41,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
   }, [isCreating]);
 
   const createOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter' || !e.currentTarget.value) { return; }
+    if (e.key !== 'Enter') { return; }
 
     createFolder();
   };
@@ -51,8 +52,13 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
 
   const createFolder = (e?: MouseEvent) => {
     if (e) { e.stopPropagation(); }
+    if (!inputValue) { return; }
 
-    dispatch(setPrefix(`${prefix}${inputValue}/`));
+    const search = prefix + inputValue + '/';
+    history.push({
+      pathname: history.location.pathname,
+      search: search ? `?prefix=${encodeURIComponent(search)}` : '',
+    });
     setIsCreating(false);
   }
 
