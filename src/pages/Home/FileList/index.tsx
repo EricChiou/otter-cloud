@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   useEffect,
   RefObject,
+  MutableRefObject,
   useRef,
   useState,
   useCallback,
@@ -46,9 +47,14 @@ const FikeList: FunctionComponent<{}> = () => {
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
   const onLoadingRef: RefObject<HTMLDivElement> = useRef(null);
+  const prePrefix: MutableRefObject<string> = useRef('');
 
   const refreshFileList = useCallback(() => {
-    onLoadingRef.current?.classList.add(styles.active);
+    if (prePrefix.current !== prefix) {
+      onLoadingRef.current?.classList.add(styles.active);
+      prePrefix.current = prefix;
+    }
+
     getFileList(prefix, userProfile.token).then((resp) => {
       if (resp.data) {
         const fileList: File[] = resp.data.map((data) => {
