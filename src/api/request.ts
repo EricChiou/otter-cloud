@@ -14,6 +14,7 @@ const request = axios.create({
   timeout: 3600,
   headers: {
     'Content-Type': 'application/json',
+    'Connection': 'keep-alive',
   },
 });
 
