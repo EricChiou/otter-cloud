@@ -9,6 +9,7 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix } from 'src/store/system.slice';
 import { removeFileNext } from 'src/shared/file-shared';
 import DeleteFileDialog from 'src/components/DeleteFileDialog';
+import { FileService } from 'src/service';
 
 // import styles from './style.module.scss';
 
@@ -34,7 +35,7 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
 
   const deleteFile = () => {
     // console.log('Delete File', file);
-    if (file.size && file.contentType) {
+    if (FileService.isFile(file)) {
       dispatch(removeDialog());
       removeFile(prefix, file.name, userProfile.token).then(() => { removeFileNext(); });
 

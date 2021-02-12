@@ -10,6 +10,7 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 import { getDeviceInfo } from 'src/util/device-detector.util';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
 
@@ -23,7 +24,7 @@ const SideMenu: FunctionComponent<{}> = () => {
 
     getFileList("", userProfile.token).then((resp) => {
       const newFolderList: Item[] = resp.data
-        .filter((data) => (!data.contentType && !data.size))
+        .filter((data) => (!FileService.isFile(data)))
         .map((data) => {
           return {
             name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name

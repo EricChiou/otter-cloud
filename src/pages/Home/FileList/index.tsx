@@ -25,8 +25,9 @@ import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file-shared';
 import Header from './Header';
 import FileListDropFile from './FileListDropFile';
-import loading from 'src/assets/img/loading2.gif';
+import { FileService } from 'src/service';
 
+import loading from 'src/assets/img/loading2.gif';
 import styles from './style.module.scss';
 import table from './table.module.scss';
 
@@ -113,7 +114,7 @@ const FikeList: FunctionComponent<{}> = () => {
   }
 
   const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
-    if (!file.contentType && !file.size) {
+    if (!FileService.isFile(file)) {
       dispatch(setPrefix(prefix + file.name));
 
     } else {

@@ -10,6 +10,7 @@ import { Folder, ArrowRight } from 'src/components/icons';
 import { BaseButton } from 'src/components/common';
 import { moveFilesNext } from 'src/shared/file-shared';
 import { removeDialog } from 'src/components/common';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
 
@@ -25,7 +26,7 @@ const MoveFile: FunctionComponent<{}> = () => {
   useEffect(() => {
     getFileList(listPrefix, userProfile.token).then((resp) => {
       if (resp.data) {
-        const newFolderList = resp.data.filter((file) => (!file.size && !file.contentType))
+        const newFolderList = resp.data.filter((file) => !FileService.isFile(file))
           .map((folder) => {
             return { ...folder, selected: false };
           });

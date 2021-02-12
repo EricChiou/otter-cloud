@@ -36,14 +36,11 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
   };
 
   const doUploadFiles = () => {
-    if (uploadInputEle.current && uploadInputEle.current.files) {
-      const files: File[] = [];
-      for (let i = 0; i < uploadInputEle.current.files.length; i++) {
-        files.push(uploadInputEle.current.files[i]);
+    if (uploadInputEle.current) {
+      if (uploadInputEle.current.files && uploadInputEle.current.files.length) {
+        FileService.uploadFiles(prefix, uploadInputEle.current.files);
+        uploadInputEle.current.value = '';
       }
-
-      FileService.uploadFiles(prefix, uploadInputEle.current.files);
-      uploadInputEle.current.value = '';
     }
   };
 

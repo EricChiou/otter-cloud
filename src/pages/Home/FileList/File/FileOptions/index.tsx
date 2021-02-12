@@ -8,6 +8,7 @@ import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
 import { ViewType } from '../../';
 import { ContentType } from 'src/constants';
+import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
 
@@ -57,24 +58,33 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
         return {};
 
       case ViewType.icon:
-        if (!file.contentType && !file.size) {
+        if (!FileService.isFile(file)) {
           return { width: '26px' };
+
         } else if (file.contentType.indexOf(ContentType.text) > -1) {
           return { width: '104px' };
+
         } else if (file.contentType.indexOf(ContentType.image) > -1) {
           return { width: '104px' };
+
         } else if (file.contentType.indexOf(ContentType.audio) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.video) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.zip) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.word) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.excel) > -1) {
           return { width: '78px' };
+
         } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
           return { width: '78px' };
         }
