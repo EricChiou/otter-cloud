@@ -5,6 +5,7 @@ import { UserProfile } from 'src/vo/common';
 import { Cookie } from 'src/util/cookie.util';
 import { CookieKeys } from 'src/constants';
 import { UserService } from 'src/service/user-service';
+import { setFileList } from './system.slice';
 
 interface UseState {
   profile: UserProfile;
@@ -56,6 +57,7 @@ export const logout = (): AppThunk => dispatch => {
     exp: 0,
   };
   const { setProfile } = userSlice.actions;
+  dispatch(setFileList([]));
   dispatch(setProfile(userProfile));
 }
 

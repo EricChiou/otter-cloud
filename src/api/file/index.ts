@@ -1,3 +1,5 @@
+import { CancelTokenSource } from 'axios';
+
 import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob, put } from '../request';
 import {
   GetFileListReqVo,
@@ -63,6 +65,7 @@ export const getPreviewUrl = (
   fileName: string,
   token: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
 ): Promise<Blob> => {
 
   const search = {
@@ -76,6 +79,7 @@ export const getPreviewUrl = (
       search,
       token,
       progress,
+      cancelToken,
     ).then((resp: RespVo | Blob) => {
       if (resp instanceof Blob) {
         resolve(resp);

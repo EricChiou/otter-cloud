@@ -1,19 +1,13 @@
-import React, { FunctionComponent, useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FunctionComponent } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { File } from 'src/vo/common';
 import { ContentType } from 'src/constants';
 import { Preview } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/common';
-import { getPreviewUrl } from 'src/api/file';
-import { selectPrefix } from 'src/store/system.slice';
-import { selectUserProfile } from 'src/store/user.slice';
-import TextFilePreview from 'src/components/TextFilePreview';
-import ImageFilePreview from 'src/components/ImageFilePreview';
 import { FileService } from 'src/service';
-import loading from 'src/assets/img/loading2.gif';
-
-import styles from './style.module.scss';
+import FilePreviewImg from './FilePreviewImg';
+import FilePreviewText from './FilePreviewText';
 
 interface Props {
   file: File;
@@ -22,64 +16,29 @@ interface Props {
 
 const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
-  const userProfile = useSelector(selectUserProfile);
-  const prefix = useSelector(selectPrefix);
 
   const previewText = () => {
-    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
-      const component = (
-        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-          <TextFilePreview
-            textBlob={resp}
-            close={() => { dispatch(removeDialog()); }}
-          ></TextFilePreview>
-        </div>
-      );
+    const component = (
+      <FilePreviewText
+        file={file}
+        close={() => { dispatch(removeDialog()); }}
+      ></FilePreviewText>
+    );
 
-      showPreviewDialog(component);
-    });
+    showPreviewDialog(component);
 
     if (onClick) { onClick(); }
   };
 
   const previewImg = () => {
-    const Component: FunctionComponent<{}> = () => {
-      const [url, setUrl] = useState('');
-      const [percentage, setPercentage] = useState(0);
+    const component = (
+      <FilePreviewImg
+        file={file}
+        close={() => { dispatch(removeDialog()); }}
+      ></FilePreviewImg>
+    );
 
-      const progress = useCallback((event: ProgressEvent<EventTarget>) => {
-        if (!event.lengthComputable) { return; }
-
-        const percentage = Math.round(event.loaded * 100 / event.total);
-        setPercentage(percentage);
-      }, []);
-
-      useEffect(() => {
-        getPreviewUrl(prefix, file.name, userProfile.token, progress).then((resp) => {
-          const urlCreator = window.URL || window.webkitURL;
-          setUrl(urlCreator.createObjectURL(resp));
-        });
-      }, []);
-
-      return (
-        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-          {url ?
-            <ImageFilePreview
-              url={url}
-              close={() => { dispatch(removeDialog()); }}
-            ></ImageFilePreview> :
-            <>
-              <div className="vert-align-mid"></div>
-              <img className={styles.onLoading} src={loading} alt="loading"></img>
-              <div className={styles.progress}>{percentage}%</div>
-            </>
-          }
-        </div>
-      );
-    };
-
-    showPreviewDialog(<Component></Component>);
-
+    showPreviewDialog(component);
     if (onClick) { onClick(); }
   };
 
