@@ -9,7 +9,7 @@ interface Props {
   createItem?: (itemName: string) => void;
 }
 
-const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }) => {
+const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }: Props) => {
   const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!createItem || e.key !== 'Enter' || !e.currentTarget.value) { return; }
 
@@ -28,6 +28,6 @@ const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }) =>
       </span>
     </div>
   );
-}
+};
 
 export default CreateItem;

@@ -1,8 +1,15 @@
-import React, { FunctionComponent, useState, MouseEvent, useEffect, useRef, RefObject } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  MouseEvent,
+  useEffect,
+  useRef,
+  RefObject,
+} from 'react';
 import { useSelector } from 'react-redux';
 
-import { ArrowRight, ArrowDown } from 'src/components/icons';
-import CreateItem from './create-item/CreateItem';
+import { ArrowRight, ArrowDown, Share } from 'src/components/icons';
+import CreateItem from './CreateItem';
 import { selectPrefix } from 'src/store/system.slice';
 
 import styles from './Item.module.scss';
@@ -29,7 +36,7 @@ const Item: FunctionComponent<Props> = ({
   showCreateFolder,
   CreateItemIcon,
   createItem,
-}) => {
+}: Props) => {
   const prefix = useSelector(selectPrefix);
   const itemRef: RefObject<HTMLDivElement> = useRef(null);
   const [expand, setExpand] = useState(false);
@@ -51,15 +58,6 @@ const Item: FunctionComponent<Props> = ({
     return () => { window.removeEventListener('resize', onResize); };
   });
 
-  const itemOnSelect = (e: MouseEvent<HTMLDivElement>, itemData: Item) => {
-    removeActiveEle();
-    e.currentTarget.classList.add(styles.active);
-
-    if (onSelect) {
-      onSelect(e.currentTarget, itemData);
-    }
-  };
-
   const removeActiveEle = () => {
     if (!itemRef.current) { return; }
 
@@ -67,6 +65,15 @@ const Item: FunctionComponent<Props> = ({
     Array.from(avtiveEles).forEach((ele) => {
       ele.classList.remove(styles.active);
     });
+  };
+
+  const itemOnSelect = (e: MouseEvent<HTMLDivElement>, itemData: Item) => {
+    removeActiveEle();
+    e.currentTarget.classList.add(styles.active);
+
+    if (onSelect) {
+      onSelect(e.currentTarget, itemData);
+    }
   };
 
   const expandOnSelect = (e: MouseEvent<HTMLElement>) => {
@@ -80,18 +87,35 @@ const Item: FunctionComponent<Props> = ({
 
   const getSubItemsClassName = (): string => {
     return window.innerWidth > 1024 ? '' : expand ? ` ${styles.boxShadow}` : '';
-  }
+  };
+
+  const shareFolder = (subItem: Item) => {
+    console.log('shareFolder', subItem);
+  };
 
   const renderSubItems = () => {
     return subItems.map((subItem, i) => {
       return (
-        <div key={i} className={styles.subItem + getItemClassName(subItem)} onClick={(e) => { itemOnSelect(e, subItem); }}>
+        <div
+          key={i}
+          className={styles.subItem + getItemClassName(subItem)}
+          onClick={(e) => { itemOnSelect(e, subItem); }}
+        >
           <div className='vert-align-mid'></div>
           <span className={styles.icon}>
             <SubItemIcon></SubItemIcon>
           </span>
           <span className={styles.text}>
             {subItem.name}
+          </span>
+          <span
+            className={styles.share}
+            onClick={(e) => {
+              e.stopPropagation();
+              shareFolder(subItem);
+            }}
+          >
+            <Share></Share>
           </span>
         </div>
       );
@@ -100,7 +124,10 @@ const Item: FunctionComponent<Props> = ({
 
   return (
     <div ref={itemRef} className={styles.itemContainer}>
-      <div className={styles.item + getItemClassName(item)} onClick={(e) => { itemOnSelect(e, item); }}>
+      <div
+        className={styles.item + getItemClassName(item)}
+        onClick={(e) => { itemOnSelect(e, item); }}
+      >
         <div className='vert-align-mid'></div>
         <span className={styles.expand} onClick={expandOnSelect}>
           {expand ? <ArrowDown></ArrowDown> : <ArrowRight></ArrowRight>}
@@ -110,11 +137,13 @@ const Item: FunctionComponent<Props> = ({
         </span>
         <span className={styles.text}>{item.name}</span>
       </div>
-      <div className={styles.subItems + getSubItemsClassName()} style={{ height: expand ? 'auto' : '0px' }}>
+      <div
+        className={styles.subItems + getSubItemsClassName()}
+        style={{ height: expand ? 'auto' : '0px' }}
+      >
         {renderSubItems()}
         {showCreateFolder ?
-          <CreateItem CreateItemIcon={CreateItemIcon} createItem={createItem}></CreateItem>
-          : null
+          <CreateItem CreateItemIcon={CreateItemIcon} createItem={createItem}></CreateItem> : null
         }
       </div>
     </div>

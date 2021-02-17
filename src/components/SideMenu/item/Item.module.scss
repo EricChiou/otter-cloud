@@ -83,7 +83,24 @@
     }
 
     .text {
-      width: calc(100% - 5px - 22px);
+      width: calc(100% - 5px - 22px - 25px);
+    }
+
+    .share {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      vertical-align: middle;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+
+      svg {
+        display: block;
+        width: 25px;
+        height: 25px;
+      }
     }
   }
 
