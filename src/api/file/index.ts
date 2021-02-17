@@ -22,7 +22,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     get(
       ApiUrl.GET_FILE_LIST,
       search,
-      token
+      token,
     ).then((resp) => {
       resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
@@ -71,7 +71,7 @@ export const getPreviewUrl = (
   const search = {
     fileName: encodeURIComponent(fileName),
     prefix: encodeURIComponent(prefix),
-  }
+  };
 
   return new Promise((resolve, reject) => {
     getBlob(
@@ -97,12 +97,12 @@ export const getPreviewUrl = (
 export const downloadFile = (
   task: TaskData,
   token: string,
-  progress?: (event: ProgressEvent<EventTarget>) => void
+  progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<Blob> => {
 
   const body: DownloadFileReqVo = {
     prefix: task.prefix,
-    fileName: task.fileName
+    fileName: task.fileName,
   };
 
   return new Promise((resolve, reject) => {
@@ -186,7 +186,7 @@ export const getShareableLinkUrl = (
     prefix: encodeURIComponent(prefix),
     clientAddr: encodeURIComponent(Config.WEB_BASE_URL),
     expiresSeconds,
-  }
+  };
 
   return new Promise((resolve, reject) => {
     get(

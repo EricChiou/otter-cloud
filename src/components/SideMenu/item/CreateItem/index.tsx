@@ -2,7 +2,7 @@ import React, { FunctionComponent, KeyboardEvent } from 'react';
 
 import { BaseInput } from 'src/components/common';
 
-import styles from '../Item.module.scss';
+import styles from '../style.module.scss';
 
 interface Props {
   CreateItemIcon?: FunctionComponent;

@@ -21,13 +21,13 @@ const LangList: FunctionComponent<Props> = ({ onSelect }) => {
     if (onSelect) {
       onSelect();
     }
-  }
+  };
 
   return (
     <ul className={styles.langList}>
-      <li onClick={() => { chooseLang(langs.en_us); }}>{intl(keys.english)}</li>
+      <li onClick={() => { chooseLang(langs.enUS); }}>{intl(keys.english)}</li>
       <hr></hr>
-      <li onClick={() => { chooseLang(langs.zh_tw); }}>{intl(keys.tradChinese)}</li>
+      <li onClick={() => { chooseLang(langs.zhTW); }}>{intl(keys.tradChinese)}</li>
     </ul>
   );
 };

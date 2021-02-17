@@ -49,3 +49,4 @@ export { CheckCircle } from './CheckCircle';
 export { ErrorCircle } from './ErrorCircle';
 export { Rename } from './Rename';
 export { Move } from './Move';
+export { ShareFolder } from './ShareFolder';

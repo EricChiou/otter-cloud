@@ -3,8 +3,8 @@ import { store } from 'src/store/store';
 import { Keys } from './interface';
 
 import { langs } from './langs';
-import { en_us } from './langs/en-us';
-import { zh_tw } from './langs/zh-tw';
+import { enUS } from './langs/en-us';
+import { zhTW } from './langs/zh-tw';
 
 export enum IntlType {
   normal = 'normal',
@@ -13,6 +13,18 @@ export enum IntlType {
   firstUpper = 'firstUpper', // only first char to be upper
   perUpper = 'perUpper', // first char to be upper of every words
 }
+
+const getDefaultText = (key: string): string => {
+  const keySplit = key.split('_');
+  return keySplit[keySplit.length - 1];
+};
+
+const getText = (key: string, text: Keys): string => {
+  if (text[key]) {
+    return text[key];
+  }
+  return getDefaultText(key);
+};
 
 export type { Langs, Keys } from './interface';
 export { langs } from './langs';
@@ -25,13 +37,13 @@ export const intl = (key: string, type?: IntlType): string => {
 
   switch (lang) {
     case langs.en:
-    case langs.en_us:
-      text = getText(key, en_us);
+    case langs.enUS:
+      text = getText(key, enUS);
       break;
 
     case langs.zh:
-    case langs.zh_tw:
-      text = getText(key, zh_tw);
+    case langs.zhTW:
+      text = getText(key, zhTW);
       break;
 
     default:
@@ -49,26 +61,13 @@ export const intl = (key: string, type?: IntlType): string => {
     case IntlType.firstUpper:
       return text.slice(0, 1).toUpperCase() + text.slice(1);
 
-    case IntlType.perUpper:
+    case IntlType.perUpper: {
       const segs = text.split(' ');
       let newText = '';
-      segs.forEach((t) => { newText += ' ' + t.slice(0, 1).toUpperCase() + t.slice(1) });
+      segs.forEach((t) => { newText += ' ' + t.slice(0, 1).toUpperCase() + t.slice(1); });
       return newText.slice(1);
-
+    }
     default:
       return text;
   }
-}
-
-const getText = (key: string, text: Keys): string => {
-  if (text[key]) {
-    return text[key];
-  }
-
-  return getDefaultText(key);
 };
-
-const getDefaultText = (key: string): string => {
-  const keySplit = key.split('_');
-  return keySplit[keySplit.length - 1];
-}

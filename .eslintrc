@@ -1,6 +1,7 @@
 {
   "env": {
-      "browser": true
+      "browser": true,
+      "es6": true
   },
   "extends": [
       "eslint:recommended",
@@ -33,6 +34,7 @@
       "no-tabs": ["error"],
       "no-trailing-spaces": "error",
       "max-depth": ["error", 4],
-      "@typescript-eslint/explicit-function-return-type": "off"
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "react/prop-types": "off"
   }
 }

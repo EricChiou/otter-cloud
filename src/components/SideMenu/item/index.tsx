@@ -6,13 +6,15 @@ import React, {
   useRef,
   RefObject,
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { ArrowRight, ArrowDown, Share } from 'src/components/icons';
+import { ArrowRight, ArrowDown, ShareFolder } from 'src/components/icons';
 import CreateItem from './CreateItem';
 import { selectPrefix } from 'src/store/system.slice';
+import { addDialog, removeDialog } from 'src/components/common';
+import ShareFolderDialog from './ShareFolderDialog';
 
-import styles from './Item.module.scss';
+import styles from './style.module.scss';
 
 interface Props {
   ItemIcon: FunctionComponent;
@@ -26,7 +28,7 @@ interface Props {
   createItem?: (itemName: string) => void;
 }
 
-const Item: FunctionComponent<Props> = ({
+const ItemComponent: FunctionComponent<Props> = ({
   ItemIcon,
   item,
   SubItemIcon,
@@ -37,6 +39,7 @@ const Item: FunctionComponent<Props> = ({
   CreateItemIcon,
   createItem,
 }: Props) => {
+  const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
   const itemRef: RefObject<HTMLDivElement> = useRef(null);
   const [expand, setExpand] = useState(false);
@@ -90,7 +93,15 @@ const Item: FunctionComponent<Props> = ({
   };
 
   const shareFolder = (subItem: Item) => {
-    console.log('shareFolder', subItem);
+    dispatch(addDialog({
+      component: (
+        <ShareFolderDialog
+          item={subItem}
+          close={() => { dispatch(removeDialog()); }}
+        ></ShareFolderDialog>
+      ),
+      closeUI: true,
+    }));
   };
 
   const renderSubItems = () => {
@@ -101,7 +112,6 @@ const Item: FunctionComponent<Props> = ({
           className={styles.subItem + getItemClassName(subItem)}
           onClick={(e) => { itemOnSelect(e, subItem); }}
         >
-          <div className='vert-align-mid'></div>
           <span className={styles.icon}>
             <SubItemIcon></SubItemIcon>
           </span>
@@ -115,7 +125,7 @@ const Item: FunctionComponent<Props> = ({
               shareFolder(subItem);
             }}
           >
-            <Share></Share>
+            <ShareFolder></ShareFolder>
           </span>
         </div>
       );
@@ -150,7 +160,7 @@ const Item: FunctionComponent<Props> = ({
   );
 };
 
-export default Item;
+export default ItemComponent;
 
 export interface Item {
   name: string;

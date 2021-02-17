@@ -7,6 +7,7 @@ import { File } from 'src/vo/common';
 import { ViewType } from '../../';
 import FileIcon from '../FileIcon';
 import FileNamePreviewImg from './FileNamePreviewImg';
+import { FileService } from 'src/service/file.service';
 
 import styles from './style.module.scss';
 import table from '../../table.module.scss';
@@ -23,14 +24,18 @@ const FileName: FunctionComponent<Props> = ({
   convertFileSize,
   convertFileLastModified,
   viewType,
-}) => {
+}: Props) => {
+  const getFileName = (): string => {
+    return FileService.isFile(file) ? file.name : file.name.slice(0, -1);
+  };
+
   const renderTooltipContent = () => {
     if (file.contentType.indexOf(ContentType.image) > -1) {
       return <FileNamePreviewImg file={file}></FileNamePreviewImg>;
     }
 
-    return <div style={{ whiteSpace: 'nowrap' }}>{file.name}</div>;
-  }
+    return <div style={{ whiteSpace: 'nowrap' }}>{getFileName()}</div>;
+  };
 
   return (
     <>
@@ -43,7 +48,7 @@ const FileName: FunctionComponent<Props> = ({
             </span>
           }
           <span className={`${table.text} ${styles.text} ${styles.iconText}`}>
-            {file.name}
+            {getFileName()}
             <div className={styles.subLine}>
               {convertFileSize()}{file.contentType ? ', ' : null}
               {convertFileLastModified()}
@@ -53,7 +58,7 @@ const FileName: FunctionComponent<Props> = ({
       }
       {viewType === ViewType.icon ?
         <BaseTooltip
-          content={<div style={{ whiteSpace: 'nowrap' }}>{file.name}</div>}
+          content={<div style={{ whiteSpace: 'nowrap' }}>{getFileName()}</div>}
           style={{
             display: 'inline-block',
             width: 'calc(100% - 52px)',
@@ -61,7 +66,7 @@ const FileName: FunctionComponent<Props> = ({
           }}
         >
           <div className={styles.iconFileName}>
-            {file.name}
+            {getFileName()}
           </div>
         </BaseTooltip> : null
       }

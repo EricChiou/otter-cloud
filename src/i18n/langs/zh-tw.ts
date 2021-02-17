@@ -1,6 +1,6 @@
-import { Keys } from "src/i18n";
+import { Keys } from 'src/i18n';
 
-export const zh_tw: Keys = {
+export const zhTW: Keys = {
   account: '帳號',
   password: '密碼',
   acc: '帳號',
@@ -45,4 +45,5 @@ export const zh_tw: Keys = {
   renameFailed: '重新命名失敗，請再試一次',
   moveTo: '移至',
   move: '移動',
+  shareFolder: '分享資料夾',
 };

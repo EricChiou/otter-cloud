@@ -45,4 +45,5 @@ export const keys: Keys = {
   renameFailed: 'renameFailed',
   moveTo: 'moveTo',
   move: 'move',
+  shareFolder: 'shareFolder',
 };

@@ -1,8 +1,8 @@
 export interface Langs {
   en: string;
-  en_us: string;
+  enUS: string;
   zh: string;
-  zh_tw: string;
+  zhTW: string;
 }
 
 export interface Keys {
@@ -51,4 +51,5 @@ export interface Keys {
   renameFailed: string;
   moveTo: string;
   move: string;
+  shareFolder: string;
 }
