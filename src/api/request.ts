@@ -127,11 +127,17 @@ export const downloadPostFile = (
   return request.post(url, body, config);
 };
 
-export const getBlob = (url: string, params?: object, token?: string): Promise<RespVo | Blob> => {
+export const getBlob = (
+  url: string,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+): Promise<RespVo | Blob> => {
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
     timeout: 1000 * 60 * 60 * 24, // 1 day
+    onDownloadProgress: progress,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 

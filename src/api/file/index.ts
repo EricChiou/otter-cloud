@@ -62,6 +62,7 @@ export const getPreviewUrl = (
   prefix: string,
   fileName: string,
   token: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<Blob> => {
 
   const search = {
@@ -73,7 +74,8 @@ export const getPreviewUrl = (
     getBlob(
       ApiUrl.GET_PREVIEW_URL,
       search,
-      token
+      token,
+      progress,
     ).then((resp: RespVo | Blob) => {
       if (resp instanceof Blob) {
         resolve(resp);
