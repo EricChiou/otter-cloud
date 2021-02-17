@@ -28,10 +28,7 @@ const SideMenu: FunctionComponent<{}> = () => {
         .map((data) => {
           return {
             name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
-            data: {
-              bucketName: userProfile.bucketName,
-              prefix: data.name,
-            },
+            data: { prefix: data.name },
           };
         });
 
@@ -63,10 +60,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   const createFolder = (folderName: string) => {
     const data: Item = {
       name: folderName,
-      data: {
-        bucketName: userProfile.bucketName,
-        prefix: folderName + '/'
-      }
+      data: { prefix: folderName + '/' }
     };
 
     const folders = [...folderList, data];
@@ -79,7 +73,7 @@ const SideMenu: FunctionComponent<{}> = () => {
         ItemIcon={Cloud}
         item={{
           name: intl(keys.myCloudStorge, IntlType.perUpper),
-          data: { bucketName: userProfile.bucketName, prefix: '' },
+          data: { prefix: '' },
         }}
         SubItemIcon={Folder}
         subItems={folderList}

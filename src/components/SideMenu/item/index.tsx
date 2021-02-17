@@ -126,7 +126,6 @@ export default Item;
 export interface Item {
   name: string;
   data: {
-    bucketName: string;
     prefix: string;
   };
 }

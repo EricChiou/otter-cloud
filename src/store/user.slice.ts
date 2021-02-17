@@ -14,12 +14,9 @@ interface UseState {
 const initialState: UseState = {
   profile: {
     token: '',
-    id: null,
     acc: '',
     name: '',
     roleCode: '',
-    roleName: '',
-    bucketName: '',
     exp: 0,
   },
   lang: UserService.getLangFrCookie(),
@@ -53,12 +50,9 @@ export const logout = (): AppThunk => dispatch => {
 
   const userProfile: UserProfile = {
     token: '',
-    id: null,
     acc: '',
     name: '',
     roleCode: '',
-    roleName: '',
-    bucketName: '',
     exp: 0,
   };
   const { setProfile } = userSlice.actions;
