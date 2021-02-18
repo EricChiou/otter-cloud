@@ -22,7 +22,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
 
-    getFileList("", userProfile.token).then((resp) => {
+    getFileList('', userProfile.token).then((resp) => {
       const newFolderList: Item[] = resp.data
         .filter((data) => (!FileService.isFile(data)))
         .map((data) => {
@@ -45,7 +45,7 @@ const SideMenu: FunctionComponent<{}> = () => {
       if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
     });
 
-    return () => { subscribe.unsubscribe(); }
+    return () => { subscribe.unsubscribe(); };
 
   }, [refreshFileList]);
 
@@ -60,7 +60,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   const createFolder = (folderName: string) => {
     const data: Item = {
       name: folderName,
-      data: { prefix: folderName + '/' }
+      data: { prefix: folderName + '/' },
     };
 
     const folders = [...folderList, data];

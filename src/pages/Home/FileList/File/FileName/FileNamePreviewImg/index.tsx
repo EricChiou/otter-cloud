@@ -44,8 +44,9 @@ const FileNamePreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
       const url = urlCreator.createObjectURL(resp);
       setUrl(url);
 
-    }).catch(
-    ).finally(() => {
+    }).catch(() => {
+      // do nothing
+    }).finally(() => {
       retry.current += 1;
     });
 

@@ -13,3 +13,13 @@ export interface File {
   lastModified: string;
   selected: boolean;
 }
+
+export interface Share {
+  id: number; // pk
+  ownerAcc: string;
+  sharedAcc: string;
+  prefix: string;
+  permission: string;
+  createdDate: number;
+  updatedDate: number;
+}

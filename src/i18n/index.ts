@@ -3,8 +3,8 @@ import { store } from 'src/store/store';
 import { Keys } from './interface';
 
 import { langs } from './langs';
-import { enUS } from './langs/en-us';
-import { zhTW } from './langs/zh-tw';
+import { enUS } from './langs/enUS';
+import { zhTW } from './langs/zhTW';
 
 export enum IntlType {
   normal = 'normal',

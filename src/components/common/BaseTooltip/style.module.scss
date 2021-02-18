@@ -4,9 +4,7 @@
   position: relative;
 
   .dialog {
-    position: absolute;
-    top: 100%;
-    left: 5px;
+    position: fixed;
     padding: 2px 3px;
     font-size: 14px;
     background-color: theme(white, deep);

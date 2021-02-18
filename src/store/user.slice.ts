@@ -36,17 +36,17 @@ const userSlice = createSlice({
   },
 });
 
-export const setUserProfile = (userProfile: UserProfile): AppThunk => dispatch => {
+export const setUserProfile = (userProfile: UserProfile): AppThunk => (dispatch) => {
   const { setProfile } = userSlice.actions;
   dispatch(setProfile(userProfile));
 };
 
-export const setLang = (lang: string): AppThunk => dispatch => {
+export const setLang = (lang: string): AppThunk => (dispatch) => {
   const { setLang } = userSlice.actions;
   dispatch(setLang(lang));
 };
 
-export const logout = (): AppThunk => dispatch => {
+export const logout = (): AppThunk => (dispatch) => {
   Cookie.remove(CookieKeys.TOKEN);
 
   const userProfile: UserProfile = {
@@ -59,7 +59,7 @@ export const logout = (): AppThunk => dispatch => {
   const { setProfile } = userSlice.actions;
   dispatch(setFileList([]));
   dispatch(setProfile(userProfile));
-}
+};
 
 export const selectUserProfile = (state: RootState) => state.user.profile;
 export const selectLang = (state: RootState) => state.user.lang;

@@ -3,8 +3,6 @@ import { Keys } from 'src/i18n';
 export const zhTW: Keys = {
   account: '帳號',
   password: '密碼',
-  acc: '帳號',
-  pwd: '密碼',
   login: '登入',
   logout: '登出',
   signUp: '註冊',
@@ -46,4 +44,6 @@ export const zhTW: Keys = {
   moveTo: '移至',
   move: '移動',
   shareFolder: '分享資料夾',
+  shareTo: '分享給',
+  shared: '已分享',
 };

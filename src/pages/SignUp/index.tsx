@@ -130,7 +130,7 @@ const SignUp: FunctionComponent<{}> = () => {
           </span>
           <span className={styles.info}>
             <div className={`${styles.infoTitle} ${checkPassword() ? styles.ok : styles.error}`}>
-              {intl(keys.pwd, IntlType.perUpper)}:
+              {intl(keys.password, IntlType.perUpper)}:
               {checkPassword() !== null ?
                 (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>)
                 : null

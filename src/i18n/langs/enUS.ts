@@ -3,8 +3,6 @@ import { Keys } from 'src/i18n';
 export const enUS: Keys = {
   account: 'account',
   password: 'password',
-  acc: 'acc',
-  pwd: 'pwd',
   login: 'login',
   logout: 'logout',
   signUp: 'sign up',
@@ -46,4 +44,6 @@ export const enUS: Keys = {
   moveTo: 'Move to',
   move: ' move',
   shareFolder: 'share folder',
+  shareTo: 'share to',
+  shared: 'shared',
 };

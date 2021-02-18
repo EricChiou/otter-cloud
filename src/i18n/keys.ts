@@ -3,8 +3,6 @@ import { Keys } from './interface';
 export const keys: Keys = {
   account: 'account',
   password: 'password',
-  acc: 'acc',
-  pwd: 'pwd',
   login: 'login',
   logout: 'logout',
   signUp: 'signUp',
@@ -46,4 +44,6 @@ export const keys: Keys = {
   moveTo: 'moveTo',
   move: 'move',
   shareFolder: 'shareFolder',
+  shareTo: 'shareTo',
+  shared: 'shared',
 };

@@ -93,7 +93,7 @@ const Login: FunctionComponent<{}> = () => {
           ></BaseInput>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.pwd, IntlType.firstUpper)}:</span>
+          <span className={styles.title}>{intl(keys.password, IntlType.firstUpper)}:</span>
           <BaseInput
             type="password"
             placeholder={intl(keys.password)}

@@ -9,8 +9,6 @@ export interface Keys {
   [key: string]: string;
   account: string;
   password: string;
-  acc: string;
-  pwd: string;
   login: string;
   logout: string;
   signUp: string;
@@ -52,4 +50,6 @@ export interface Keys {
   moveTo: string;
   move: string;
   shareFolder: string;
+  shareTo: string;
+  shared: string;
 }

@@ -10,7 +10,7 @@ import {
   GetShareableLinkResVo,
   RenameFileReqVo,
   MoveFilesReqVo,
-} from './interface';
+} from './vo';
 import { ApiUrl, ApiResult, Config } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
