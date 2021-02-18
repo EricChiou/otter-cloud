@@ -17,7 +17,9 @@ export interface File {
 export interface Share {
   id: number; // pk
   ownerAcc: string;
+  ownerName: string;
   sharedAcc: string;
+  sharedName: string;
   prefix: string;
   permission: string;
   createdDate: number;

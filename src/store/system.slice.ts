@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
 import { File, Share } from 'src/vo/common';
+import { getShareFolderList } from 'src/api/share';
 
 interface SystemState {
   bucket: string;
@@ -35,6 +36,9 @@ const systemSlice = createSlice({
     setFile: (state, action: PayloadAction<{ file: File; index: number }>) => {
       state.fileList[action.payload.index] = action.payload.file;
     },
+    setShareToList: (state, action: PayloadAction<Share[]>) => {
+      state.shareToList = action.payload;
+    },
   },
 });
 
@@ -56,6 +60,28 @@ export const setFileList = (fileList: File[]): AppThunk => (dispatch) => {
 export const setFile = (file: File, index: number): AppThunk => (dispatch) => {
   const { setFile } = systemSlice.actions;
   dispatch(setFile({ file, index }));
+};
+
+export const updateShareToList = (token: string): AppThunk => (dispatch) => {
+  getShareFolderList(token).then((resp) => {
+    const shareToList = resp.data.map((shareToFolder) => ({
+      id: shareToFolder.id,
+      ownerAcc: '',
+      ownerName: '',
+      sharedAcc: shareToFolder.sharedAcc,
+      sharedName: shareToFolder.sharedName,
+      prefix: shareToFolder.prefix,
+      permission: shareToFolder.permission,
+      createdDate: 0,
+      updatedDate: 0,
+    }));
+
+    const { setShareToList } = systemSlice.actions;
+    dispatch(setShareToList(shareToList));
+
+  }).catch(() => {
+    // do nothing
+  });
 };
 
 export const selectBucket = (state: RootState) => state.system.bucket;

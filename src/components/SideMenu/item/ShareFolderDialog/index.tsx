@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { Item } from '../';
 import { selectUserProfile } from 'src/store/user.slice';
+import { selectShareToList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseInput, BaseButton, ButtonType, BaseTooltip } from 'src/components/common';
 import { Add, Cancel } from 'src/components/icons';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
+  const shareToList = useSelector(selectShareToList);
   const userProfile = useSelector(selectUserProfile);
   let sharedAcc = '';
 
@@ -29,6 +31,27 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
 
   const shareToOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     sharedAcc = e.target.value;
+  };
+
+  const renderShareFolderList = () => {
+
+    return shareToList
+      .filter((shareTo) => (shareTo.prefix === item.data.prefix))
+      .map((shareTo) => {
+        return (
+          <BaseTooltip key={shareTo.id} content={`${shareTo.sharedName}, ${shareTo.sharedAcc}`}>
+            <div className={styles.sharedBlock}>
+              <span className={styles.sharedName}>{shareTo.sharedName}, {shareTo.sharedAcc}</span>
+              <BaseButton
+                style={{ padding: '0', verticalAlign: 'middle' }}
+                type={ButtonType.danger}
+              >
+                <Cancel></Cancel>
+              </BaseButton>
+            </div>
+          </BaseTooltip>
+        );
+      });
   };
 
   return (
@@ -51,17 +74,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
       <div className={styles.shared}>
         {intl(keys.shared, IntlType.perUpper)}：<br />
         <div className={styles.sharedList}>
-          <BaseTooltip content={'name, acc'}>
-            <div className={styles.sharedBlock}>
-              <span className={styles.sharedName}>name, acc</span>
-              <BaseButton
-                style={{ padding: '0', verticalAlign: 'middle' }}
-                type={ButtonType.danger}
-              >
-                <Cancel></Cancel>
-              </BaseButton>
-            </div>
-          </BaseTooltip>
+          {renderShareFolderList()}
         </div>
       </div>
     </div>

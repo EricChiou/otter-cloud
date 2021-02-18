@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { routes } from './routes';
 import { setUserProfile, selectUserProfile, selectLang, logout } from './store/user.slice';
-import { selectPrefix, setPrefix } from 'src/store/system.slice';
+import { selectPrefix, setPrefix, updateShareToList } from 'src/store/system.slice';
 import { StatusService, UserService } from './service';
 import { Routes } from './constants';
 import { Dialog } from 'src/components/common';
@@ -64,8 +64,16 @@ const App = () => {
       }
     });
 
-    return () => { subscribe.unsubscribe(); }
+    return () => { subscribe.unsubscribe(); };
   }, [history, dispatch]);
+
+  // get share folder
+  // useEffect(() => {
+  //   if (!StatusService.isLogin()) { return; }
+
+  //   dispatch(updateShareToList(userProfile.token));
+
+  // }, [dispatch, userProfile]);
 
   return (
     <div id="app">
@@ -84,6 +92,6 @@ const App = () => {
       <Dialog></Dialog>
     </div>
   );
-}
+};
 
 export default App;

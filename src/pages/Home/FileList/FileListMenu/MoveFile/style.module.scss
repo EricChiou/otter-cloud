@@ -50,6 +50,7 @@
         padding: 8px 0;
         width: calc(100% - 40px - 40px);
         font-weight: bold;
+        white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         vertical-align: middle;

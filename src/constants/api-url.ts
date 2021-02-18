@@ -24,4 +24,5 @@ export class ApiUrl {
 
     // share
     public static readonly ADD_SHARED_FOLDER_URL = shareGroupUrl + '/add';
+    public static readonly GET_SHARE_FOLDER_LIST_URL = shareGroupUrl + '/folder';
 }
