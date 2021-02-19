@@ -3,7 +3,7 @@ const mainUrl = '/otter-cloud-ws';
 
 const userGroupUrl = mainUrl + '/user';
 const fileGroupUrl = mainUrl + '/file';
-const shareGroupUrl = mainUrl + '/share';
+const shareGroupUrl = mainUrl + '/shared';
 
 export class ApiUrl {
     // user
@@ -24,5 +24,5 @@ export class ApiUrl {
 
     // share
     public static readonly ADD_SHARED_FOLDER_URL = shareGroupUrl + '/add';
-    public static readonly GET_SHARE_FOLDER_LIST_URL = shareGroupUrl + '/folder';
+    public static readonly GET_SHARED_FOLDER_LIST_URL = shareGroupUrl + '/folder';
 }

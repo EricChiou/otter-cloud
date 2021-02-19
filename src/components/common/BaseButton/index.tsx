@@ -56,7 +56,7 @@ const BaseButton: FunctionComponent<Props> = ({ children, type, style, disabled,
     >
       {children}
     </button>
-  )
+  );
 };
 
 export { BaseButton };

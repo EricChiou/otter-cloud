@@ -46,4 +46,7 @@ export const keys: Keys = {
   shareFolder: 'shareFolder',
   shareTo: 'shareTo',
   shared: 'shared',
+  canRead: 'canRead',
+  canWrite: 'canWrite',
+  permission: 'permission',
 };

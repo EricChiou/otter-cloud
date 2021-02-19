@@ -52,4 +52,7 @@ export interface Keys {
   shareFolder: string;
   shareTo: string;
   shared: string;
+  canRead: string;
+  canWrite: string;
+  permission: string;
 }

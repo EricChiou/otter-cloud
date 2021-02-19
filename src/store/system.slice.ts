@@ -2,22 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
 import { File, Share } from 'src/vo/common';
-import { getShareFolderList } from 'src/api/share';
+import { getSharedFolderList } from 'src/api/shared';
 
 interface SystemState {
   bucket: string;
   prefix: string;
   fileList: File[];
-  shareToList: Share[];
-  sharedList: Share[];
+  sharedFolderList: Share[];
 }
 
 const initialState: SystemState = {
   bucket: '',
   prefix: '',
   fileList: [],
-  shareToList: [],
-  sharedList: [],
+  sharedFolderList: [],
 };
 
 const systemSlice = createSlice({
@@ -36,8 +34,8 @@ const systemSlice = createSlice({
     setFile: (state, action: PayloadAction<{ file: File; index: number }>) => {
       state.fileList[action.payload.index] = action.payload.file;
     },
-    setShareToList: (state, action: PayloadAction<Share[]>) => {
-      state.shareToList = action.payload;
+    setSharedFolderList: (state, action: PayloadAction<Share[]>) => {
+      state.sharedFolderList = action.payload;
     },
   },
 });
@@ -62,22 +60,22 @@ export const setFile = (file: File, index: number): AppThunk => (dispatch) => {
   dispatch(setFile({ file, index }));
 };
 
-export const updateShareToList = (token: string): AppThunk => (dispatch) => {
-  getShareFolderList(token).then((resp) => {
-    const shareToList = resp.data.map((shareToFolder) => ({
-      id: shareToFolder.id,
-      ownerAcc: '',
-      ownerName: '',
-      sharedAcc: shareToFolder.sharedAcc,
-      sharedName: shareToFolder.sharedName,
-      prefix: shareToFolder.prefix,
-      permission: shareToFolder.permission,
+export const updateSharedFolderList = (token: string): AppThunk => (dispatch) => {
+  getSharedFolderList(token).then((resp) => {
+    const shareToList = resp.data.map((sharedFolder) => ({
+      id: sharedFolder.id,
+      ownerAcc: sharedFolder.ownerAcc,
+      ownerName: sharedFolder.ownerName,
+      sharedAcc: sharedFolder.sharedAcc,
+      sharedName: sharedFolder.sharedName,
+      prefix: sharedFolder.prefix,
+      permission: sharedFolder.permission,
       createdDate: 0,
       updatedDate: 0,
     }));
 
-    const { setShareToList } = systemSlice.actions;
-    dispatch(setShareToList(shareToList));
+    const { setSharedFolderList } = systemSlice.actions;
+    dispatch(setSharedFolderList(shareToList));
 
   }).catch(() => {
     // do nothing
@@ -87,7 +85,6 @@ export const updateShareToList = (token: string): AppThunk => (dispatch) => {
 export const selectBucket = (state: RootState) => state.system.bucket;
 export const selectPrefix = (state: RootState) => state.system.prefix;
 export const selectFileList = (state: RootState) => state.system.fileList;
-export const selectShareToList = (state: RootState) => state.system.shareToList;
-export const selectSharedListList = (state: RootState) => state.system.sharedList;
+export const selectSharedFolderList = (state: RootState) => state.system.sharedFolderList;
 
 export default systemSlice.reducer;

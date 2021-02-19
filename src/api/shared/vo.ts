@@ -8,9 +8,11 @@ export interface AddSharedFolderReqVo {
 }
 
 // response vo
-export interface AddSharedFolderResVo extends RespVo {
+export interface GetSharedFolderResVo extends RespVo {
   data: {
     id: number;
+    ownerAcc: string;
+    ownerName: string;
     sharedAcc: string;
     sharedName: string;
     prefix: string;

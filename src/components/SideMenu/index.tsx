@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder } from 'src/components/icons';
@@ -11,10 +11,12 @@ import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
+import { updateSharedFolderList } from 'src/store/system.slice';
 
 import styles from './style.module.scss';
 
 const SideMenu: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const userProfile = useSelector(selectUserProfile);
   const [folderList, setFolderList] = useState<Item[]>([]);
@@ -48,6 +50,14 @@ const SideMenu: FunctionComponent<{}> = () => {
     return () => { subscribe.unsubscribe(); };
 
   }, [refreshFileList]);
+
+  // get share folder
+  useEffect(() => {
+    if (!StatusService.isLogin()) { return; }
+
+    dispatch(updateSharedFolderList(userProfile.token));
+
+  }, [dispatch, userProfile]);
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }

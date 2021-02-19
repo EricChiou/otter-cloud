@@ -1,6 +1,6 @@
 import { RespVo, post, get } from '../request';
 import { ApiUrl, ApiResult } from 'src/constants';
-import { AddSharedFolderReqVo, AddSharedFolderResVo } from './vo';
+import { AddSharedFolderReqVo, GetSharedFolderResVo } from './vo';
 
 export const addSharedFolder = (
   sharedAcc: string,
@@ -29,10 +29,10 @@ export const addSharedFolder = (
   });
 };
 
-export const getShareFolderList = (token: string): Promise<AddSharedFolderResVo> => {
+export const getSharedFolderList = (token: string): Promise<GetSharedFolderResVo> => {
   return new Promise((resolve, reject) => {
     get(
-      ApiUrl.GET_SHARE_FOLDER_LIST_URL,
+      ApiUrl.GET_SHARED_FOLDER_LIST_URL,
       undefined,
       token,
     ).then((resp) => {
