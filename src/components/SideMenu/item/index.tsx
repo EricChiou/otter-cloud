@@ -23,7 +23,7 @@ interface Props {
   subItems: Item[];
   defaultExpand?: boolean;
   onSelect?: (ele: HTMLElement, itemData: Item) => void;
-  showCreateFolder?: boolean;
+  showCreateItem?: boolean;
   CreateItemIcon?: FunctionComponent;
   createItem?: (itemName: string) => void;
 }
@@ -35,7 +35,7 @@ const ItemComponent: FunctionComponent<Props> = ({
   subItems,
   defaultExpand,
   onSelect,
-  showCreateFolder,
+  showCreateItem,
   CreateItemIcon,
   createItem,
 }: Props) => {
@@ -152,7 +152,7 @@ const ItemComponent: FunctionComponent<Props> = ({
         style={{ height: expand ? 'auto' : '0px' }}
       >
         {renderSubItems()}
-        {showCreateFolder ?
+        {showCreateItem ?
           <CreateItem CreateItemIcon={CreateItemIcon} createItem={createItem}></CreateItem> : null
         }
       </div>

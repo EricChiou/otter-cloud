@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
-import { Cloud, Folder, CreateFolder } from 'src/components/icons';
+import { Cloud, Folder, CreateFolder, FolderShared } from 'src/components/icons';
 import ItemComponent, { Item } from './item';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
@@ -11,7 +11,7 @@ import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
-import { updateSharedFolderList } from 'src/store/system.slice';
+import { updateSharedFolderList, selectSharedFolderList } from 'src/store/system.slice';
 
 import styles from './style.module.scss';
 
@@ -20,6 +20,7 @@ const SideMenu: FunctionComponent<{}> = () => {
   const history = useHistory();
   const userProfile = useSelector(selectUserProfile);
   const [folderList, setFolderList] = useState<Item[]>([]);
+  const sharedFolderList = useSelector(selectSharedFolderList);
 
   const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
@@ -29,7 +30,7 @@ const SideMenu: FunctionComponent<{}> = () => {
         .filter((data) => (!FileService.isFile(data)))
         .map((data) => {
           return {
-            name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
+            name: data.name.slice(0, -1), // remove '/' at last of name
             data: { prefix: data.name },
           };
         });
@@ -58,6 +59,17 @@ const SideMenu: FunctionComponent<{}> = () => {
     dispatch(updateSharedFolderList(userProfile.token));
 
   }, [dispatch, userProfile]);
+
+  const getSharedFolderListItems = (): Item[] => {
+    return sharedFolderList.
+      filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc).
+      map((sharedFolder) => ({
+        name: sharedFolder.prefix.slice(0, -1),
+        data: {
+          prefix: sharedFolder.prefix,
+        },
+      }));
+  };
 
   const folderOnSelect = (ele: HTMLElement, folder: Item) => {
     if (!ele) { return; }
@@ -89,7 +101,21 @@ const SideMenu: FunctionComponent<{}> = () => {
         subItems={folderList}
         defaultExpand={getDeviceInfo()?.mobile ? false : true}
         onSelect={folderOnSelect}
-        showCreateFolder={true}
+        showCreateItem={true}
+        CreateItemIcon={CreateFolder}
+        createItem={createFolder}
+      ></ItemComponent>
+      <ItemComponent
+        ItemIcon={FolderShared}
+        item={{
+          name: intl(keys.sharedFolder, IntlType.perUpper),
+          data: { prefix: '' },
+        }}
+        SubItemIcon={FolderShared}
+        subItems={getSharedFolderListItems()}
+        defaultExpand={getDeviceInfo()?.mobile ? false : true}
+        onSelect={folderOnSelect}
+        showCreateItem={false}
         CreateItemIcon={CreateFolder}
         createItem={createFolder}
       ></ItemComponent>

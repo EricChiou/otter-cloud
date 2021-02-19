@@ -55,4 +55,5 @@ export interface Keys {
   canRead: string;
   canWrite: string;
   permission: string;
+  sharedFolder: string;
 }
