@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { Cloud, Folder, CreateFolder, FolderShared } from 'src/components/icons';
-import ItemComponent, { Item } from './item';
+import ItemComponent, { Item } from './CloudFolder';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
@@ -61,9 +61,9 @@ const SideMenu: FunctionComponent<{}> = () => {
   }, [dispatch, userProfile]);
 
   const getSharedFolderListItems = (): Item[] => {
-    return sharedFolderList.
-      filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc).
-      map((sharedFolder) => ({
+    return sharedFolderList
+      .filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc)
+      .map((sharedFolder) => ({
         name: sharedFolder.prefix.slice(0, -1),
         data: {
           prefix: sharedFolder.prefix,

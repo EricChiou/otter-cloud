@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Item } from '../';
+import { Item } from '..';
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectSharedFolderList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
