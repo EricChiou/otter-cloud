@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Item } from '..';
+import { Folder } from '..';
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectSharedFolderList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
@@ -13,11 +13,11 @@ import { sharedFolderPermsType } from 'src/constants';
 import styles from './style.module.scss';
 
 interface Props {
-  item: Item;
+  folder: Folder;
   close: () => void;
 }
 
-const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
+const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
   const sharedFolderList = useSelector(selectSharedFolderList);
   const userProfile = useSelector(selectUserProfile);
   let sharedAcc = '';
@@ -30,7 +30,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
   const doAddSharedFolder = () => {
     if (!sharedAcc || !permission) { return; }
 
-    addSharedFolder(sharedAcc, item.data.prefix, permission, userProfile.token).then((resp) => {
+    addSharedFolder(sharedAcc, folder.data.prefix, permission, userProfile.token).then((resp) => {
       console.log(resp);
     }).catch((error) => {
       console.log(error);
@@ -44,7 +44,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
   const renderShareFolderList = () => {
     return sharedFolderList
       .filter((sharedFolder) =>
-        (sharedFolder.ownerAcc === userProfile.acc && sharedFolder.prefix === item.data.prefix))
+        (sharedFolder.ownerAcc === userProfile.acc && sharedFolder.prefix === folder.data.prefix))
       .map((sharedFolder) => {
         return (
           <BaseTooltip
@@ -70,7 +70,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ item }) => {
   return (
     <div className={styles.shareFolder}>
       <div className={styles.header}>{intl(keys.shareFolder, IntlType.perUpper)}</div>
-      <div className={styles.target}>{item.name}</div>
+      <div className={styles.target}>{folder.name}</div>
       <div className={styles.shareTo}>
         {intl(keys.shareTo, IntlType.perUpper)}：<br />
         <BaseInput

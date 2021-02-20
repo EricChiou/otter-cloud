@@ -8,41 +8,49 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ArrowRight, ArrowDown, ShareFolder } from 'src/components/icons';
-import CreateItem from './CreateItem';
+import {
+  ArrowRight,
+  ArrowDown,
+  ShareFolder,
+  Cloud,
+  Folder as FolderIcon,
+} from 'src/components/icons';
+import CreateFolder from './CreateFolder';
 import { selectPrefix } from 'src/store/system.slice';
 import { addDialog, removeDialog } from 'src/components/common';
 import ShareFolderDialog from './ShareFolderDialog';
+import { intl, keys, IntlType } from 'src/i18n';
 
 import styles from './style.module.scss';
 
-interface Props {
-  ItemIcon: FunctionComponent;
-  item: Item;
-  SubItemIcon: FunctionComponent;
-  subItems: Item[];
-  defaultExpand?: boolean;
-  onSelect?: (ele: HTMLElement, itemData: Item) => void;
-  showCreateItem?: boolean;
-  CreateItemIcon?: FunctionComponent;
-  createItem?: (itemName: string) => void;
+export interface Folder {
+  name: string;
+  data: {
+    prefix: string;
+  };
 }
 
-const ItemComponent: FunctionComponent<Props> = ({
-  ItemIcon,
-  item,
-  SubItemIcon,
-  subItems,
+interface Props {
+  subFolderList: Folder[];
+  defaultExpand?: boolean;
+  onSelect: (ele: HTMLElement, folder: Folder) => void;
+  createFolder: (folderName: string) => void;
+}
+
+const CloudFolder: FunctionComponent<Props> = ({
+  subFolderList,
   defaultExpand,
   onSelect,
-  showCreateItem,
-  CreateItemIcon,
-  createItem,
+  createFolder,
 }: Props) => {
   const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
-  const itemRef: RefObject<HTMLDivElement> = useRef(null);
+  const cloudRef: RefObject<HTMLDivElement> = useRef(null);
   const [expand, setExpand] = useState(false);
+  const rootFolder: Folder = {
+    name: intl(keys.myCloudStorge, IntlType.perUpper),
+    data: { prefix: '' },
+  };
 
   useEffect(() => {
     if (defaultExpand !== undefined) {
@@ -62,21 +70,19 @@ const ItemComponent: FunctionComponent<Props> = ({
   });
 
   const removeActiveEle = () => {
-    if (!itemRef.current) { return; }
+    if (!cloudRef.current) { return; }
 
-    const avtiveEles = itemRef.current.getElementsByClassName(styles.active);
+    const avtiveEles = cloudRef.current.getElementsByClassName(styles.active);
     Array.from(avtiveEles).forEach((ele) => {
       ele.classList.remove(styles.active);
     });
   };
 
-  const itemOnSelect = (e: MouseEvent<HTMLDivElement>, itemData: Item) => {
+  const folderOnSelect = (e: MouseEvent<HTMLDivElement>, folder: Folder) => {
     removeActiveEle();
     e.currentTarget.classList.add(styles.active);
 
-    if (onSelect) {
-      onSelect(e.currentTarget, itemData);
-    }
+    onSelect(e.currentTarget, folder);
   };
 
   const expandOnSelect = (e: MouseEvent<HTMLElement>) => {
@@ -84,19 +90,19 @@ const ItemComponent: FunctionComponent<Props> = ({
     setExpand(!expand);
   };
 
-  const getItemClassName = (targetItem: Item): string => {
-    return ` ${prefix === targetItem.data.prefix ? styles.active : null}`;
+  const getFolderClassName = (folder: Folder): string => {
+    return ` ${prefix === folder.data.prefix ? styles.active : null}`;
   };
 
-  const getSubItemsClassName = (): string => {
+  const getSubFoldersClassName = (): string => {
     return window.innerWidth > 1024 ? '' : expand ? ` ${styles.boxShadow}` : '';
   };
 
-  const shareFolder = (subItem: Item) => {
+  const shareFolder = (folder: Folder) => {
     dispatch(addDialog({
       component: (
         <ShareFolderDialog
-          item={subItem}
+          folder={folder}
           close={() => { dispatch(removeDialog()); }}
         ></ShareFolderDialog>
       ),
@@ -104,25 +110,25 @@ const ItemComponent: FunctionComponent<Props> = ({
     }));
   };
 
-  const renderSubItems = () => {
-    return subItems.map((subItem, i) => {
+  const renderSubFolders = () => {
+    return subFolderList.map((folder, i) => {
       return (
         <div
           key={i}
-          className={styles.subItem + getItemClassName(subItem)}
-          onClick={(e) => { itemOnSelect(e, subItem); }}
+          className={styles.folder + getFolderClassName(folder)}
+          onClick={(e) => { folderOnSelect(e, folder); }}
         >
           <span className={styles.icon}>
-            <SubItemIcon></SubItemIcon>
+            <FolderIcon></FolderIcon>
           </span>
           <span className={styles.text}>
-            {subItem.name}
+            {folder.name}
           </span>
           <span
             className={styles.share}
             onClick={(e) => {
               e.stopPropagation();
-              shareFolder(subItem);
+              shareFolder(folder);
             }}
           >
             <ShareFolder></ShareFolder>
@@ -133,38 +139,29 @@ const ItemComponent: FunctionComponent<Props> = ({
   };
 
   return (
-    <div ref={itemRef} className={styles.itemContainer}>
+    <div ref={cloudRef} className={styles.cloudContainer}>
       <div
-        className={styles.item + getItemClassName(item)}
-        onClick={(e) => { itemOnSelect(e, item); }}
+        className={styles.cloud + getFolderClassName(rootFolder)}
+        onClick={(e) => { folderOnSelect(e, rootFolder); }}
       >
         <div className='vert-align-mid'></div>
         <span className={styles.expand} onClick={expandOnSelect}>
           {expand ? <ArrowDown></ArrowDown> : <ArrowRight></ArrowRight>}
         </span>
         <span className={styles.icon}>
-          <ItemIcon></ItemIcon>
+          <Cloud></Cloud>
         </span>
-        <span className={styles.text}>{item.name}</span>
+        <span className={styles.text}>{intl(keys.myCloudStorge, IntlType.perUpper)}</span>
       </div>
       <div
-        className={styles.subItems + getSubItemsClassName()}
+        className={styles.folders + getSubFoldersClassName()}
         style={{ height: expand ? 'auto' : '0px' }}
       >
-        {renderSubItems()}
-        {showCreateItem ?
-          <CreateItem CreateItemIcon={CreateItemIcon} createItem={createItem}></CreateItem> : null
-        }
+        {renderSubFolders()}
+        <CreateFolder createFolder={createFolder}></CreateFolder>
       </div>
     </div>
   );
 };
 
-export default ItemComponent;
-
-export interface Item {
-  name: string;
-  data: {
-    prefix: string;
-  };
-}
+export default CloudFolder;

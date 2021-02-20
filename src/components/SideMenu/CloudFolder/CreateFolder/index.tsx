@@ -1,27 +1,27 @@
 import React, { FunctionComponent, KeyboardEvent } from 'react';
 
 import { BaseInput } from 'src/components/common';
+import { CreateFolder as CreateFolderIcon } from 'src/components/icons';
 
 import styles from '../style.module.scss';
 
 interface Props {
-  CreateItemIcon?: FunctionComponent;
-  createItem?: (itemName: string) => void;
+  createFolder: (folderName: string) => void;
 }
 
-const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }: Props) => {
+const CreateFolder: FunctionComponent<Props> = ({ createFolder }: Props) => {
   const onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (!createItem || e.key !== 'Enter' || !e.currentTarget.value) { return; }
+    if (e.key !== 'Enter' || !e.currentTarget.value) { return; }
 
-    createItem(e.currentTarget.value);
+    createFolder(e.currentTarget.value);
     e.currentTarget.value = '';
   };
 
   return (
-    <div className={styles.subItem}>
+    <div className={styles.folder}>
       <div className='vert-align-mid'></div>
       <span className={styles.icon}>
-        {CreateItemIcon ? <CreateItemIcon></CreateItemIcon> : null}
+        <CreateFolderIcon></CreateFolderIcon>
       </span>
       <span className={styles.text}>
         <BaseInput style={{ width: 'calc(100% - 8px)' }} onKeyUp={onKeyUp}></BaseInput>
@@ -30,4 +30,4 @@ const CreateItem: FunctionComponent<Props> = ({ CreateItemIcon, createItem }: Pr
   );
 };
 
-export default CreateItem;
+export default CreateFolder;
