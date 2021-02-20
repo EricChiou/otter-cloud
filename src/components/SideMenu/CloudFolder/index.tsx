@@ -14,12 +14,15 @@ import {
   ShareFolder,
   Cloud,
   Folder as FolderIcon,
+  FolderShared,
 } from 'src/components/icons';
 import CreateFolder from './CreateFolder';
 import { selectPrefix } from 'src/store/system.slice';
+import { selectUserProfile } from 'src/store/user.slice';
 import { addDialog, removeDialog } from 'src/components/common';
 import ShareFolderDialog from './ShareFolderDialog';
 import { intl, keys, IntlType } from 'src/i18n';
+import { Share } from 'src/vo/common';
 
 import styles from './style.module.scss';
 
@@ -31,20 +34,23 @@ export interface Folder {
 }
 
 interface Props {
-  subFolderList: Folder[];
+  folderList: Folder[];
+  sharedFolderList: Share[];
   defaultExpand?: boolean;
   onSelect: (ele: HTMLElement, folder: Folder) => void;
   createFolder: (folderName: string) => void;
 }
 
 const CloudFolder: FunctionComponent<Props> = ({
-  subFolderList,
+  folderList,
+  sharedFolderList,
   defaultExpand,
   onSelect,
   createFolder,
 }: Props) => {
   const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
+  const userProfile = useSelector(selectUserProfile);
   const cloudRef: RefObject<HTMLDivElement> = useRef(null);
   const [expand, setExpand] = useState(false);
   const rootFolder: Folder = {
@@ -110,8 +116,17 @@ const CloudFolder: FunctionComponent<Props> = ({
     }));
   };
 
+  const renderFolderIcon = (folder: Folder) => {
+    const hasSharedFolder = sharedFolderList.find((sharedFolder) => (
+      sharedFolder.ownerAcc === userProfile.acc &&
+      sharedFolder.prefix === folder.data.prefix
+    ));
+
+    return hasSharedFolder ? <FolderShared></FolderShared> : <FolderIcon></FolderIcon>;
+  };
+
   const renderSubFolders = () => {
-    return subFolderList.map((folder, i) => {
+    return folderList.map((folder, i) => {
       return (
         <div
           key={i}
@@ -119,7 +134,7 @@ const CloudFolder: FunctionComponent<Props> = ({
           onClick={(e) => { folderOnSelect(e, folder); }}
         >
           <span className={styles.icon}>
-            <FolderIcon></FolderIcon>
+            {renderFolderIcon(folder)}
           </span>
           <span className={styles.text}>
             {folder.name}

@@ -90,7 +90,8 @@ const SideMenu: FunctionComponent<{}> = () => {
   return (
     <div id={styles.sideMenu}>
       <CloudFolder
-        subFolderList={folderList}
+        folderList={folderList}
+        sharedFolderList={sharedFolderList}
         defaultExpand={getDeviceInfo()?.mobile ? false : true}
         onSelect={folderOnSelect}
         createFolder={createFolder}
