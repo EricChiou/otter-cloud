@@ -32,11 +32,13 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
 
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    getPreviewUrl(prefix, file.name, userProfile.token, progress, cancelToken).then((resp) => {
+    getPreviewUrl(prefix.path, file.name, userProfile.token, progress, cancelToken).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
       setUrl(urlCreator.createObjectURL(resp));
 
-    }).catch(() => { });
+    }).catch(() => {
+      // do nothing
+    });
 
     return () => { cancelToken.cancel(); };
 

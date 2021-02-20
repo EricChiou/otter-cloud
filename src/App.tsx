@@ -37,8 +37,13 @@ const App = () => {
 
   useEffect(() => {
     const search = getSearch();
-    if (search.prefix !== prefix) {
-      dispatch(setPrefix(search.prefix ? search.prefix : ''));
+    if (search.prefix) {
+      if (search.prefix !== prefix.path) {
+        dispatch(setPrefix(null, search.prefix));
+      }
+
+    } else if (prefix.path !== '') {
+      dispatch(setPrefix(null, ''));
     }
 
   }, [dispatch, location, prefix]);

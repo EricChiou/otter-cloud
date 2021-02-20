@@ -2,19 +2,22 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
 import { File, Share } from 'src/vo/common';
+import { getFileList } from 'src/api/file';
 import { getSharedFolderList } from 'src/api/shared';
 
 interface SystemState {
   bucket: string;
-  prefix: string;
+  prefix: { sharedId: number | null; path: string };
   fileList: File[];
+  fileListOnloading: boolean;
   sharedFolderList: Share[];
 }
 
 const initialState: SystemState = {
   bucket: '',
-  prefix: '',
+  prefix: { sharedId: null, path: '' },
   fileList: [],
+  fileListOnloading: false,
   sharedFolderList: [],
 };
 
@@ -25,11 +28,14 @@ const systemSlice = createSlice({
     setBucket: (state, action: PayloadAction<string>) => {
       state.bucket = action.payload;
     },
-    setPrefix: (state, action: PayloadAction<string>) => {
+    setPrefix: (state, action: PayloadAction<{ sharedId: number | null; path: string }>) => {
       state.prefix = action.payload;
     },
     setFileList: (state, action: PayloadAction<File[]>) => {
       state.fileList = action.payload;
+    },
+    setFileListOnLoading: (state, action: PayloadAction<boolean>) => {
+      state.fileListOnloading = action.payload;
     },
     setFile: (state, action: PayloadAction<{ file: File; index: number }>) => {
       state.fileList[action.payload.index] = action.payload.file;
@@ -45,9 +51,9 @@ export const setBucket = (bucket: string): AppThunk => (dispatch) => {
   dispatch(setBucket(bucket));
 };
 
-export const setPrefix = (prefix: string): AppThunk => (dispatch) => {
+export const setPrefix = (sharedId: number | null, path: string): AppThunk => (dispatch) => {
   const { setPrefix } = systemSlice.actions;
-  dispatch(setPrefix(prefix));
+  dispatch(setPrefix({ sharedId, path }));
 };
 
 export const setFileList = (fileList: File[]): AppThunk => (dispatch) => {
@@ -58,6 +64,38 @@ export const setFileList = (fileList: File[]): AppThunk => (dispatch) => {
 export const setFile = (file: File, index: number): AppThunk => (dispatch) => {
   const { setFile } = systemSlice.actions;
   dispatch(setFile({ file, index }));
+};
+
+export const updateFileList = (
+  prefix: { sharedId: number | null; path: string },
+  token: string,
+): AppThunk => (dispatch) => {
+  const { setFileList, setFileListOnLoading } = systemSlice.actions;
+
+  dispatch(setFileListOnLoading(true));
+  getFileList(prefix.path, token).then((resp) => {
+    if (resp.data) {
+      const fileList: File[] = resp.data.map((data) => {
+        return {
+          contentType: data.contentType,
+          name: data.name.replace(prefix.path, ''),
+          size: data.size,
+          lastModified: data.lastModified,
+          selected: false,
+        };
+      });
+      dispatch(setFileList(fileList));
+
+    } else {
+      dispatch(setFileList([]));
+    }
+
+  }).catch((error) => {
+    console.log(error);
+
+  }).finally(() => {
+    dispatch(setFileListOnLoading(false));
+  });
 };
 
 export const updateSharedFolderList = (token: string): AppThunk => (dispatch) => {
@@ -85,6 +123,7 @@ export const updateSharedFolderList = (token: string): AppThunk => (dispatch) =>
 export const selectBucket = (state: RootState) => state.system.bucket;
 export const selectPrefix = (state: RootState) => state.system.prefix;
 export const selectFileList = (state: RootState) => state.system.fileList;
+export const selectFileListOnLoading = (state: RootState) => state.system.fileListOnloading;
 export const selectSharedFolderList = (state: RootState) => state.system.sharedFolderList;
 
 export default systemSlice.reducer;

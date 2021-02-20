@@ -38,7 +38,7 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
   const doUploadFiles = () => {
     if (uploadInputEle.current) {
       if (uploadInputEle.current.files && uploadInputEle.current.files.length) {
-        FileService.uploadFiles(prefix, uploadInputEle.current.files);
+        FileService.uploadFiles(prefix.path, uploadInputEle.current.files);
         uploadInputEle.current.value = '';
       }
     }
@@ -49,7 +49,8 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
       dispatch(removeDialog());
 
       const files = fileList.filter((file) => file.selected);
-      const removeAllFiles = files.map((file) => removeFile(prefix, file.name, userProfile.token));
+      const removeAllFiles = files
+        .map((file) => removeFile(prefix.path, file.name, userProfile.token));
 
       Promise.all(removeAllFiles).then(() => { removeFileNext(); });
     };
@@ -69,19 +70,24 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
           </div>
           <div
             className={styles.icon}
-            onClick={() => { FileService.downloadFiles(prefix, fileList); }}
+            onClick={() => { FileService.downloadFiles(prefix.path, fileList); }}
           >
             <Download></Download>
           </div>
           <div className={styles.icon} onClick={showMoveFileDialog}>
             <Move></Move>
           </div>
-        </>
-        : null
+        </> : null
       }
       <div className={styles.icon}>
         <Upload onClick={uploadOnClick}></Upload>
-        <input ref={uploadInputEle} className={styles.uploadInput} type="file" multiple onChange={doUploadFiles}></input>
+        <input
+          ref={uploadInputEle}
+          className={styles.uploadInput}
+          type="file"
+          multiple
+          onChange={doUploadFiles}
+        ></input>
       </div>
     </div>
   );

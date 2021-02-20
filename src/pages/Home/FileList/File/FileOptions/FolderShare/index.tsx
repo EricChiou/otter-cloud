@@ -26,7 +26,7 @@ const FolderShare: FunctionComponent<Props> = ({ file, onClick }) => {
           folder={{
             name: file.name.slice(0, -1),
             data: {
-              prefix: prefix + file.name,
+              prefix: prefix.path + file.name,
             },
           }}
           close={() => { dispatch(removeDialog()); }}

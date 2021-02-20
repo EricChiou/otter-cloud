@@ -46,7 +46,7 @@ export const zhTW: Keys = {
   shareFolder: '共享資料夾',
   shareTo: '分享給',
   shared: '已分享',
-  canRead: '可讀取',
+  canRead: '僅讀取',
   canWrite: '可修改',
   permission: '權限',
   sharedFolder: '共享資料夾',

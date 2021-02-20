@@ -29,7 +29,7 @@ const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
     if (!FileService.isFile(file)) {
       const hasSharedFolder = sharedFolderList.find((sharedFolder) => (
         sharedFolder.ownerAcc === userProfile.acc &&
-        sharedFolder.prefix === prefix + file.name
+        sharedFolder.prefix === prefix.path + file.name
       ));
 
       icon = hasSharedFolder ? <FolderShared></FolderShared> : <FileFolder></FileFolder>;

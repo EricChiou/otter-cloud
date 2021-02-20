@@ -15,7 +15,7 @@ import styles from './style.module.scss';
 
 interface Props {
   file: File;
-};
+}
 
 const ShareLink: FunctionComponent<Props> = ({ file }) => {
   const prefix = useSelector(selectPrefix);
@@ -31,7 +31,7 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
       (expires.minutes * 60);
 
     getShareableLinkUrl(
-      prefix,
+      prefix.path,
       file.name,
       file.contentType,
       expiresSeconds,
@@ -42,35 +42,11 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
 
   }, [shareableLink, file, expires, prefix, userProfile]);
 
-  const changeDays = (value: number) => {
-    const newExpires = { ...expires };
-    newExpires.days = checkValueRange(newExpires.days + value, 7, 0);
-    checkExpires(newExpires);
-
-    setExpires(newExpires);
-  }
-
-  const changeHours = (value: number) => {
-    const newExpires = { ...expires };
-    newExpires.hours = checkValueRange(newExpires.hours + value, 23, 0);
-    checkExpires(newExpires);
-
-    setExpires(newExpires);
-  }
-
-  const changeMinutes = (value: number) => {
-    const newExpires = { ...expires };
-    newExpires.minutes = checkValueRange(newExpires.minutes + value, 59, 0);
-    checkExpires(newExpires);
-
-    setExpires(newExpires);
-  }
-
   const checkValueRange = (value: number, max: number, min: number): number => {
     return (value > max) ? max : ((value < min) ? min : value);
   };
 
-  const checkExpires = (newExpires: { days: number, hours: number, minutes: number }) => {
+  const checkExpires = (newExpires: { days: number; hours: number; minutes: number }) => {
     if (newExpires.days >= 7) {
       newExpires.days = 7;
       newExpires.hours = 0;
@@ -82,9 +58,37 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
       newExpires.hours = 0;
       newExpires.minutes = 1;
     }
-  }
+  };
 
-  const renderExpiresSelector = (value: number, unit: string, pressUp: () => void, pressDown: () => void) => {
+  const changeDays = (value: number) => {
+    const newExpires = { ...expires };
+    newExpires.days = checkValueRange(newExpires.days + value, 7, 0);
+    checkExpires(newExpires);
+
+    setExpires(newExpires);
+  };
+
+  const changeHours = (value: number) => {
+    const newExpires = { ...expires };
+    newExpires.hours = checkValueRange(newExpires.hours + value, 23, 0);
+    checkExpires(newExpires);
+
+    setExpires(newExpires);
+  };
+
+  const changeMinutes = (value: number) => {
+    const newExpires = { ...expires };
+    newExpires.minutes = checkValueRange(newExpires.minutes + value, 59, 0);
+    checkExpires(newExpires);
+
+    setExpires(newExpires);
+  };
+
+  const renderExpiresSelector = (
+    value: number,
+    unit: string,
+    pressUp: () => void, pressDown: () => void,
+  ) => {
     return (
       <div className={styles.expiresSelector}>
         <BaseButton
@@ -106,7 +110,7 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
         </BaseButton>
       </div>
     );
-  }
+  };
 
   return (
     <div className={styles.shareLinkBlock}>
@@ -117,7 +121,12 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
         <div ref={shareableLinkRef} className={styles.shareableLink}>
           {intl(keys.shareableLink, IntlType.perUpper)}:
           <BaseInput
-            style={{ width: 'calc(100% - 4px - 30px)', height: '24px', borderRadius: '4px 0 0 4px', verticalAlign: 'top' }}
+            style={{
+              width: 'calc(100% - 4px - 30px)',
+              height: '24px',
+              borderRadius: '4px 0 0 4px',
+              verticalAlign: 'top',
+            }}
             value={shareableLink}
             readonly={true}
           ></BaseInput>
@@ -165,7 +174,7 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
   );
 };
 
-export const showShareLinkDialog = (file: File): AppThunk => dispatch => {
+export const showShareLinkDialog = (file: File): AppThunk => (dispatch) => {
   dispatch(addDialog({
     component: <ShareLink file={file}></ShareLink>,
     closeUI: true,

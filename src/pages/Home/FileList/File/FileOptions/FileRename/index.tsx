@@ -34,17 +34,22 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     newFilename = e.target.value;
-  }
+  };
 
   const close = () => {
     dispatch(removeDialog());
-  }
+  };
+
+  const doRenameFailed = (errorMsg?: string) => {
+    const msg = errorMsg ? errorMsg : intl(keys.renameFailed);
+    dispatch(addMessage(msg, MessageType.warning));
+  };
 
   const doRename = () => {
     // console.log(newFilename);
     if (!newFilename) { return; }
 
-    renameFile(prefix, file.name, newFilename, userProfile.token).then(() => {
+    renameFile(prefix.path, file.name, newFilename, userProfile.token).then(() => {
       renameFileNext();
       close();
 
@@ -54,12 +59,6 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
       }
     });
   };
-
-  const doRenameFailed = (errorMsg?: string) => {
-    const msg = errorMsg ? errorMsg : intl(keys.renameFailed);
-    dispatch(addMessage(msg, MessageType.warning));
-  };
-
 
   const rename = () => {
     const component = (

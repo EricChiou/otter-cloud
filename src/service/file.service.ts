@@ -20,7 +20,7 @@ export class FileService {
           progress: 0,
           cancelToken: axios.CancelToken.source(),
           file: file,
-        }
+        };
         return task;
       });
 
@@ -41,7 +41,7 @@ export class FileService {
         progress: 0,
         cancelToken: axios.CancelToken.source(),
         contentType: file.contentType,
-      }
+      };
       return task;
     });
 
@@ -49,7 +49,7 @@ export class FileService {
   };
 
   public static readonly isFile = (
-    file: File | { contentType: string, name: string, size: number, lastModified: string }
+    file: File | { contentType: string; name: string; size: number; lastModified: string },
   ): boolean => {
     if (file.contentType || file.size) {
       return true;

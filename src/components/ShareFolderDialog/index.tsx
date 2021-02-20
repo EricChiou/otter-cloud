@@ -70,6 +70,13 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
     sharedAcc = e.target.value;
   };
 
+  const getPermissionLabel = (sharedFolder: Share): string => {
+    const targetPerms =
+      permissionOptions.find((permission) => (permission.value === sharedFolder.permission));
+
+    return targetPerms ? targetPerms.label : sharedFolder.permission;
+  };
+
   const renderShareFolderList = () => {
     return sharedFolderList
       .filter((sharedFolder) =>
@@ -83,6 +90,9 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
             <div className={styles.sharedBlock}>
               <span className={styles.sharedName}>
                 {sharedFolder.sharedName}, {sharedFolder.sharedAcc}
+              </span>
+              <span className={styles.sharedPerms}>
+                {getPermissionLabel(sharedFolder)}
               </span>
               <BaseButton
                 style={{ padding: '0', verticalAlign: 'middle' }}
@@ -112,7 +122,6 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
         ></BaseInput>
         <BaseSelect
           style={{ width: '75px', height: '28px', verticalAlign: 'middle' }}
-          // placeholder={intl(keys.permission, IntlType.firstUpper)}
           options={permissionOptions}
           defaultSelect={true}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => { permission = e.target.value; }}

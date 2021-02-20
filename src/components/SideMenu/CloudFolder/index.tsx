@@ -74,7 +74,7 @@ const CloudFolder: FunctionComponent<Props> = ({
   };
 
   const getFolderClassName = (folder: Folder): string => {
-    return prefix === folder.data.prefix ? ` ${styles.active}` : '';
+    return prefix.path === folder.data.prefix ? ` ${styles.active}` : '';
   };
 
   const getSubFoldersClassName = (): string => {

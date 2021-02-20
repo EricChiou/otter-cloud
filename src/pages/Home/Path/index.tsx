@@ -13,7 +13,7 @@ const Path: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
 
   const pathOnClick = (newPrefix: string) => {
-    if (prefix !== newPrefix) {
+    if (prefix.path !== newPrefix) {
       history.push({
         pathname: history.location.pathname,
         search: newPrefix ? `?prefix=${encodeURIComponent(newPrefix)}` : '',
@@ -29,31 +29,41 @@ const Path: FunctionComponent<{}> = () => {
   const renderPrefix = () => {
     let preMergePrefix = '';
 
-    return prefix.split('/').map((path, i) => {
+    return prefix.path.split('/').map((path, i) => {
       if (path) {
         const mergePrefix = `${preMergePrefix}${path}/`;
         preMergePrefix += `${path}/`;
         return (
           <span key={'path_' + i} className={styles.folder}>
-            <span className={styles.prefix} onClick={() => { pathOnClick(mergePrefix); }}>{path}</span>
+            <span
+              className={styles.prefix}
+              onClick={() => { pathOnClick(mergePrefix); }}
+            >
+              {path}
+            </span>
             <span className={styles.backslash}>/</span>
           </span>
         );
       }
       return null;
     });
-  }
+  };
 
   return (
     <div id={styles.path} onWheel={onWheel}>
       <span className={styles.folder}>
-        <span className={styles.prefix} onClick={() => { pathOnClick(''); }}>{intl(keys.myCloudStorge, IntlType.perUpper)}</span>
+        <span
+          className={styles.prefix}
+          onClick={() => { pathOnClick(''); }}
+        >
+          {intl(keys.myCloudStorge, IntlType.perUpper)}
+        </span>
         <span className={styles.backslash}>/</span>
       </span>
       {renderPrefix()}
       <CreateFolder></CreateFolder>
     </div>
   );
-}
+};
 
 export default Path;
