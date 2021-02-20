@@ -15,7 +15,7 @@ const FileShare: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
 
   const shareFile = () => {
-    console.log('Share File:', file);
+    // console.log('Share File:', file);
     dispatch(showShareLinkDialog(file));
 
     if (onClick) { onClick(); }

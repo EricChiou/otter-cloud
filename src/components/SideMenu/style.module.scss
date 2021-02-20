@@ -9,6 +9,6 @@
 
   @include breakpoint(l) {
     white-space: nowrap;
-    overflow: visible;
+    overflow-y: hidden;
   }
 }

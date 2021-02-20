@@ -1,14 +1,15 @@
-import React, { ChangeEvent, FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
+import React, { ChangeEvent, FunctionComponent, useRef, RefObject } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Folder } from '..';
+import { Folder } from '../SideMenu/CloudFolder';
 import { selectUserProfile } from 'src/store/user.slice';
-import { selectSharedFolderList } from 'src/store/system.slice';
+import { selectSharedFolderList, updateSharedFolderList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseInput, BaseButton, ButtonType, BaseTooltip, BaseSelect } from 'src/components/common';
 import { Add, Cancel } from 'src/components/icons';
-import { addSharedFolder } from 'src/api/shared';
-import { sharedFolderPermsType } from 'src/constants';
+import { addSharedFolder, removeSharedFolder } from 'src/api/shared';
+import { ApiResult, sharedFolderPermsType } from 'src/constants';
+import { Share } from 'src/vo/common';
 
 import styles from './style.module.scss';
 
@@ -18,8 +19,11 @@ interface Props {
 }
 
 const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
+  const dispatch = useDispatch();
   const sharedFolderList = useSelector(selectSharedFolderList);
   const userProfile = useSelector(selectUserProfile);
+  const onLoading = useRef(false);
+  const shareToRef: RefObject<HTMLDivElement> = useRef(null);
   let sharedAcc = '';
   let permission: string | sharedFolderPermsType = sharedFolderPermsType.read;
   const permissionOptions = [
@@ -28,12 +32,37 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
   ];
 
   const doAddSharedFolder = () => {
-    if (!sharedAcc || !permission) { return; }
+    if (onLoading.current || !sharedAcc || !permission) { return; }
 
+    onLoading.current = true;
     addSharedFolder(sharedAcc, folder.data.prefix, permission, userProfile.token).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
+      if (resp.status === ApiResult.Success && shareToRef.current) {
+        shareToRef.current.getElementsByTagName('input')[0].value = '';
+      }
+      dispatch(updateSharedFolderList(userProfile.token));
+
     }).catch((error) => {
       console.log(error);
+
+    }).finally(() => {
+      onLoading.current = false;
+    });
+  };
+
+  const doRemoveSharedFolder = (sharedFolder: Share) => {
+    if (onLoading.current) { return; }
+
+    onLoading.current = true;
+    removeSharedFolder(sharedFolder.id, userProfile.token).then((resp) => {
+      if (resp.status === ApiResult.Success && shareToRef.current) {
+        dispatch(updateSharedFolderList(userProfile.token));
+      }
+    }).catch((error) => {
+      console.log(error);
+
+    }).finally(() => {
+      onLoading.current = false;
     });
   };
 
@@ -58,6 +87,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
               <BaseButton
                 style={{ padding: '0', verticalAlign: 'middle' }}
                 type={ButtonType.danger}
+                onClick={() => { doRemoveSharedFolder(sharedFolder); }}
               >
                 <Cancel></Cancel>
               </BaseButton>
@@ -70,8 +100,10 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
   return (
     <div className={styles.shareFolder}>
       <div className={styles.header}>{intl(keys.shareFolder, IntlType.perUpper)}</div>
-      <div className={styles.target}>{folder.name}</div>
-      <div className={styles.shareTo}>
+      <BaseTooltip content={folder.name}>
+        <div className={styles.target}>{folder.name}</div>
+      </BaseTooltip>
+      <div ref={shareToRef} className={styles.shareTo}>
         {intl(keys.shareTo, IntlType.perUpper)}：<br />
         <BaseInput
           style={{ width: 'calc(100% - 75px - 36px)', height: '22px', verticalAlign: 'middle' }}
@@ -97,7 +129,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
           {renderShareFolderList()}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

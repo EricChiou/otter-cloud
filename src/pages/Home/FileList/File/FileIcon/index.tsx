@@ -1,13 +1,18 @@
 import React, { FunctionComponent } from 'react';
+import { useSelector } from 'react-redux';
+
 import { ViewType } from '../../';
 import {
   File as FileSvg, FileText, FileImage, FileAudio, FileVideo,
   FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,
+  FolderShared,
 } from 'src/components/icons';
 import { File } from 'src/vo/common';
 import { ContentType } from 'src/constants';
 import PreviewImg from './FileIconPreviewImg';
 import { FileService } from 'src/service';
+import { selectPrefix, selectSharedFolderList } from 'src/store/system.slice';
+import { selectUserProfile } from 'src/store/user.slice';
 
 interface Props {
   file: File;
@@ -15,11 +20,19 @@ interface Props {
 }
 
 const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
+  const userProfile = useSelector(selectUserProfile);
+  const prefix = useSelector(selectPrefix);
+  const sharedFolderList = useSelector(selectSharedFolderList);
 
   const renderIcon = () => {
     let icon = <FileSvg></FileSvg>;
     if (!FileService.isFile(file)) {
-      icon = <FileFolder></FileFolder>;
+      const hasSharedFolder = sharedFolderList.find((sharedFolder) => (
+        sharedFolder.ownerAcc === userProfile.acc &&
+        sharedFolder.prefix === prefix + file.name
+      ));
+
+      icon = hasSharedFolder ? <FolderShared></FolderShared> : <FileFolder></FileFolder>;
 
     } else if (file.contentType.indexOf(ContentType.text) > -1) {
       icon = <FileText></FileText>;

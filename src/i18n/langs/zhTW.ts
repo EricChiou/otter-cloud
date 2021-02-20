@@ -43,7 +43,7 @@ export const zhTW: Keys = {
   renameFailed: '重新命名失敗，請再試一次',
   moveTo: '移至',
   move: '移動',
-  shareFolder: '分享資料夾',
+  shareFolder: '共享資料夾',
   shareTo: '分享給',
   shared: '已分享',
   canRead: '可讀取',

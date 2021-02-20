@@ -18,7 +18,7 @@ export const store = configureStore({
         'user/setProfile',
         'system/setFileList',
         'system/setPrefix',
-        // 'system/setShareToList',
+        'system/setSharedFolderList',
       ],
     },
   }),

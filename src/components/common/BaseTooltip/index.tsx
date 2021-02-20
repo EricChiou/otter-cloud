@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useState, useRef, RefObject } from 'react';
+import React, { FunctionComponent, useState, useRef, RefObject, useEffect } from 'react';
 
-import { DeviceInfo, getDeviceInfo } from 'src/util/device-detector.util';
+import { getDeviceInfo } from 'src/util/device-detector.util';
 
 import styles from './style.module.scss';
 
@@ -12,52 +12,64 @@ interface Props {
 
 const BaseTooltip: FunctionComponent<Props> = ({ children, style, tooltipStyle, content }) => {
   const [show, setShow] = useState(false);
-  const [countDown, setCountDown] = useState<number | null>(null);
-  const toolTipRef: RefObject<HTMLDivElement> = useRef(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [deviceInfo, setDeviceInfo] = useState(getDeviceInfo());
+  const countDown = useRef<number | null>(null);
+  const toolTipRef: RefObject<HTMLDivElement> = useRef(null);
+
+  useEffect(() => {
+    const onResize = () => { setDeviceInfo(getDeviceInfo()); };
+    window.addEventListener('resize', onResize);
+
+    return () => { window.removeEventListener('resize', onResize); };
+  }, []);
 
   const clearCountDown = () => {
-    const deviceInfo: DeviceInfo | null = getDeviceInfo();
-    if (!deviceInfo || deviceInfo.mobile) { return; }
+    if (countDown.current) {
+      clearTimeout(countDown.current);
+      countDown.current = null;
+    }
 
-    if (countDown) { clearTimeout(countDown); }
     setShow(false);
   };
 
   const startCountDown = () => {
-    const deviceInfo: DeviceInfo | null = getDeviceInfo();
-    if (!deviceInfo || deviceInfo.mobile) { return; }
-
     clearCountDown();
-    setCountDown(window.setTimeout(() => {
+
+    countDown.current = window.setTimeout(() => {
       if (toolTipRef.current) {
         const clientRect = toolTipRef.current.getBoundingClientRect();
         setPosition({
           top: clientRect.top + toolTipRef.current.clientHeight,
-          left: clientRect.left + 5,
+          left: clientRect.left,
         });
       }
 
       setShow(true);
-    }, 500));
+    }, 500);
   };
 
   return (
-    <div
-      ref={toolTipRef}
-      className={styles.tooltip}
-      style={style}
-      onMouseEnter={startCountDown}
-      onMouseLeave={clearCountDown}
-    >
-      {children}
-      {show ?
+    <>
+      {deviceInfo && !deviceInfo.mobile ?
         <div
-          className={styles.dialog}
-          style={{ top: position.top, left: position.left, ...tooltipStyle }}
-        >{content}</div> : null
+          ref={toolTipRef}
+          className={styles.tooltip}
+          style={style}
+          onMouseEnter={startCountDown}
+          onMouseLeave={clearCountDown}
+        >
+          {children}
+          {show ?
+            <div
+              className={styles.dialog}
+              style={{ top: position.top, left: position.left, ...tooltipStyle }}
+            >{content}</div> : null
+          }
+        </div> :
+        <div style={style}>{children}</div>
       }
-    </div>
+    </>
   );
 };
 

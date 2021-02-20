@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
+import React, { FunctionComponent, useState, useEffect, useCallback, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -10,6 +10,8 @@ import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
 import { updateSharedFolderList, selectSharedFolderList } from 'src/store/system.slice';
+import SharedFolder from './SharedFolder';
+import { Share } from 'src/vo/common';
 
 import styles from './style.module.scss';
 
@@ -19,6 +21,21 @@ const SideMenu: FunctionComponent<{}> = () => {
   const userProfile = useSelector(selectUserProfile);
   const [folderList, setFolderList] = useState<Folder[]>([]);
   const sharedFolderList = useSelector(selectSharedFolderList);
+  const [expand, setExpand] = useState({
+    cloud: getDeviceInfo()?.mobile ? false : true,
+    shared: getDeviceInfo()?.mobile ? false : true,
+  });
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth < 1024) {
+        setExpand({ cloud: false, shared: false });
+      }
+    };
+    window.addEventListener('resize', onResize);
+
+    return () => { window.removeEventListener('resize', onResize); };
+  }, []);
 
   const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
@@ -58,23 +75,16 @@ const SideMenu: FunctionComponent<{}> = () => {
 
   }, [dispatch, userProfile]);
 
-  // const getSharedFolderList = (): Folder[] => {
-  //   return sharedFolderList
-  //     .filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc)
-  //     .map((sharedFolder) => ({
-  //       name: sharedFolder.prefix.slice(0, -1),
-  //       data: {
-  //         prefix: sharedFolder.prefix,
-  //       },
-  //     }));
-  // };
-
   const folderOnSelect = (ele: HTMLElement, folder: Folder) => {
     if (!ele) { return; }
     history.push({
       pathname: history.location.pathname,
       search: folder.data.prefix ? `?prefix=${encodeURIComponent(folder.data.prefix)}` : '',
     });
+  };
+
+  const sharedFolderOnSelect = (ele: HTMLElement, sharedfolder: Share) => {
+    console.log(ele, sharedfolder);
   };
 
   const createFolder = (folderName: string) => {
@@ -87,15 +97,38 @@ const SideMenu: FunctionComponent<{}> = () => {
     setFolderList(folders);
   };
 
+  const cloudExpandOnClick = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setExpand({
+      cloud: !expand.cloud,
+      shared: window.innerWidth > 1024 ? expand.shared : (!expand.cloud ? false : expand.shared),
+    });
+  };
+
+  const sharedExpandOnClick = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setExpand({
+      cloud: window.innerWidth > 1024 ? expand.cloud : (!expand.shared ? false : expand.cloud),
+      shared: !expand.shared,
+    });
+  };
+
   return (
     <div id={styles.sideMenu}>
       <CloudFolder
         folderList={folderList}
         sharedFolderList={sharedFolderList}
-        defaultExpand={getDeviceInfo()?.mobile ? false : true}
+        expand={expand.cloud}
+        expandOnClick={cloudExpandOnClick}
         onSelect={folderOnSelect}
         createFolder={createFolder}
       ></CloudFolder>
+      <SharedFolder
+        sharedFolderList={sharedFolderList}
+        expand={expand.shared}
+        expandOnClick={sharedExpandOnClick}
+        onSelect={sharedFolderOnSelect}
+      ></SharedFolder>
     </div>
   );
 };

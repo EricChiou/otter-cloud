@@ -8,6 +8,7 @@
     height: 35px;
     font-size: 20px;
     line-height: 35px;
+    text-align: left;
     color: theme(white);
     background-color: theme(blue);
   }
@@ -16,6 +17,9 @@
     margin-top: 2px;
     padding: 0 5px;
     font-size: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .shareTo {
