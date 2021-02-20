@@ -16,11 +16,16 @@ interface Props {
   onSelect: (ele: HTMLElement, sharedfolder: Share) => void;
 }
 
-const SharedFolder: FunctionComponent<Props> = ({ sharedFolderList, expand, expandOnClick }) => {
+const SharedFolder: FunctionComponent<Props> = ({
+  sharedFolderList,
+  expand,
+  expandOnClick,
+  onSelect,
+}) => {
   const userProfile = useSelector(selectUserProfile);
 
-  const sharedFolderOnSelect = (e: MouseEvent, sharedFolder: Share) => {
-    console.log(e, sharedFolder);
+  const sharedFolderOnSelect = (e: MouseEvent<HTMLDivElement>, sharedFolder: Share) => {
+    onSelect(e.currentTarget, sharedFolder);
   };
 
   const renderSharedFolder = () => {

@@ -46,16 +46,6 @@ const FikeList: FunctionComponent<{}> = () => {
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
-  // const prePrefix: MutableRefObject<string> = useRef('');
-
-  // const refreshFileList = useCallback(() => {
-  //   if (prePrefix.current !== prefix.path) {
-  //     prePrefix.current = prefix.path;
-  //   }
-
-  //   updateFileList(prefix, userProfile.token);
-
-  // }, [prefix, userProfile]);
 
   useEffect(() => {
     if (!StatusService.isLogin()) { return; }
@@ -127,11 +117,15 @@ const FikeList: FunctionComponent<{}> = () => {
   };
 
   const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
+    let search = (prefix.path + file.name) ?
+      `?prefix=${encodeURIComponent(prefix.path + file.name)}` : '';
+    search += prefix.sharedId ? `&sharedId=${prefix.sharedId}` : '';
+
+
     if (!FileService.isFile(file)) {
       history.push({
         pathname: history.location.pathname,
-        search: (prefix.path + file.name) ?
-          `?prefix=${encodeURIComponent(prefix.path + file.name)}` : '',
+        search: search,
       });
 
     } else {

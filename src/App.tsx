@@ -39,7 +39,8 @@ const App = () => {
     const search = getSearch();
     if (search.prefix) {
       if (search.prefix !== prefix.path) {
-        dispatch(setPrefix(null, search.prefix));
+        const sharedId = parseInt(search.sharedId);
+        dispatch(setPrefix(sharedId ? sharedId : null, search.prefix));
       }
 
     } else if (prefix.path !== '') {

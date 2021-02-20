@@ -13,10 +13,13 @@ const Path: FunctionComponent<{}> = () => {
   const prefix = useSelector(selectPrefix);
 
   const pathOnClick = (newPrefix: string) => {
+    let search = newPrefix ? `?prefix=${encodeURIComponent(newPrefix)}` : '';
+    search += prefix.sharedId ? `&sharedId=${prefix.sharedId}` : '';
+
     if (prefix.path !== newPrefix) {
       history.push({
         pathname: history.location.pathname,
-        search: newPrefix ? `?prefix=${encodeURIComponent(newPrefix)}` : '',
+        search: search,
       });
     }
   };
@@ -28,7 +31,6 @@ const Path: FunctionComponent<{}> = () => {
 
   const renderPrefix = () => {
     let preMergePrefix = '';
-
     return prefix.path.split('/').map((path, i) => {
       if (path) {
         const mergePrefix = `${preMergePrefix}${path}/`;
@@ -54,9 +56,12 @@ const Path: FunctionComponent<{}> = () => {
       <span className={styles.folder}>
         <span
           className={styles.prefix}
-          onClick={() => { pathOnClick(''); }}
+          onClick={() => { if (!prefix.sharedId) { pathOnClick(''); } }}
         >
-          {intl(keys.myCloudStorge, IntlType.perUpper)}
+          {prefix.sharedId ?
+            intl(keys.shareFolder, IntlType.perUpper) :
+            intl(keys.myCloudStorge, IntlType.perUpper)
+          }
         </span>
         <span className={styles.backslash}>/</span>
       </span>

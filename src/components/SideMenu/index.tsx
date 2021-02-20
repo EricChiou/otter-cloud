@@ -84,7 +84,12 @@ const SideMenu: FunctionComponent<{}> = () => {
   };
 
   const sharedFolderOnSelect = (ele: HTMLElement, sharedfolder: Share) => {
-    console.log(ele, sharedfolder);
+    if (!ele) { return; }
+    history.push({
+      pathname: history.location.pathname,
+      search: sharedfolder ?
+        `?prefix=${encodeURIComponent(sharedfolder.prefix)}&sharedId=${sharedfolder.id}` : '',
+    });
   };
 
   const createFolder = (folderName: string) => {
