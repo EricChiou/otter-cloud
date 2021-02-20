@@ -23,6 +23,23 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   const prefix = useSelector(selectPrefix);
   const userProfile = useSelector(selectUserProfile);
 
+  const deleteFolder = () => {
+    // console.log('deleteFolder', file);
+    dispatch(removeDialog());
+    removeFolder(prefix.path + file.name, userProfile.token).then(() => { removeFileNext(); });
+  };
+
+  const deleteFile = () => {
+    // console.log('Delete File', file);
+    if (FileService.isFile(file)) {
+      dispatch(removeDialog());
+      removeFile(prefix.path, file.name, userProfile.token).then(() => { removeFileNext(); });
+
+    } else {
+      deleteFolder();
+    }
+  };
+
   const showDeleteWarning = () => {
     const confirm = deleteFile;
     const cancel = () => { dispatch(removeDialog()); };
@@ -33,24 +50,7 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
     if (onClick) { onClick(); }
   };
 
-  const deleteFile = () => {
-    // console.log('Delete File', file);
-    if (FileService.isFile(file)) {
-      dispatch(removeDialog());
-      removeFile(prefix, file.name, userProfile.token).then(() => { removeFileNext(); });
-
-    } else {
-      deleteFolder();
-    }
-  };
-
-  const deleteFolder = () => {
-    // console.log('deleteFolder', file);
-    dispatch(removeDialog());
-    removeFolder(prefix + file.name, userProfile.token).then(() => { removeFileNext(); });
-  }
-
   return <Delete onClick={showDeleteWarning}></Delete>;
-}
+};
 
 export default FileDelete;

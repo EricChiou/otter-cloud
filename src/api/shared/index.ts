@@ -29,6 +29,24 @@ export const addSharedFolder = (
   });
 };
 
+export const removeSharedFolder = (sharedId: number, token: string): Promise<RespVo> => {
+  const body = { id: sharedId };
+
+  return new Promise((resolve, reject) => {
+    post(
+      ApiUrl.REMOVE_SHARED_FOLDER_URL,
+      body,
+      undefined,
+      token,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
 export const getSharedFolderList = (token: string): Promise<GetSharedFolderResVo> => {
   return new Promise((resolve, reject) => {
     get(

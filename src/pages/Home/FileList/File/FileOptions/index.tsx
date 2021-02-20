@@ -6,6 +6,7 @@ import FileRename from './FileRename';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
+import FolderShare from './FolderShare';
 import { ViewType } from '../../';
 import { ContentType } from 'src/constants';
 import { FileService } from 'src/service';
@@ -33,7 +34,7 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
 
       if (showOptions) {
         setShowOptions(false);
-      };
+      }
     };
     window.addEventListener('click', onClick);
 
@@ -50,16 +51,16 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
       case ViewType.icon:
         return styles.iconOptions;
     }
-  }
+  };
 
-  const getOptionsStyle = (): Object => {
+  const getOptionsStyle = (): object => {
     switch (viewType) {
       case ViewType.list:
         return {};
 
       case ViewType.icon:
         if (!FileService.isFile(file)) {
-          return { width: '26px' };
+          return { width: '52px' };
 
         } else if (file.contentType.indexOf(ContentType.text) > -1) {
           return { width: '104px' };
@@ -90,7 +91,7 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
         }
         return { width: '78px' };
     }
-  }
+  };
 
   const showOptionOnClick = () => {
     setShowOptions(!showOptions);
@@ -108,9 +109,9 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
           <FileRename file={file} onClick={optionOnClick}></FileRename>
           <FilePreview file={file} onClick={optionOnClick}></FilePreview>
           <FileShare file={file} onClick={optionOnClick}></FileShare>
+          <FolderShare file={file} onClick={optionOnClick}></FolderShare>
           <FileDelete file={file} onClick={optionOnClick}></FileDelete>
-        </div>
-        : null
+        </div> : null
       }
     </span >
   );

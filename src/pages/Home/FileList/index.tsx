@@ -2,10 +2,8 @@ import React, {
   FunctionComponent,
   useEffect,
   RefObject,
-  MutableRefObject,
   useRef,
   useState,
-  useCallback,
   MouseEvent,
 } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -14,14 +12,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectPrefix,
   selectFileList,
-  setFileList,
+  selectFileListOnLoading,
+  updateFileList,
   setFile,
 } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import FileComponent from './File';
 import { File } from 'src/vo/common';
 import FileListMenu from './FileListMenu';
-import { getFileList } from 'src/api/file';
 import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file-shared';
 import Header from './Header';
@@ -44,61 +42,39 @@ const FikeList: FunctionComponent<{}> = () => {
   const userProfile = useSelector(selectUserProfile);
   const fileListRef: RefObject<HTMLDivElement> = useRef(null);
   const fileList = useSelector(selectFileList);
+  const fileListOnLoading = useSelector(selectFileListOnLoading);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
-  const onLoadingRef: RefObject<HTMLDivElement> = useRef(null);
-  const prePrefix: MutableRefObject<string> = useRef('');
+  // const prePrefix: MutableRefObject<string> = useRef('');
 
-  const refreshFileList = useCallback(() => {
-    if (prePrefix.current !== prefix) {
-      onLoadingRef.current?.classList.add(styles.active);
-      prePrefix.current = prefix;
-    }
+  // const refreshFileList = useCallback(() => {
+  //   if (prePrefix.current !== prefix.path) {
+  //     prePrefix.current = prefix.path;
+  //   }
 
-    getFileList(prefix, userProfile.token).then((resp) => {
-      if (resp.data) {
-        const fileList: File[] = resp.data.map((data) => {
-          return {
-            contentType: data.contentType,
-            name: data.name.replace(prefix, ''),
-            size: data.size,
-            lastModified: data.lastModified,
-            selected: false,
-          };
-        });
-        dispatch(setFileList(fileList));
-      } else {
-        dispatch(setFileList([]));
-      }
+  //   updateFileList(prefix, userProfile.token);
 
-    }).catch((error) => {
-      console.log(error);
-
-    }).finally(() => {
-      onLoadingRef.current?.classList.remove(styles.active);
-    });
-
-  }, [prefix, userProfile, dispatch]);
+  // }, [prefix, userProfile]);
 
   useEffect(() => {
     if (!StatusService.isLogin()) { return; }
 
-    refreshFileList();
+    dispatch(updateFileList(prefix, userProfile.token));
     const subscribe = subFileShared((data) => {
       switch (data.action) {
         case fileSharedActs.uploadFile:
         case fileSharedActs.removeFile:
         case fileSharedActs.renameFile:
         case fileSharedActs.moveFiles:
-          refreshFileList();
+          dispatch(updateFileList(prefix, userProfile.token));
           break;
       }
     });
 
-    return () => { subscribe.unsubscribe(); }
+    return () => { subscribe.unsubscribe(); };
 
-  }, [refreshFileList]);
+  }, [dispatch, userProfile, prefix]);
 
   useEffect(() => {
     const result = fileList.find((file) => file.selected);
@@ -117,22 +93,6 @@ const FikeList: FunctionComponent<{}> = () => {
       case ViewType.icon:
         setViewType(ViewType.list);
         break;
-    }
-  }
-
-  const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
-    if (!FileService.isFile(file)) {
-      history.push({
-        pathname: history.location.pathname,
-        search: prefix + file.name ? `?prefix=${encodeURIComponent(prefix + file.name)}` : '',
-      });
-
-    } else {
-      const file = Object.assign({}, fileList[index]);
-      file.selected = !file.selected;
-      dispatch(setFile(file, index));
-
-      rangeSelection(e, file, index);
     }
   };
 
@@ -164,7 +124,24 @@ const FikeList: FunctionComponent<{}> = () => {
         dispatch(setFile(targetFile, i));
       }
     }
-  }
+  };
+
+  const fileOnSelected = (e: MouseEvent, file: File, index: number) => {
+    if (!FileService.isFile(file)) {
+      history.push({
+        pathname: history.location.pathname,
+        search: (prefix.path + file.name) ?
+          `?prefix=${encodeURIComponent(prefix.path + file.name)}` : '',
+      });
+
+    } else {
+      const file = Object.assign({}, fileList[index]);
+      file.selected = !file.selected;
+      dispatch(setFile(file, index));
+
+      rangeSelection(e, file, index);
+    }
+  };
 
   const getFilesClassName = (): string => {
     switch (viewType) {
@@ -203,9 +180,11 @@ const FikeList: FunctionComponent<{}> = () => {
         <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
         <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
       </div>
-      <div ref={onLoadingRef} className={`${styles.onLoadingContainer}`}>
-        <img className={styles.onLoading} src={loading} alt="loading"></img>
-      </div>
+      {fileListOnLoading ?
+        <div className={`${styles.onLoadingContainer}`}>
+          <img className={styles.onLoading} src={loading} alt="loading"></img>
+        </div> : null
+      }
     </div>
   );
 };

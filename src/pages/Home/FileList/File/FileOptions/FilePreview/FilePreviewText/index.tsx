@@ -29,7 +29,7 @@ const FilePreviewText: FunctionComponent<Props> = ({ file, close }) => {
   }, []);
 
   useEffect(() => {
-    getPreviewUrl(prefix, file.name, userProfile.token, progress).then((resp) => {
+    getPreviewUrl(prefix.path, file.name, userProfile.token, progress).then((resp) => {
       setTextBlob(resp);
     });
   }, [file, prefix, userProfile, progress]);

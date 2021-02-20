@@ -8,6 +8,7 @@
     height: 35px;
     font-size: 20px;
     line-height: 35px;
+    text-align: left;
     color: theme(white);
     background-color: theme(blue);
   }
@@ -16,6 +17,9 @@
     margin-top: 2px;
     padding: 0 5px;
     font-size: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .shareTo {
@@ -46,10 +50,20 @@
 
         .sharedName {
           display: inline-block;
-          width: calc(100% - 26px);
+          width: calc(100% - 55px - 26px);
           text-overflow: ellipsis;
           vertical-align: middle;
           overflow: hidden;
+        }
+
+        .sharedPerms {
+          display: inline-block;
+          width: 54px;
+          text-align: center;
+          text-overflow: ellipsis;
+          vertical-align: middle;
+          overflow: hidden;
+          border-left: 1px solid theme(gray, light);
         }
 
         svg {

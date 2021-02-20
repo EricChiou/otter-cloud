@@ -1,4 +1,12 @@
-import React, { FunctionComponent, useState, useEffect, RefObject, useRef, KeyboardEvent, ChangeEvent } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  RefObject,
+  useRef,
+  KeyboardEvent,
+  ChangeEvent,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectPrefix } from 'src/store/system.slice';
@@ -31,14 +39,26 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
         ele = ele.parentElement;
       }
       setIsCreating(false);
-    }
+    };
 
-    window.addEventListener('click', onClick)
+    window.addEventListener('click', onClick);
 
     return () => {
       window.removeEventListener('click', onClick);
     };
   }, [isCreating]);
+
+  const createFolder = (e?: MouseEvent) => {
+    if (e) { e.stopPropagation(); }
+    if (!inputValue) { return; }
+
+    const search = prefix.path + inputValue + '/';
+    history.push({
+      pathname: history.location.pathname,
+      search: search ? `?prefix=${encodeURIComponent(search)}` : '',
+    });
+    setIsCreating(false);
+  };
 
   const createOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') { return; }
@@ -50,18 +70,6 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
     inputValue = e.currentTarget.value;
   };
 
-  const createFolder = (e?: MouseEvent) => {
-    if (e) { e.stopPropagation(); }
-    if (!inputValue) { return; }
-
-    const search = prefix + inputValue + '/';
-    history.push({
-      pathname: history.location.pathname,
-      search: search ? `?prefix=${encodeURIComponent(search)}` : '',
-    });
-    setIsCreating(false);
-  }
-
   return (
     <span ref={createFolderRef} className={styles.createFolder} onClick={createOnClick}>
       {isCreating ?
@@ -70,8 +78,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
           <BaseButton style={{ height: '23px' }} onClick={createFolder}>
             <Check></Check>
           </BaseButton>
-        </div>
-        :
+        </div> :
         <CreateFolder></CreateFolder>
       }
     </span>

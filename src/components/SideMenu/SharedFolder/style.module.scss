@@ -1,7 +1,7 @@
 @import 'src/assets/css/theme.scss';
 @import 'src/assets/css/rwd.scss';
 
-.cloudContainer {
+.sharedContainer {
   position: relative;
   display: block;
   color: theme(black, light);
@@ -10,17 +10,8 @@
     display: inline-block;
   }
 
-  .cloud,
-  .folder {
-    cursor: pointer;
-
-    &:hover {
-      background-color: theme(pink, light);
-    }
-
-    &:active {
-      background-color: theme(pink);
-    }
+  .sharedRoot,
+  .sharedFolder {
 
     .expand,
     .icon,
@@ -46,13 +37,12 @@
     }
   }
 
-  .cloud {
+  .sharedRoot {
     padding: 4px 8px;
     height: 26px;
 
     .expand {
       padding: 2px;
-      cursor: default;
 
       svg {
         width: 22px;
@@ -69,12 +59,25 @@
 
     .text {
       width: calc(100% - 4px - 22px - 5px - 26px);
+      cursor: default;
     }
   }
 
-  .folder {
+  .sharedFolderContainer {
+    position: fixed;
+    top: 75px;
+    right: 0;
+    left: 0;
+    background-color: theme(white, deep);
+    border-bottom: 1px solid theme(gray);
+    overflow: hidden;
+    z-index: 99;
+  }
+
+  .sharedFolder {
     padding: 2px 8px 2px 48px;
     height: 26px;
+    cursor: pointer;
 
     .icon {
       svg {
@@ -84,50 +87,7 @@
     }
 
     .text {
-      width: calc(100% - 5px - 22px - 26px);
-    }
-
-    .share {
-      display: inline-block;
-      width: 26px;
-      height: 26px;
-      vertical-align: middle;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.15);
-      }
-
-      svg {
-        display: block;
-        margin: 2px;
-        width: 22px;
-        height: 22px;
-      }
-    }
-  }
-
-  .folders {
-    overflow: hidden;
-
-    @include breakpoint(l) {
-      position: fixed;
-      top: 75px;
-      right: 0;
-      left: 0;
-      background-color: theme(white, deep);
-      z-index: 99;
-    }
-  }
-
-  .boxShadow {
-    border-bottom: 1px solid theme(gray);
-  }
-
-  .active {
-    background-color: theme(pink);
-
-    &:hover {
-      background-color: theme(pink);
+      width: calc(100% - 5px - 22px);
     }
   }
 }

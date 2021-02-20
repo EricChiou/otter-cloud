@@ -66,7 +66,7 @@ const MoveFile: FunctionComponent<{}> = () => {
 
   const move = () => {
     const filenames = fileList.filter((file) => (file.selected)).map((file) => (file.name));
-    moveFiles(prefix, targetPrefix, filenames, userProfile.token).then(() => {
+    moveFiles(prefix.path, targetPrefix, filenames, userProfile.token).then(() => {
       moveFilesNext();
     });
 
@@ -114,12 +114,12 @@ const MoveFile: FunctionComponent<{}> = () => {
       </div>
       {renderFolderList()}
       <div className={styles.footer}>
-        <BaseButton disabled={prefix === targetPrefix} onClick={move}>
+        <BaseButton disabled={prefix.path === targetPrefix} onClick={move}>
           {intl(keys.move, IntlType.firstUpper)}
         </BaseButton>
       </div>
     </div>
   );
-}
+};
 
 export default MoveFile;

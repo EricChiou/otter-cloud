@@ -57,7 +57,7 @@ const FileComponent: FunctionComponent<Props> = ({
   const convertFileLastModified = (): string => {
     try {
       const convertTime = (num: number): string => {
-        return num < 10 ? `0${num}` : `${num}`
+        return num < 10 ? `0${num}` : `${num}`;
       };
 
       const dateTime = new Date(file.lastModified);
@@ -66,7 +66,7 @@ const FileComponent: FunctionComponent<Props> = ({
       const hour = convertTime(dateTime.getHours());
       const minute = convertTime(dateTime.getMinutes());
 
-      return `${dateTime.getFullYear()}-${month}-${date} ${hour}:${minute}`
+      return `${dateTime.getFullYear()}-${month}-${date} ${hour}:${minute}`;
 
     } catch (error) {
       console.error(error);
@@ -80,13 +80,13 @@ const FileComponent: FunctionComponent<Props> = ({
     const task: TaskData = {
       id: `${timeStamp}_${0}`,
       type: TaskType.download,
-      prefix,
+      prefix: prefix.path,
       fileName: file.name,
       status: TaskStatus.waiting,
       progress: 0,
       cancelToken: axios.CancelToken.source(),
       contentType: file.contentType,
-    }
+    };
 
     addTask([task]);
   };
@@ -150,6 +150,6 @@ const FileComponent: FunctionComponent<Props> = ({
       }
     </>
   );
-}
+};
 
 export default FileComponent;

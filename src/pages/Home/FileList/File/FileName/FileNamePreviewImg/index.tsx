@@ -34,7 +34,7 @@ const FileNamePreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
     if (cancelToken.current) { cancelToken.current.cancel(); }
     cancelToken.current = axios.CancelToken.source();
     getPreviewUrl(
-      prefix,
+      prefix.path,
       file.name,
       userProfile.token,
       progress,
