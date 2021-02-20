@@ -7,6 +7,7 @@ import React,
   RefObject,
 } from 'react';
 import { useSelector } from 'react-redux';
+import axios, { CancelTokenSource } from 'axios';
 
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
@@ -22,18 +23,41 @@ interface Props {
   file: File;
 }
 
-const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
+const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const url = useRef('');
   const onLoading = useRef(false);
   const retry = useRef(0);
   const imgRef: RefObject<HTMLImageElement> = useRef(null);
+  const cancelToken = useRef<CancelTokenSource | null>(null);
+
+  const setOnLoading = (isOnloading: boolean) => {
+    onLoading.current = isOnloading;
+
+    if (imgRef.current) {
+      if (isOnloading) {
+        imgRef.current.src = loading;
+        imgRef.current.classList.add(styles.onLoading);
+
+      } else {
+        imgRef.current.classList.remove(styles.onLoading);
+      }
+    }
+  };
 
   const getPreview = useCallback(() => {
     setOnLoading(true);
 
-    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
+    if (cancelToken.current) { cancelToken.current.cancel(); }
+    cancelToken.current = axios.CancelToken.source();
+    getPreviewUrl(
+      prefix,
+      file.name,
+      userProfile.token,
+      undefined,
+      cancelToken.current,
+    ).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
       url.current = urlCreator.createObjectURL(resp);
 
@@ -65,23 +89,12 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
       }
     });
 
-    return () => { subscribe.unsubscribe(); };
+    return () => {
+      subscribe.unsubscribe();
+      if (cancelToken.current) { cancelToken.current.cancel(); }
+    };
 
   }, [getPreview]);
-
-  const setOnLoading = (isOnloading: boolean) => {
-    onLoading.current = isOnloading;
-
-    if (imgRef.current) {
-      if (isOnloading) {
-        imgRef.current.src = loading;
-        imgRef.current.classList.add(styles.onLoading);
-
-      } else {
-        imgRef.current.classList.remove(styles.onLoading);
-      }
-    }
-  };
 
   const onError = () => {
     if (url.current && !onLoading.current && retry.current < 3) {
@@ -97,6 +110,6 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }) => {
       onError={onError}
     ></img>
   );
-}
+};
 
 export default FileIconPreviewImg;

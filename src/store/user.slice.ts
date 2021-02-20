@@ -5,6 +5,7 @@ import { UserProfile } from 'src/vo/common';
 import { Cookie } from 'src/util/cookie.util';
 import { CookieKeys } from 'src/constants';
 import { UserService } from 'src/service/user-service';
+import { setFileList } from './system.slice';
 
 interface UseState {
   profile: UserProfile;
@@ -14,12 +15,9 @@ interface UseState {
 const initialState: UseState = {
   profile: {
     token: '',
-    id: null,
     acc: '',
     name: '',
     roleCode: '',
-    roleName: '',
-    bucketName: '',
     exp: 0,
   },
   lang: UserService.getLangFrCookie(),
@@ -38,32 +36,30 @@ const userSlice = createSlice({
   },
 });
 
-export const setUserProfile = (userProfile: UserProfile): AppThunk => dispatch => {
+export const setUserProfile = (userProfile: UserProfile): AppThunk => (dispatch) => {
   const { setProfile } = userSlice.actions;
   dispatch(setProfile(userProfile));
 };
 
-export const setLang = (lang: string): AppThunk => dispatch => {
+export const setLang = (lang: string): AppThunk => (dispatch) => {
   const { setLang } = userSlice.actions;
   dispatch(setLang(lang));
 };
 
-export const logout = (): AppThunk => dispatch => {
+export const logout = (): AppThunk => (dispatch) => {
   Cookie.remove(CookieKeys.TOKEN);
 
   const userProfile: UserProfile = {
     token: '',
-    id: null,
     acc: '',
     name: '',
     roleCode: '',
-    roleName: '',
-    bucketName: '',
     exp: 0,
   };
   const { setProfile } = userSlice.actions;
+  dispatch(setFileList([]));
   dispatch(setProfile(userProfile));
-}
+};
 
 export const selectUserProfile = (state: RootState) => state.user.profile;
 export const selectLang = (state: RootState) => state.user.lang;

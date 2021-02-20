@@ -1,37 +1,35 @@
 import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { intl, keys, IntlType } from 'src/i18n';
-import { Cloud, Folder, CreateFolder } from 'src/components/icons';
-import ItemComponent, { Item } from './item';
+import CloudFolder, { Folder } from './CloudFolder';
 import { getFileList } from 'src/api/file';
 import { selectUserProfile } from 'src/store/user.slice';
 import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
+import { updateSharedFolderList, selectSharedFolderList } from 'src/store/system.slice';
 
 import styles from './style.module.scss';
 
 const SideMenu: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const userProfile = useSelector(selectUserProfile);
-  const [folderList, setFolderList] = useState<Item[]>([]);
+  const [folderList, setFolderList] = useState<Folder[]>([]);
+  const sharedFolderList = useSelector(selectSharedFolderList);
 
   const refreshFileList = useCallback(() => {
     if (!StatusService.isLogin()) { return; }
 
-    getFileList("", userProfile.token).then((resp) => {
-      const newFolderList: Item[] = resp.data
+    getFileList('', userProfile.token).then((resp) => {
+      const newFolderList: Folder[] = resp.data
         .filter((data) => (!FileService.isFile(data)))
         .map((data) => {
           return {
-            name: data.name.substring(0, data.name.length - 1), // remove '/' at last of name
-            data: {
-              bucketName: userProfile.bucketName,
-              prefix: data.name,
-            },
+            name: data.name.slice(0, -1), // remove '/' at last of name
+            data: { prefix: data.name },
           };
         });
 
@@ -48,11 +46,30 @@ const SideMenu: FunctionComponent<{}> = () => {
       if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
     });
 
-    return () => { subscribe.unsubscribe(); }
+    return () => { subscribe.unsubscribe(); };
 
   }, [refreshFileList]);
 
-  const folderOnSelect = (ele: HTMLElement, folder: Item) => {
+  // get share folder
+  useEffect(() => {
+    if (!StatusService.isLogin()) { return; }
+
+    dispatch(updateSharedFolderList(userProfile.token));
+
+  }, [dispatch, userProfile]);
+
+  // const getSharedFolderList = (): Folder[] => {
+  //   return sharedFolderList
+  //     .filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc)
+  //     .map((sharedFolder) => ({
+  //       name: sharedFolder.prefix.slice(0, -1),
+  //       data: {
+  //         prefix: sharedFolder.prefix,
+  //       },
+  //     }));
+  // };
+
+  const folderOnSelect = (ele: HTMLElement, folder: Folder) => {
     if (!ele) { return; }
     history.push({
       pathname: history.location.pathname,
@@ -61,12 +78,9 @@ const SideMenu: FunctionComponent<{}> = () => {
   };
 
   const createFolder = (folderName: string) => {
-    const data: Item = {
+    const data: Folder = {
       name: folderName,
-      data: {
-        bucketName: userProfile.bucketName,
-        prefix: folderName + '/'
-      }
+      data: { prefix: folderName + '/' },
     };
 
     const folders = [...folderList, data];
@@ -75,20 +89,13 @@ const SideMenu: FunctionComponent<{}> = () => {
 
   return (
     <div id={styles.sideMenu}>
-      <ItemComponent
-        ItemIcon={Cloud}
-        item={{
-          name: intl(keys.myCloudStorge, IntlType.perUpper),
-          data: { bucketName: userProfile.bucketName, prefix: '' },
-        }}
-        SubItemIcon={Folder}
-        subItems={folderList}
+      <CloudFolder
+        folderList={folderList}
+        sharedFolderList={sharedFolderList}
         defaultExpand={getDeviceInfo()?.mobile ? false : true}
         onSelect={folderOnSelect}
-        showCreateFolder={true}
-        CreateItemIcon={CreateFolder}
-        createItem={createFolder}
-      ></ItemComponent>
+        createFolder={createFolder}
+      ></CloudFolder>
     </div>
   );
 };

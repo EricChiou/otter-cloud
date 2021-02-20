@@ -13,7 +13,7 @@ export interface DialogData {
   defaultSize?: boolean;
   blockStyle?: object;
   callback?: () => void;
-};
+}
 
 const Dialog: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -35,17 +35,17 @@ const Dialog: FunctionComponent<{}> = () => {
 
   }, [buffer, defaultSize]);
 
+  const close = () => {
+    if (buffer[0].callback) { buffer[0].callback(); }
+    dispatch(removeDialog());
+  };
+
   const closeByClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (buffer.length && buffer[0].closeByClick) {
       close();
     }
-  }
-
-  const close = () => {
-    if (buffer[0].callback) { buffer[0].callback(); }
-    dispatch(removeDialog());
-  }
+  };
 
   return (
     <>
@@ -61,13 +61,11 @@ const Dialog: FunctionComponent<{}> = () => {
               {buffer[0].closeUI ?
                 <div className={styles.close}>
                   <Close onClick={close}></Close>
-                </div>
-                : null
+                </div> : null
               }
             </div>
           </div>
-        </div>
-        : null
+        </div> : null
       }
     </>
   );

@@ -1,3 +1,5 @@
+import { CancelTokenSource } from 'axios';
+
 import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob, put } from '../request';
 import {
   GetFileListReqVo,
@@ -8,7 +10,7 @@ import {
   GetShareableLinkResVo,
   RenameFileReqVo,
   MoveFilesReqVo,
-} from './interface';
+} from './vo';
 import { ApiUrl, ApiResult, Config } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
@@ -20,7 +22,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
     get(
       ApiUrl.GET_FILE_LIST,
       search,
-      token
+      token,
     ).then((resp) => {
       resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
@@ -62,18 +64,22 @@ export const getPreviewUrl = (
   prefix: string,
   fileName: string,
   token: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
 ): Promise<Blob> => {
 
   const search = {
     fileName: encodeURIComponent(fileName),
     prefix: encodeURIComponent(prefix),
-  }
+  };
 
   return new Promise((resolve, reject) => {
     getBlob(
       ApiUrl.GET_PREVIEW_URL,
       search,
-      token
+      token,
+      progress,
+      cancelToken,
     ).then((resp: RespVo | Blob) => {
       if (resp instanceof Blob) {
         resolve(resp);
@@ -91,12 +97,12 @@ export const getPreviewUrl = (
 export const downloadFile = (
   task: TaskData,
   token: string,
-  progress?: (event: ProgressEvent<EventTarget>) => void
+  progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<Blob> => {
 
   const body: DownloadFileReqVo = {
     prefix: task.prefix,
-    fileName: task.fileName
+    fileName: task.fileName,
   };
 
   return new Promise((resolve, reject) => {
@@ -180,7 +186,7 @@ export const getShareableLinkUrl = (
     prefix: encodeURIComponent(prefix),
     clientAddr: encodeURIComponent(Config.WEB_BASE_URL),
     expiresSeconds,
-  }
+  };
 
   return new Promise((resolve, reject) => {
     get(

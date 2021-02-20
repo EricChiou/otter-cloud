@@ -7,12 +7,9 @@ export class UserService {
   public static readonly parseToken = (token: string): UserProfile => {
     const userProfile: UserProfile = {
       token: '',
-      id: null,
       acc: '',
       name: '',
       roleCode: '',
-      roleName: '',
-      bucketName: '',
       exp: 0,
     };
 
@@ -28,12 +25,9 @@ export class UserService {
     if (!parse) { return userProfile; }
 
     userProfile.token = token;
-    userProfile.id = parse.id;
     userProfile.acc = parse.acc;
     userProfile.name = parse.name;
     userProfile.roleCode = parse.roleCode;
-    userProfile.roleName = parse.roleName;
-    userProfile.bucketName = parse.bucketName;
     userProfile.exp = parse.exp;
     return userProfile;
   };

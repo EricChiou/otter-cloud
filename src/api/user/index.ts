@@ -1,5 +1,5 @@
 import { post } from '../request';
-import { SingInReqVo, SingInResVo, SingUpReqVo } from './interface';
+import { SingInReqVo, SingInResVo, SingUpReqVo } from './vo';
 import { ApiUrl } from 'src/constants';
 import { RespVo } from '../request';
 

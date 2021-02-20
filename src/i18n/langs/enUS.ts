@@ -1,10 +1,8 @@
-import { Keys } from "src/i18n";
+import { Keys } from 'src/i18n';
 
-export const en_us: Keys = {
+export const enUS: Keys = {
   account: 'account',
   password: 'password',
-  acc: 'acc',
-  pwd: 'pwd',
   login: 'login',
   logout: 'logout',
   signUp: 'sign up',
@@ -45,4 +43,11 @@ export const en_us: Keys = {
   renameFailed: 'Rename file was failed, please try again.',
   moveTo: 'Move to',
   move: ' move',
+  shareFolder: 'share folder',
+  shareTo: 'share to',
+  shared: 'shared',
+  canRead: 'read',
+  canWrite: 'write',
+  permission: 'perms',
+  sharedFolder: 'shared folder',
 };

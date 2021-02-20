@@ -1,11 +1,8 @@
 export interface UserProfile {
   token: string;
-  id: number | null;
   acc: string;
   name: string;
   roleCode: string;
-  roleName: string;
-  bucketName: string;
   exp: number;
 }
 
@@ -15,4 +12,16 @@ export interface File {
   size: number;
   lastModified: string;
   selected: boolean;
+}
+
+export interface Share {
+  id: number; // pk
+  ownerAcc: string;
+  ownerName: string;
+  sharedAcc: string;
+  sharedName: string;
+  prefix: string;
+  permission: string;
+  createdDate: number;
+  updatedDate: number;
 }

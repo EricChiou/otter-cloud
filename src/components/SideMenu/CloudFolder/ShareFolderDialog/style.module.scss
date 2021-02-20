@@ -1,0 +1,64 @@
+@import 'src/assets/css/theme.scss';
+
+.shareFolder {
+  width: 300px;
+
+  .header {
+    padding: 0 5px;
+    height: 35px;
+    font-size: 20px;
+    line-height: 35px;
+    color: theme(white);
+    background-color: theme(blue);
+  }
+
+  .target {
+    margin-top: 2px;
+    padding: 0 5px;
+    font-size: 18px;
+  }
+
+  .shareTo {
+    margin-bottom: 10px;
+    padding: 0 5px;
+    text-align: left;
+
+    svg {
+      display: block;
+    }
+  }
+
+  .shared {
+    margin-bottom: 5px;
+    padding: 0 5px;
+    text-align: left;
+
+    .sharedList {
+      background-color: theme(white, light);
+      max-height: 182px;
+      overflow: auto;
+      border-top: 1px solid theme(gray);
+
+      .sharedBlock {
+        padding: 1.5px 2px 1.5px 5px;
+        color: theme(black, light);
+        border-bottom: 1px solid theme(gray);
+
+        .sharedName {
+          display: inline-block;
+          width: calc(100% - 26px);
+          text-overflow: ellipsis;
+          vertical-align: middle;
+          overflow: hidden;
+        }
+
+        svg {
+          display: block;
+          width: 22px;
+          height: 22px;
+        }
+      }
+    }
+  }
+
+}

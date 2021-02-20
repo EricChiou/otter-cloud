@@ -1,18 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { File } from 'src/vo/common';
 import { ContentType } from 'src/constants';
 import { Preview } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/common';
-import { getPreviewUrl } from 'src/api/file';
-import { selectPrefix } from 'src/store/system.slice';
-import { selectUserProfile } from 'src/store/user.slice';
-import TextFilePreview from 'src/components/TextFilePreview';
-import ImageFilePreview from 'src/components/ImageFilePreview';
 import { FileService } from 'src/service';
-
-import styles from './style.module.scss';
+import FilePreviewImg from './FilePreviewImg';
+import FilePreviewText from './FilePreviewText';
 
 interface Props {
   file: File;
@@ -21,43 +16,29 @@ interface Props {
 
 const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
   const dispatch = useDispatch();
-  const userProfile = useSelector(selectUserProfile);
-  const prefix = useSelector(selectPrefix);
 
   const previewText = () => {
-    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
-      const component = (
-        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-          <TextFilePreview
-            textBlob={resp}
-            close={() => { dispatch(removeDialog()); }}
-          ></TextFilePreview>
-        </div>
-      );
+    const component = (
+      <FilePreviewText
+        file={file}
+        close={() => { dispatch(removeDialog()); }}
+      ></FilePreviewText>
+    );
 
-      showPreviewDialog(component);
-    });
+    showPreviewDialog(component);
 
     if (onClick) { onClick(); }
   };
 
   const previewImg = () => {
-    getPreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
-      const urlCreator = window.URL || window.webkitURL;
-      const url = urlCreator.createObjectURL(resp);
+    const component = (
+      <FilePreviewImg
+        file={file}
+        close={() => { dispatch(removeDialog()); }}
+      ></FilePreviewImg>
+    );
 
-      const component = (
-        <div className={styles.preview} onClick={() => { dispatch(removeDialog()); }}>
-          <ImageFilePreview
-            url={url}
-            close={() => { dispatch(removeDialog()); }}
-          ></ImageFilePreview>
-        </div>
-      );
-
-      showPreviewDialog(component);
-    });
-
+    showPreviewDialog(component);
     if (onClick) { onClick(); }
   };
 

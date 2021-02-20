@@ -1,16 +1,14 @@
 export interface Langs {
   en: string;
-  en_us: string;
+  enUS: string;
   zh: string;
-  zh_tw: string;
+  zhTW: string;
 }
 
 export interface Keys {
   [key: string]: string;
   account: string;
   password: string;
-  acc: string;
-  pwd: string;
   login: string;
   logout: string;
   signUp: string;
@@ -51,4 +49,11 @@ export interface Keys {
   renameFailed: string;
   moveTo: string;
   move: string;
+  shareFolder: string;
+  shareTo: string;
+  shared: string;
+  canRead: string;
+  canWrite: string;
+  permission: string;
+  sharedFolder: string;
 }

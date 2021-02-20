@@ -7,7 +7,7 @@ const userShared = new Subject<SharedInput>();
 /** user shared actions */
 export const userSharedActs = {
     tokenError: 'tokenError',
-}
+};
 
 /** subscribe user shared */
 export const subUserShared = (callback: (data: SharedInput) => void) => {
@@ -16,4 +16,4 @@ export const subUserShared = (callback: (data: SharedInput) => void) => {
 
 export const tokenErrorNext = () => {
     userShared.next({ action: userSharedActs.tokenError });
-}
+};

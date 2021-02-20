@@ -64,7 +64,7 @@ const App = () => {
       }
     });
 
-    return () => { subscribe.unsubscribe(); }
+    return () => { subscribe.unsubscribe(); };
   }, [history, dispatch]);
 
   return (
@@ -84,6 +84,6 @@ const App = () => {
       <Dialog></Dialog>
     </div>
   );
-}
+};
 
 export default App;

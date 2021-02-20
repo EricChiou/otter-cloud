@@ -15,6 +15,10 @@ export const store = configureStore({
       ignoredActions: [
         'dialog/addDialog',
         'dialog/removeDialog',
+        'user/setProfile',
+        'system/setFileList',
+        'system/setPrefix',
+        // 'system/setShareToList',
       ],
     },
   }),

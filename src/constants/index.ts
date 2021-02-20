@@ -4,3 +4,4 @@ export { CookieKeys } from './cookie-keys';
 export { ApiResult } from './api-result';
 export { ApiUrl } from './api-url';
 export { ContentType } from './file';
+export { sharedFolderPermsType } from './shared';

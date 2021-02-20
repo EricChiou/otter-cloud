@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
+import axios, { AxiosRequestConfig, CancelTokenSource, Cancel } from 'axios';
 
 import { Config, ApiResult } from 'src/constants';
 import { tokenErrorNext } from 'src/shared/user-shared';
@@ -7,6 +7,10 @@ export interface RespVo {
   status: string;
   data: any;
   trace: any;
+}
+
+const instanceOfCancel = (object: any): object is Cancel => {
+  return 'message' in object;
 }
 
 const request = axios.create({
@@ -33,7 +37,7 @@ request.interceptors.response.use(
   },
   (error) => {
     const err = errorHandler(error);
-    console.error('api error:', err);
+    if (!instanceOfCancel(err)) { console.error('api error:', err); }
     return Promise.reject(err);
   }
 );
@@ -127,11 +131,19 @@ export const downloadPostFile = (
   return request.post(url, body, config);
 };
 
-export const getBlob = (url: string, params?: object, token?: string): Promise<RespVo | Blob> => {
+export const getBlob = (
+  url: string,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<RespVo | Blob> => {
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
     timeout: 1000 * 60 * 60 * 24, // 1 day
+    onDownloadProgress: progress,
+    cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
