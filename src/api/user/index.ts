@@ -34,7 +34,7 @@ export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
       ApiUrl.SIGN_IN,
       body,
     ).then((resp) => {
-      resolve(resp);
+      resolve(resp as SingInResVo);
 
     }).catch((error) => {
       reject(error);

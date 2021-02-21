@@ -24,7 +24,7 @@ const ImageFilePreview: FunctionComponent<Props> = ({ url, close }) => {
 
   return (
     <>
-      <div className={"vert-align-mid"}></div>
+      <div className={'vert-align-mid'}></div>
       <img
         className={styles.img}
         src={url}

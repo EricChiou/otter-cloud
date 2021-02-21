@@ -24,7 +24,7 @@ export const getFileList = (prefix: string, token: string): Promise<GetFileListR
       search,
       token,
     ).then((resp) => {
-      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+      resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);
@@ -193,10 +193,11 @@ export const getShareableLinkUrl = (
       ApiUrl.GET_SHAREABLE_LINK_URL,
       search,
       token,
-    ).then((resp: GetShareableLinkResVo) => {
+    ).then((resp: RespVo) => {
       if (resp.status === ApiResult.Success) {
-        resp.data.shareableLink = atob(resp.data.shareableLink);
-        resolve(resp);
+        const getShareableLink = resp as GetShareableLinkResVo;
+        getShareableLink.data.shareableLink = atob(getShareableLink.data.shareableLink);
+        resolve(getShareableLink);
 
       } else {
         reject(resp);
@@ -244,7 +245,7 @@ export const renameFile = (
       undefined,
       token,
     ).then((resp) => {
-      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+      resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);
@@ -268,7 +269,7 @@ export const moveFiles = (
       undefined,
       token,
     ).then((resp) => {
-      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+      resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);

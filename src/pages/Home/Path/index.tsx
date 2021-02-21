@@ -55,7 +55,7 @@ const Path: FunctionComponent<{}> = () => {
     <div id={styles.path} onWheel={onWheel}>
       <span className={styles.folder}>
         <span
-          className={styles.prefix}
+          className={prefix.sharedId ? styles.prefixCantClick : styles.prefix}
           onClick={() => { if (!prefix.sharedId) { pathOnClick(''); } }}
         >
           {prefix.sharedId ?

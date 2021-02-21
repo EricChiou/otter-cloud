@@ -72,7 +72,6 @@ export const updateFileList = (
 ): AppThunk => (dispatch) => {
   const { setFileList, setFileListOnLoading } = systemSlice.actions;
 
-  console.log('11111 prefix', prefix);
   if (prefix.sharedId) {
     dispatch(setFileListOnLoading(true));
     getSharedFileList(prefix.sharedId, prefix.path, token).then((resp) => {

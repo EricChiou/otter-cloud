@@ -6,6 +6,7 @@ import { File } from 'src/vo/common';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { getPreviewUrl } from 'src/api/file';
+import { getSharedFilePreviewUrl } from 'src/api/shared';
 import ImageFilePreview from 'src/components/ImageFilePreview';
 import loading from 'src/assets/img/loading2.gif';
 
@@ -32,13 +33,38 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
 
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    getPreviewUrl(prefix.path, file.name, userProfile.token, progress, cancelToken).then((resp) => {
-      const urlCreator = window.URL || window.webkitURL;
-      setUrl(urlCreator.createObjectURL(resp));
+    if (prefix.sharedId) {
+      getSharedFilePreviewUrl(
+        prefix.sharedId,
+        prefix.path,
+        file.name,
+        userProfile.token,
+        progress,
+        cancelToken,
+      ).then((resp) => {
+        const urlCreator = window.URL || window.webkitURL;
+        setUrl(urlCreator.createObjectURL(resp));
 
-    }).catch(() => {
-      // do nothing
-    });
+      }).catch(() => {
+        // do nothing
+      });
+
+    } else {
+      getPreviewUrl(
+        prefix.path,
+        file.name,
+        userProfile.token,
+        progress,
+        cancelToken,
+      ).then((resp) => {
+        const urlCreator = window.URL || window.webkitURL;
+        setUrl(urlCreator.createObjectURL(resp));
+
+      }).catch(() => {
+        // do nothing
+      });
+    }
+
 
     return () => { cancelToken.cancel(); };
 
