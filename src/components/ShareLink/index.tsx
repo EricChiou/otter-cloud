@@ -32,7 +32,7 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
       (expires.minutes * 60);
 
     getShareableLinkUrl(
-      prefix.path,
+      prefix,
       file.name,
       expiresSeconds,
       userProfile.token,

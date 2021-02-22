@@ -19,6 +19,7 @@ import {
   GetShareableLinkResVo,
   RenameFileReqVo,
   MoveFilesReqVo,
+  GetShareableLinkReqVo,
 } from './vo';
 import { ApiUrl, ApiResult } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
@@ -185,20 +186,21 @@ export const removeFolder = (
 };
 
 export const getShareableLinkUrl = (
-  prefix: string,
+  prefix: Prefix,
   fileName: string,
   expiresSeconds: number,
   token: string,
 ): Promise<GetShareableLinkResVo> => {
-  const body = {
+  const body: GetShareableLinkReqVo = {
+    id: prefix.sharedId ? prefix.sharedId : undefined,
     fileName,
-    prefix,
+    prefix: prefix.path,
     expiresSeconds,
   };
 
   return new Promise((resolve, reject) => {
     post(
-      ApiUrl.GET_SHAREABLE_LINK_URL,
+      prefix.sharedId ? ApiUrl.GET_SHARED_FILE_SHAREABLE_LINK : ApiUrl.GET_SHAREABLE_LINK,
       body,
       undefined,
       token,

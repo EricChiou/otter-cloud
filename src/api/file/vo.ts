@@ -32,6 +32,13 @@ export interface MoveFilesReqVo {
   filenames: string[];
 }
 
+export interface GetShareableLinkReqVo {
+  id?: number;
+  fileName: string;
+  prefix: string;
+  expiresSeconds: number;
+}
+
 // response vo
 export interface GetFileListResVo extends RespVo {
   data: {
