@@ -65,8 +65,10 @@ const App = () => {
   useEffect(() => {
     const subscribe = subUserShared((data) => {
       if (data.action === userSharedActs.tokenError) {
-        dispatch(logout());
-        dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
+        if (StatusService.isLogin()) {
+          dispatch(logout());
+          dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
+        }
       }
     });
 

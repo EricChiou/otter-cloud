@@ -138,15 +138,33 @@ export const getBlob = (
   token?: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
   cancelToken?: CancelTokenSource,
-): Promise<RespVo | Blob> => {
+): Promise<Blob | RespVo> => {
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
-    timeout: 1000 * 60 * 60 * 24, // 1 day
     onDownloadProgress: progress,
     cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
   return request.get(url, config);
+};
+
+export const postBlob = (
+  url: string,
+  body: object,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<Blob | RespVo> => {
+  const config: AxiosRequestConfig = {
+    params,
+    responseType: 'blob',
+    onDownloadProgress: progress,
+    cancelToken: cancelToken?.token,
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
 };

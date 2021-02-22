@@ -1,6 +1,16 @@
 import { CancelTokenSource } from 'axios';
 
-import { RespVo, get, uploadPostFile, downloadPostFile, del, getBlob, put } from '../request';
+import {
+  RespVo,
+  get,
+  uploadPostFile,
+  downloadPostFile,
+  del,
+  getBlob,
+  put,
+  post,
+  postBlob,
+} from '../request';
 import {
   GetFileListReqVo,
   GetFileListResVo,
@@ -11,7 +21,7 @@ import {
   RenameFileReqVo,
   MoveFilesReqVo,
 } from './vo';
-import { ApiUrl, ApiResult, Config } from 'src/constants';
+import { ApiUrl, ApiResult, Config, Routes } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
 
@@ -180,24 +190,23 @@ export const getShareableLinkUrl = (
   token: string,
 ): Promise<GetShareableLinkResVo> => {
 
-  const search = {
-    fileName: encodeURIComponent(fileName),
-    contentType: encodeURIComponent(contentType),
-    prefix: encodeURIComponent(prefix),
-    clientAddr: encodeURIComponent(Config.WEB_BASE_URL),
+  const body = {
+    fileName,
+    contentType,
+    prefix,
+    clientUrl: Config.WEB_BASE_URL + Routes.SHARE_LINK,
     expiresSeconds,
   };
 
   return new Promise((resolve, reject) => {
-    get(
+    post(
       ApiUrl.GET_SHAREABLE_LINK_URL,
-      search,
+      body,
+      undefined,
       token,
     ).then((resp: RespVo) => {
       if (resp.status === ApiResult.Success) {
-        const getShareableLink = resp as GetShareableLinkResVo;
-        getShareableLink.data.shareableLink = atob(getShareableLink.data.shareableLink);
-        resolve(getShareableLink);
+        resolve(resp as GetShareableLinkResVo);
 
       } else {
         reject(resp);
@@ -210,12 +219,12 @@ export const getShareableLinkUrl = (
 };
 
 export const getObjectByShareableLinkUrl = (url: string): Promise<Blob> => {
-  const search = { url: btoa(url) };
+  const body = { url };
 
   return new Promise((resolve, reject) => {
-    getBlob(
+    postBlob(
       ApiUrl.GET_OBJECT_BY_SHAREABLE_LINK_URL,
-      search,
+      body,
     ).then((resp) => {
       if (resp instanceof Blob) {
         resolve(resp);
