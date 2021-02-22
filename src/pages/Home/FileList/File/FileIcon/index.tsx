@@ -7,7 +7,7 @@ import {
   FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,
   FolderShared,
 } from 'src/components/icons';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { ContentType } from 'src/constants';
 import PreviewImg from './FileIconPreviewImg';
 import { FileService } from 'src/service';

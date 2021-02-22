@@ -6,6 +6,11 @@ export interface UserProfile {
   exp: number;
 }
 
+export interface Prefix {
+  sharedId: number | null;
+  path: string;
+}
+
 export interface File {
   contentType: string;
   name: string; // unique key

@@ -11,7 +11,7 @@ import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
 import { updateSharedFolderList, selectSharedFolderList } from 'src/store/system.slice';
 import SharedFolder from './SharedFolder';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 
 import styles from './style.module.scss';
 
@@ -84,7 +84,12 @@ const SideMenu: FunctionComponent<{}> = () => {
   };
 
   const sharedFolderOnSelect = (ele: HTMLElement, sharedfolder: Share) => {
-    console.log(ele, sharedfolder);
+    if (!ele) { return; }
+    history.push({
+      pathname: history.location.pathname,
+      search: sharedfolder ?
+        `?prefix=${encodeURIComponent(sharedfolder.prefix)}&sharedId=${sharedfolder.id}` : '',
+    });
   };
 
   const createFolder = (folderName: string) => {

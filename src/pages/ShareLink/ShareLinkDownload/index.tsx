@@ -1,21 +1,21 @@
 import React, { FunctionComponent, useEffect } from 'react';
 
-import { Search } from '../';
+import { ShareableFile } from '../';
 import { getObjectByShareableLinkUrl } from 'src/api/file';
 
 interface Props {
-  search: Search;
+  shareableFile: ShareableFile;
   showLinkInvalidMessage: () => void;
-};
+}
 
-const ShareLinkDownload: FunctionComponent<Props> = ({ search, showLinkInvalidMessage }) => {
+const ShareLinkDownload: FunctionComponent<Props> = ({ shareableFile, showLinkInvalidMessage }) => {
   useEffect(() => {
     // console.log(search);
-    getObjectByShareableLinkUrl(search.url).then((resp) => {
-      const url = URL.createObjectURL(new Blob([resp], { type: search.contentType }));
+    getObjectByShareableLinkUrl(shareableFile.url).then((resp) => {
+      const url = URL.createObjectURL(new Blob([resp], { type: shareableFile.contentType }));
       const link = document.createElement('a');
       link.href = url;
-      link.download = search.fileName;
+      link.download = shareableFile.fileName;
       link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
@@ -26,7 +26,7 @@ const ShareLinkDownload: FunctionComponent<Props> = ({ search, showLinkInvalidMe
       showLinkInvalidMessage();
     });
 
-  }, [search, showLinkInvalidMessage]);
+  }, [shareableFile, showLinkInvalidMessage]);
 
   return <></>;
 };

@@ -9,51 +9,48 @@ import ShareLinkDownload from './ShareLinkDownload';
 import ShareLinkImage from './ShareLinkImage';
 import ShareLinkAudio from './ShareLinkAudio';
 import ShareLinkVideo from './ShareLinkVideo';
+import { getSearch } from 'src/util/location.util';
 
-export interface Search {
+export interface ShareableFile {
   fileName: string;
   contentType: string;
   url: string;
-};
+}
 
 const ShareLink: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const [search, setSearch] = useState<Search>({
+  const [shareableFile, setShareableFile] = useState<ShareableFile>({
     fileName: '',
     contentType: '',
     url: '',
   });
 
   const showLinkInvalidMessage = useCallback(() => {
-    dispatch(addMessage(intl(keys.shareableLinkInvalid,), MessageType.warning, () => {
+    dispatch(addMessage(intl(keys.shareableLinkInvalid), MessageType.warning, () => {
       history.push({ pathname: Routes.LOGIN, search: '' });
     }));
   }, [dispatch, history]);
 
   useEffect(() => {
     try {
-      const newSearch: { [key: string]: string } = {};
-      location.search.slice(1).split('&').forEach((keyValueStr) => {
-        const keyValue = keyValueStr.split('=');
-        newSearch[keyValue[0]] = atob(keyValue[1]);
-      });
+      const search = getSearch();
 
-      if (!newSearch.fileName || !newSearch.contentType || !newSearch.url) {
+      if (!search.fileName || !search.contentType || !search.url) {
         showLinkInvalidMessage();
         return;
       }
 
       if (
-        newSearch.fileName !== search.fileName ||
-        newSearch.contentType !== search.contentType ||
-        newSearch.url !== search.url
+        search.fileName !== shareableFile.fileName ||
+        search.contentType !== shareableFile.contentType ||
+        search.url !== shareableFile.url
       ) {
-        setSearch({
-          fileName: newSearch.fileName,
-          contentType: newSearch.contentType,
-          url: newSearch.url
+        setShareableFile({
+          fileName: search.fileName,
+          contentType: search.contentType,
+          url: search.url,
         });
       }
 
@@ -61,32 +58,32 @@ const ShareLink: FunctionComponent<{}> = () => {
       showLinkInvalidMessage();
     }
 
-  }, [location, search, showLinkInvalidMessage]);
+  }, [location, shareableFile, showLinkInvalidMessage]);
 
   const renderShareLink = () => {
-    if (!search.fileName || !search.contentType || !search.url) { return; }
+    if (!shareableFile.fileName || !shareableFile.contentType || !shareableFile.url) { return; }
 
     // console.log('renderShareLink', search);
-    if (search.contentType.indexOf(ContentType.image) > -1) {
+    if (shareableFile.contentType.indexOf(ContentType.image) > -1) {
       return (
         <ShareLinkImage
-          search={search}
+          shareableFile={shareableFile}
           showLinkInvalidMessage={showLinkInvalidMessage}
         ></ShareLinkImage>
       );
 
-    } else if (search.contentType.indexOf(ContentType.audio) > -1) {
+    } else if (shareableFile.contentType.indexOf(ContentType.audio) > -1) {
       return (
         <ShareLinkAudio
-          search={search}
+          shareableFile={shareableFile}
           showLinkInvalidMessage={showLinkInvalidMessage}
         ></ShareLinkAudio>
       );
 
-    } else if (search.contentType.indexOf(ContentType.video) > -1) {
+    } else if (shareableFile.contentType.indexOf(ContentType.video) > -1) {
       return (
         <ShareLinkVideo
-          search={search}
+          shareableFile={shareableFile}
           showLinkInvalidMessage={showLinkInvalidMessage}
         ></ShareLinkVideo>
       );
@@ -94,7 +91,7 @@ const ShareLink: FunctionComponent<{}> = () => {
 
     return (
       <ShareLinkDownload
-        search={search}
+        shareableFile={shareableFile}
         showLinkInvalidMessage={showLinkInvalidMessage}
       ></ShareLinkDownload>
     );

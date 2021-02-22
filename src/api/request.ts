@@ -5,13 +5,13 @@ import { tokenErrorNext } from 'src/shared/user-shared';
 
 export interface RespVo {
   status: string;
-  data: any;
-  trace: any;
+  data: unknown;
+  trace: unknown;
 }
 
-const instanceOfCancel = (object: any): object is Cancel => {
+const instanceOfCancel = (object: Cancel): object is Cancel => {
   return 'message' in object;
-}
+};
 
 const request = axios.create({
   baseURL: Config.API_BASE_URL,
@@ -20,6 +20,15 @@ const request = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const errorHandler = (error: any) => {
+  if (error.message) { return error.message; }
+  if (error.response && error.response.data) {
+    return error.response.data;
+  }
+  return error;
+};
 
 request.interceptors.response.use(
   (resp) => {
@@ -39,16 +48,8 @@ request.interceptors.response.use(
     const err = errorHandler(error);
     if (!instanceOfCancel(err)) { console.error('api error:', err); }
     return Promise.reject(err);
-  }
+  },
 );
-
-const errorHandler = (error: any) => {
-  if (error.message) { return error.message; }
-  if (error.response && error.response.data) {
-    return error.response.data;
-  }
-  return error;
-};
 
 export const get = (url: string, params?: object, token?: string): Promise<RespVo> => {
   const config: AxiosRequestConfig = { params };
@@ -61,7 +62,7 @@ export const post = (
   url: string,
   body?: object,
   params?: object,
-  token?: string
+  token?: string,
 ): Promise<RespVo> => {
 
   const config: AxiosRequestConfig = { params };
@@ -74,7 +75,7 @@ export const put = (
   url: string,
   body?: object,
   params?: object,
-  token?: string
+  token?: string,
 ): Promise<RespVo> => {
 
   const config: AxiosRequestConfig = { params };
@@ -137,15 +138,33 @@ export const getBlob = (
   token?: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
   cancelToken?: CancelTokenSource,
-): Promise<RespVo | Blob> => {
+): Promise<Blob | RespVo> => {
   const config: AxiosRequestConfig = {
     params,
     responseType: 'blob',
-    timeout: 1000 * 60 * 60 * 24, // 1 day
     onDownloadProgress: progress,
     cancelToken: cancelToken?.token,
   };
   if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
 
   return request.get(url, config);
+};
+
+export const postBlob = (
+  url: string,
+  body: object,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<Blob | RespVo> => {
+  const config: AxiosRequestConfig = {
+    params,
+    responseType: 'blob',
+    onDownloadProgress: progress,
+    cancelToken: cancelToken?.token,
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
 };

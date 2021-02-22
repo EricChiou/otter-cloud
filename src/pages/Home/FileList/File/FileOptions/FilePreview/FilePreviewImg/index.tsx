@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState, useCallback } from 'reac
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { getPreviewUrl } from 'src/api/file';
@@ -32,7 +32,13 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
 
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    getPreviewUrl(prefix.path, file.name, userProfile.token, progress, cancelToken).then((resp) => {
+    getPreviewUrl(
+      prefix,
+      file.name,
+      userProfile.token,
+      progress,
+      cancelToken,
+    ).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
       setUrl(urlCreator.createObjectURL(resp));
 

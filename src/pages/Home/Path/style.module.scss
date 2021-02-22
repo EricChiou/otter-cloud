@@ -31,6 +31,11 @@
       }
     }
 
+    .prefixCantClick {
+      padding: 0 2px;
+      cursor: default;
+    }
+
     .backslash {
       margin: 0 6px;
       color: theme(gray, deep);

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useRef, RefObject, useEffect, useState } from 'react';
 
 import { More } from 'src/components/icons';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import FileRename from './FileRename';
 import FileShare from './FileShare';
 import FileDelete from './FileDelete';

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { ArrowRight, ArrowDown, FolderShared } from 'src/components/icons';
 import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 import { BaseTooltip } from 'src/components/common';
 
 import styles from './style.module.scss';
@@ -16,11 +16,16 @@ interface Props {
   onSelect: (ele: HTMLElement, sharedfolder: Share) => void;
 }
 
-const SharedFolder: FunctionComponent<Props> = ({ sharedFolderList, expand, expandOnClick }) => {
+const SharedFolder: FunctionComponent<Props> = ({
+  sharedFolderList,
+  expand,
+  expandOnClick,
+  onSelect,
+}) => {
   const userProfile = useSelector(selectUserProfile);
 
-  const sharedFolderOnSelect = (e: MouseEvent, sharedFolder: Share) => {
-    console.log(e, sharedFolder);
+  const sharedFolderOnSelect = (e: MouseEvent<HTMLDivElement>, sharedFolder: Share) => {
+    onSelect(e.currentTarget, sharedFolder);
   };
 
   const renderSharedFolder = () => {

@@ -39,7 +39,8 @@ const App = () => {
     const search = getSearch();
     if (search.prefix) {
       if (search.prefix !== prefix.path) {
-        dispatch(setPrefix(null, search.prefix));
+        const sharedId = parseInt(search.sharedId);
+        dispatch(setPrefix(sharedId ? sharedId : null, search.prefix));
       }
 
     } else if (prefix.path !== '') {
@@ -64,8 +65,10 @@ const App = () => {
   useEffect(() => {
     const subscribe = subUserShared((data) => {
       if (data.action === userSharedActs.tokenError) {
-        dispatch(logout());
-        dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
+        if (StatusService.isLogin()) {
+          dispatch(logout());
+          dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
+        }
       }
     });
 

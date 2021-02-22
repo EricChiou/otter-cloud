@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect, useRef, RefObject } from
 import { useSelector } from 'react-redux';
 
 import { addDialog } from 'src/components/common';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { AppThunk } from 'src/store/store';
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseButton, BaseInput } from 'src/components/common';
@@ -10,6 +10,7 @@ import { Copy, ChevronUp, ChevronDown } from 'src/components/icons';
 import { getShareableLinkUrl } from 'src/api/file';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
+import { Config, Routes } from 'src/constants';
 
 import styles from './style.module.scss';
 
@@ -33,11 +34,15 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
     getShareableLinkUrl(
       prefix.path,
       file.name,
-      file.contentType,
       expiresSeconds,
       userProfile.token,
     ).then((resp) => {
-      setShareableLink(resp.data.shareableLink);
+      let shareableLink = Config.WEB_BASE_URL + Routes.SHARE_LINK;
+      shareableLink += `?fileName=${encodeURIComponent(file.name)}`;
+      shareableLink += `&contentType=${encodeURIComponent(file.contentType)}`;
+      shareableLink += `&url=${encodeURIComponent(resp.data.shareableLink)}`;
+
+      setShareableLink(shareableLink);
     });
 
   }, [shareableLink, file, expires, prefix, userProfile]);

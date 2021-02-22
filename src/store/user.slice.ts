@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
-import { UserProfile } from 'src/vo/common';
+import { UserProfile } from 'src/interface/common';
 import { Cookie } from 'src/util/cookie.util';
 import { CookieKeys } from 'src/constants';
 import { UserService } from 'src/service/user-service';

@@ -1,28 +1,28 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { Search } from '..';
+import { ShareableFile } from '..';
 import { getObjectByShareableLinkUrl } from 'src/api/file';
 
 import styles from './style.module.scss';
 
 interface Props {
-  search: Search;
+  shareableFile: ShareableFile;
   showLinkInvalidMessage: () => void;
-};
+}
 
-const ShareLinkVideo: FunctionComponent<Props> = ({ search, showLinkInvalidMessage }) => {
+const ShareLinkVideo: FunctionComponent<Props> = ({ shareableFile, showLinkInvalidMessage }) => {
   const [url, setUrl] = useState('');
 
   useEffect(() => {
-    getObjectByShareableLinkUrl(search.url).then((resp) => {
-      const url = URL.createObjectURL(new Blob([resp], { type: search.contentType }));
+    getObjectByShareableLinkUrl(shareableFile.url).then((resp) => {
+      const url = URL.createObjectURL(new Blob([resp], { type: shareableFile.contentType }));
       setUrl(url);
 
     }).catch(() => {
       showLinkInvalidMessage();
     });
 
-  }, [search, showLinkInvalidMessage]);
+  }, [shareableFile, showLinkInvalidMessage]);
 
   return (
     <div className={styles.shareLinkVideo}>

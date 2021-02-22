@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { getPreviewUrl } from 'src/api/file';
@@ -29,7 +29,7 @@ const FilePreviewText: FunctionComponent<Props> = ({ file, close }) => {
   }, []);
 
   useEffect(() => {
-    getPreviewUrl(prefix.path, file.name, userProfile.token, progress).then((resp) => {
+    getPreviewUrl(prefix, file.name, userProfile.token, progress).then((resp) => {
       setTextBlob(resp);
     });
   }, [file, prefix, userProfile, progress]);

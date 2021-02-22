@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ShareFolder } from 'src/components/icons';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { FileService } from 'src/service';
 import ShareFolderDialog from 'src/components/ShareFolderDialog';
 import { addDialog, removeDialog } from 'src/components/common';

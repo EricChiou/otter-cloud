@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { ContentType } from 'src/constants';
 import { Preview } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/common';

@@ -20,7 +20,7 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { addDialog, removeDialog, BaseTooltip } from 'src/components/common';
 import ShareFolderDialog from 'src/components/ShareFolderDialog';
 import { intl, keys, IntlType } from 'src/i18n';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 
 import styles from './style.module.scss';
 
