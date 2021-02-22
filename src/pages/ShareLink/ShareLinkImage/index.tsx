@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { ShareableFile } from '../';
 import { getObjectByShareableLinkUrl } from 'src/api/file';
+import loading from 'src/assets/img/loading2.gif';
 
 import styles from './style.module.scss';
 
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const ShareLinkImage: FunctionComponent<Props> = ({ shareableFile, showLinkInvalidMessage }) => {
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(loading);
 
   useEffect(() => {
     getObjectByShareableLinkUrl(shareableFile.url).then((resp) => {

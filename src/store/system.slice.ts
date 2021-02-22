@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState, AppThunk } from './store';
-import { File, Share } from 'src/vo/common';
+import { Prefix, File, Share } from 'src/interface/common';
 import { getFileList } from 'src/api/file';
 import { getSharedFolderList, getSharedFileList } from 'src/api/shared';
+import { GetFileListResVo } from 'src/api/file/vo';
 
 interface SystemState {
   bucket: string;
-  prefix: { sharedId: number | null; path: string };
+  prefix: Prefix;
   fileList: File[];
   fileListOnloading: boolean;
   sharedFolderList: Share[];
@@ -28,7 +29,7 @@ const systemSlice = createSlice({
     setBucket: (state, action: PayloadAction<string>) => {
       state.bucket = action.payload;
     },
-    setPrefix: (state, action: PayloadAction<{ sharedId: number | null; path: string }>) => {
+    setPrefix: (state, action: PayloadAction<Prefix>) => {
       state.prefix = action.payload;
     },
     setFileList: (state, action: PayloadAction<File[]>) => {
@@ -67,64 +68,41 @@ export const setFile = (file: File, index: number): AppThunk => (dispatch) => {
 };
 
 export const updateFileList = (
-  prefix: { sharedId: number | null; path: string },
+  prefix: Prefix,
   token: string,
 ): AppThunk => (dispatch) => {
   const { setFileList, setFileListOnLoading } = systemSlice.actions;
 
-  if (prefix.sharedId) {
-    dispatch(setFileListOnLoading(true));
-    getSharedFileList(prefix.sharedId, prefix.path, token).then((resp) => {
-      if (resp.data) {
-        const fileList: File[] = resp.data.map((data) => {
-          return {
-            contentType: data.contentType,
-            name: data.name.replace(prefix.path, ''),
-            size: data.size,
-            lastModified: data.lastModified,
-            selected: false,
-          };
-        });
-        dispatch(setFileList(fileList));
+  const getFileListApi = (): Promise<GetFileListResVo> => {
+    return prefix.sharedId ?
+      getSharedFileList(prefix.sharedId, prefix.path, token) :
+      getFileList(prefix.path, token);
+  };
 
-      } else {
-        dispatch(setFileList([]));
-      }
-    }).catch((error) => {
-      console.log(error);
-      dispatch(setFileList([]));
+  dispatch(setFileListOnLoading(true));
+  getFileListApi().then((resp) => {
 
-    }).finally(() => {
-      dispatch(setFileListOnLoading(false));
+    const fileList: File[] = resp.data.map((file) => {
+      const fileNameSep = file.name.split('/');
+      const length = fileNameSep.length;
+      return {
+        contentType: file.contentType,
+        name: fileNameSep[length - 1] ? fileNameSep[length - 1] : fileNameSep[length - 2] + '/',
+        size: file.size,
+        lastModified: file.lastModified,
+        selected: false,
+      };
     });
 
-  } else {
-    dispatch(setFileListOnLoading(true));
-    getFileList(prefix.path, token).then((resp) => {
-      if (resp.data) {
-        const fileList: File[] = resp.data.map((data) => {
-          return {
-            contentType: data.contentType,
-            name: data.name.replace(prefix.path, ''),
-            size: data.size,
-            lastModified: data.lastModified,
-            selected: false,
-          };
-        });
-        dispatch(setFileList(fileList));
+    dispatch(setFileList(fileList));
 
-      } else {
-        dispatch(setFileList([]));
-      }
+  }).catch((error) => {
+    console.log(error);
+    dispatch(setFileList([]));
 
-    }).catch((error) => {
-      console.log(error);
-      dispatch(setFileList([]));
-
-    }).finally(() => {
-      dispatch(setFileListOnLoading(false));
-    });
-  }
+  }).finally(() => {
+    dispatch(setFileListOnLoading(false));
+  });
 };
 
 export const updateSharedFolderList = (token: string): AppThunk => (dispatch) => {

@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { ContentType } from 'src/constants';
 import { BaseTooltip } from 'src/components/common';
 import { CheckBox } from 'src/components/icons';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { ViewType } from '../../';
 import FileIcon from '../FileIcon';
 import FileNamePreviewImg from './FileNamePreviewImg';

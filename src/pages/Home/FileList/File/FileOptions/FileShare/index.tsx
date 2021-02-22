@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Share } from 'src/components/icons';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { showShareLinkDialog } from 'src/components/ShareLink';
 import { FileService } from 'src/service';
 

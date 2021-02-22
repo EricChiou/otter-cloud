@@ -8,7 +8,7 @@ import styles from './style.module.scss';
 interface Props {
   shareableFile: ShareableFile;
   showLinkInvalidMessage: () => void;
-};
+}
 
 const ShareLinkVideo: FunctionComponent<Props> = ({ shareableFile, showLinkInvalidMessage }) => {
   const [url, setUrl] = useState('');

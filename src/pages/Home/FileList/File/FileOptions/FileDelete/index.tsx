@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { Delete } from 'src/components/icons';
 import { addDialog, removeDialog } from 'src/components/common';
 import { removeFile, removeFolder } from 'src/api/file';

@@ -38,7 +38,7 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
   const doUploadFiles = () => {
     if (uploadInputEle.current) {
       if (uploadInputEle.current.files && uploadInputEle.current.files.length) {
-        FileService.uploadFiles(prefix.path, uploadInputEle.current.files);
+        FileService.uploadFiles(prefix, uploadInputEle.current.files);
         uploadInputEle.current.value = '';
       }
     }
@@ -70,7 +70,7 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
           </div>
           <div
             className={styles.icon}
-            onClick={() => { FileService.downloadFiles(prefix.path, fileList); }}
+            onClick={() => { FileService.downloadFiles(prefix, fileList); }}
           >
             <Download></Download>
           </div>

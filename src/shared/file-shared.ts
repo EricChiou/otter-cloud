@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 
 import { SharedInput } from './interface';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 
 const fileShared = new Subject<SharedInput>();
 

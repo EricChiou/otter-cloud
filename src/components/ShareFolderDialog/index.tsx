@@ -9,7 +9,7 @@ import { BaseInput, BaseButton, ButtonType, BaseTooltip, BaseSelect } from 'src/
 import { Add, Cancel } from 'src/components/icons';
 import { addSharedFolder, removeSharedFolder } from 'src/api/shared';
 import { ApiResult, sharedFolderPermsType } from 'src/constants';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 
 import styles from './style.module.scss';
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix } from 'src/store/system.slice';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { Rename } from 'src/components/icons';
 import {
   addDialog,

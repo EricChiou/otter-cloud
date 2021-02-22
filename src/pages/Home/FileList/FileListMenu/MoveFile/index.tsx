@@ -5,7 +5,7 @@ import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix, selectFileList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import { getFileList, moveFiles } from 'src/api/file';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { Folder, ArrowRight } from 'src/components/icons';
 import { BaseButton } from 'src/components/common';
 import { moveFilesNext } from 'src/shared/file-shared';

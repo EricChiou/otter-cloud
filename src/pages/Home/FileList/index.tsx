@@ -18,7 +18,7 @@ import {
 } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import FileComponent from './File';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import FileListMenu from './FileListMenu';
 import { StatusService } from 'src/service';
 import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file-shared';

@@ -11,7 +11,7 @@ import axios, { CancelTokenSource } from 'axios';
 
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { getPreviewUrl } from 'src/api/file';
 import { subFileShared, fileSharedActs } from 'src/shared/file-shared';
 
@@ -52,7 +52,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
     if (cancelToken.current) { cancelToken.current.cancel(); }
     cancelToken.current = axios.CancelToken.source();
     getPreviewUrl(
-      prefix.path,
+      prefix,
       file.name,
       userProfile.token,
       undefined,

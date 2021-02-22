@@ -1,5 +1,7 @@
 import { CancelTokenSource } from 'axios';
 
+import { Prefix } from 'src/interface/common';
+
 export enum TaskType {
     upload = 'upload',
     download = 'download',
@@ -15,7 +17,7 @@ export enum TaskStatus {
 export interface TaskData {
     id: string;
     type: TaskType;
-    prefix: string;
+    prefix: Prefix;
     fileName: string;
     status: TaskStatus;
     progress: number;
@@ -33,19 +35,25 @@ enum TaskListActions {
 
 interface Action {
     type: TaskListActions;
-    payload: any;
+    payload: {
+        task?: TaskData;
+        id?: string;
+        progress?: number;
+        status?: TaskStatus;
+    };
 }
 
-export const taskListReducer = (state: TaskData[], action: Action,): TaskData[] => {
+export const taskListReducer = (state: TaskData[], action: Action): TaskData[] => {
+    const newProgressTaskList = [...state];
+    const newStatusTaskList = [...state];
 
     switch (action.type) {
         case TaskListActions.addTask:
-            return [...state, action.payload.task];
+            return action.payload.task ? [...state, action.payload.task] : state;
 
         case TaskListActions.updateTaskProgress:
-            const newProgressTaskList = [...state];
             newProgressTaskList.every((task) => {
-                if (task.id === action.payload.id) {
+                if (task.id === action.payload.id && action.payload.progress !== undefined) {
                     task.progress = action.payload.progress;
                     return false;
                 }
@@ -54,9 +62,8 @@ export const taskListReducer = (state: TaskData[], action: Action,): TaskData[] 
             return newProgressTaskList;
 
         case TaskListActions.updateTaskStatus:
-            const newStatusTaskList = [...state];
             newStatusTaskList.every((task) => {
-                if (task.id === action.payload.id) {
+                if (task.id === action.payload.id && action.payload.status) {
                     task.status = action.payload.status;
                     return false;
                 }

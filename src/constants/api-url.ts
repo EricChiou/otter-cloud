@@ -28,4 +28,5 @@ export class ApiUrl {
     public static readonly GET_SHARED_FOLDER_LIST_URL = shareGroupUrl + '/folder';
     public static readonly GET_SHARED_FILE_LIST_URL = shareGroupUrl + '/file/list';
     public static readonly GET_SHARED_FILE_PREVIEW_URL = shareGroupUrl + '/file/preview';
+    public static readonly DOWNLOAD_SHARED_FILE = shareGroupUrl + '/file/download';
 }

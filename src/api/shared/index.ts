@@ -1,6 +1,4 @@
-import { CancelTokenSource } from 'axios';
-
-import { RespVo, post, get, getBlob } from '../request';
+import { RespVo, post, get } from '../request';
 import { ApiUrl, ApiResult } from 'src/constants';
 import { AddSharedFolderReqVo, GetSharedFolderResVo } from './vo';
 import { GetFileListResVo } from 'src/api/file/vo';
@@ -70,48 +68,18 @@ export const getSharedFileList = (
   prefix: string,
   token: string,
 ): Promise<GetFileListResVo> => {
-  return new Promise((resolve, reject) => {
-    get(
-      ApiUrl.GET_SHARED_FILE_LIST_URL + `/${id}/${encodeURIComponent(prefix)}`,
-      undefined,
-      token,
-    ).then((resp) => {
-      resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
-
-    }).catch((error) => {
-      reject(error);
-    });
-  });
-};
-
-export const getSharedFilePreviewUrl = (
-  id: number,
-  prefix: string,
-  fileName: string,
-  token: string,
-  progress?: (event: ProgressEvent<EventTarget>) => void,
-  cancelToken?: CancelTokenSource,
-): Promise<Blob> => {
   const search = {
     id,
     prefix: encodeURIComponent(prefix),
-    fileName: encodeURIComponent(fileName),
   };
 
   return new Promise((resolve, reject) => {
-    getBlob(
-      ApiUrl.GET_SHARED_FILE_PREVIEW_URL,
+    get(
+      ApiUrl.GET_SHARED_FILE_LIST_URL,
       search,
       token,
-      progress,
-      cancelToken,
-    ).then((resp: RespVo | Blob) => {
-      if (resp instanceof Blob) {
-        resolve(resp);
-
-      } else {
-        reject(resp);
-      }
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);

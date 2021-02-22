@@ -6,6 +6,7 @@ export interface GetFileListReqVo {
 }
 
 export interface DownloadFileReqVo {
+  id?: number;
   prefix: string;
   fileName: string;
 }

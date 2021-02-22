@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { ArrowRight, ArrowDown, FolderShared } from 'src/components/icons';
 import { selectUserProfile } from 'src/store/user.slice';
 import { intl, keys, IntlType } from 'src/i18n';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 import { BaseTooltip } from 'src/components/common';
 
 import styles from './style.module.scss';

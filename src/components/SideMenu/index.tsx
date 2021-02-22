@@ -11,7 +11,7 @@ import { getDeviceInfo } from 'src/util/device-detector.util';
 import { FileService } from 'src/service';
 import { updateSharedFolderList, selectSharedFolderList } from 'src/store/system.slice';
 import SharedFolder from './SharedFolder';
-import { Share } from 'src/vo/common';
+import { Share } from 'src/interface/common';
 
 import styles from './style.module.scss';
 

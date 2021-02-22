@@ -6,7 +6,6 @@ import {
   uploadPostFile,
   downloadPostFile,
   del,
-  getBlob,
   put,
   post,
   postBlob,
@@ -21,9 +20,10 @@ import {
   RenameFileReqVo,
   MoveFilesReqVo,
 } from './vo';
-import { ApiUrl, ApiResult, Config, Routes } from 'src/constants';
+import { ApiUrl, ApiResult } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
 import { TaskData } from 'src/components/TaskList/reducer';
+import { Prefix } from 'src/interface/common';
 
 export const getFileList = (prefix: string, token: string): Promise<GetFileListResVo> => {
   const search: GetFileListReqVo = { prefix: encodeURIComponent(prefix) };
@@ -48,7 +48,7 @@ export const uploadFile = (
   token: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<RespVo> => {
-  const search = { prefix: encodeURIComponent(task.prefix) };
+  const search = { prefix: encodeURIComponent(task.prefix.path) };
   const formData = new FormData();
   formData.append('file', file);
 
@@ -71,22 +71,23 @@ export const uploadFile = (
 };
 
 export const getPreviewUrl = (
-  prefix: string,
+  prefix: Prefix,
   fileName: string,
   token: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
   cancelToken?: CancelTokenSource,
 ): Promise<Blob> => {
-
-  const search = {
-    fileName: encodeURIComponent(fileName),
-    prefix: encodeURIComponent(prefix),
+  const body = {
+    id: prefix.sharedId,
+    prefix: prefix.path,
+    fileName: fileName,
   };
 
   return new Promise((resolve, reject) => {
-    getBlob(
-      ApiUrl.GET_PREVIEW_URL,
-      search,
+    postBlob(
+      prefix.sharedId ? ApiUrl.GET_SHARED_FILE_PREVIEW_URL : ApiUrl.GET_PREVIEW_URL,
+      body,
+      undefined,
       token,
       progress,
       cancelToken,
@@ -111,13 +112,14 @@ export const downloadFile = (
 ): Promise<Blob> => {
 
   const body: DownloadFileReqVo = {
-    prefix: task.prefix,
+    id: task.prefix.sharedId ? task.prefix.sharedId : undefined,
+    prefix: task.prefix.path,
     fileName: task.fileName,
   };
 
   return new Promise((resolve, reject) => {
     downloadPostFile(
-      ApiUrl.DOWNLOAD_FILE,
+      task.prefix.sharedId ? ApiUrl.DOWNLOAD_SHARED_FILE : ApiUrl.DOWNLOAD_FILE,
       body,
       undefined,
       token,
@@ -185,16 +187,12 @@ export const removeFolder = (
 export const getShareableLinkUrl = (
   prefix: string,
   fileName: string,
-  contentType: string,
   expiresSeconds: number,
   token: string,
 ): Promise<GetShareableLinkResVo> => {
-
   const body = {
     fileName,
-    contentType,
     prefix,
-    clientUrl: Config.WEB_BASE_URL + Routes.SHARE_LINK,
     expiresSeconds,
   };
 
@@ -206,7 +204,9 @@ export const getShareableLinkUrl = (
       token,
     ).then((resp: RespVo) => {
       if (resp.status === ApiResult.Success) {
-        resolve(resp as GetShareableLinkResVo);
+        const getShareableLinkResVo = resp as GetShareableLinkResVo;
+        getShareableLinkResVo.data.shareableLink = atob(getShareableLinkResVo.data.shareableLink);
+        resolve(getShareableLinkResVo);
 
       } else {
         reject(resp);

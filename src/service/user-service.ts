@@ -1,4 +1,4 @@
-import { UserProfile } from 'src/vo/common';
+import { UserProfile } from 'src/interface/common';
 
 import { Cookie } from 'src/util/cookie.util';
 import { CookieKeys } from 'src/constants';

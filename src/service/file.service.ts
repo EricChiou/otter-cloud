@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { addTask } from 'src/shared/task-shared';
-import { File } from 'src/vo/common';
+import { File, Prefix } from 'src/interface/common';
 
 export class FileService {
-  public static readonly uploadFiles = (prefix: string, files: FileList) => {
+  public static readonly uploadFiles = (prefix: Prefix, files: FileList) => {
     // console.log('Upload Files', fileList);
     const timeStamp = new Date().getTime();
     const tasks = Array.from(files)
@@ -27,7 +27,7 @@ export class FileService {
     addTask(tasks);
   };
 
-  public static readonly downloadFiles = (prefix: string, fileList: File[]) => {
+  public static readonly downloadFiles = (prefix: Prefix, fileList: File[]) => {
     const files = fileList.filter((file) => file.selected);
     // console.log('Download Files', files);
     const timeStamp = new Date().getTime();

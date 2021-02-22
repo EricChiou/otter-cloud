@@ -10,7 +10,7 @@ import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer'
 import FileName from './FileName';
 import { ViewType } from '../';
 import FileIcon from './FileIcon';
-import { File } from 'src/vo/common';
+import { File } from 'src/interface/common';
 import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
@@ -80,7 +80,7 @@ const FileComponent: FunctionComponent<Props> = ({
     const task: TaskData = {
       id: `${timeStamp}_${0}`,
       type: TaskType.download,
-      prefix: prefix.path,
+      prefix: prefix,
       fileName: file.name,
       status: TaskStatus.waiting,
       progress: 0,
