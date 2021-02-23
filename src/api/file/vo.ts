@@ -18,6 +18,7 @@ export interface RemoveFileReqVo {
 }
 
 export interface RemoveFolderReqVo {
+  id?: number;
   prefix: string;
 }
 

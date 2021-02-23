@@ -169,15 +169,19 @@ export const removeFile = (
 };
 
 export const removeFolder = (
+  sharedId: number | null,
   prefix: string,
   token: string,
 ): Promise<RespVo> => {
 
-  const search: RemoveFolderReqVo = { prefix: encodeURIComponent(prefix) };
+  const search: RemoveFolderReqVo = {
+    id: sharedId ? sharedId : undefined,
+    prefix: encodeURIComponent(prefix),
+  };
 
   return new Promise((resolve, reject) => {
     del(
-      ApiUrl.REMOVE_FOLDER,
+      sharedId ? ApiUrl.REMOVE_SHARED_FOLDER : ApiUrl.REMOVE_FOLDER,
       search,
       token,
     ).then((resp: RespVo) => {

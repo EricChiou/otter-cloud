@@ -32,4 +32,5 @@ export class ApiUrl {
     public static readonly GET_SHARED_FILE_SHAREABLE_LINK = shareGroupUrl + '/file/shareableLink';
     public static readonly UPLOAD_SHARED_FILE = shareGroupUrl + '/file/upload';
     public static readonly REMOVE_SHARED_FILE = shareGroupUrl + '/file';
+    public static readonly REMOVE_SHARED_FOLDER = shareGroupUrl + '/folder';
 }

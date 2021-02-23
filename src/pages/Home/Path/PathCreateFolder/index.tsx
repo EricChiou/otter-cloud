@@ -52,10 +52,11 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
     if (e) { e.stopPropagation(); }
     if (!inputValue) { return; }
 
-    const search = prefix.path + inputValue + '/';
+    let search = `?prefix=${encodeURIComponent(prefix.path + inputValue + '/')}`;
+    search += prefix.sharedId ? `&sharedId=${prefix.sharedId}` : '';
     history.push({
       pathname: history.location.pathname,
-      search: search ? `?prefix=${encodeURIComponent(search)}` : '',
+      search: search,
     });
     setIsCreating(false);
   };
