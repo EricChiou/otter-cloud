@@ -56,4 +56,8 @@ export interface Keys {
   canWrite: string;
   permission: string;
   sharedFolder: string;
+  permissionDenied: string;
+  accNotExisting: string;
+  sharedInfo: string;
+  sharedFrom: string;
 }

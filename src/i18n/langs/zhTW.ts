@@ -50,4 +50,8 @@ export const zhTW: Keys = {
   canWrite: '可修改',
   permission: '權限',
   sharedFolder: '共享資料夾',
+  permissionDenied: '權限不足',
+  accNotExisting: '帳號不存在',
+  sharedInfo: '分享資訊',
+  sharedFrom: '分享自',
 };

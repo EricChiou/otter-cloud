@@ -12,6 +12,7 @@ export interface DownloadFileReqVo {
 }
 
 export interface RemoveFileReqVo {
+  id?: number;
   prefix: string;
   fileName: string;
 }

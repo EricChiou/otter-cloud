@@ -50,4 +50,8 @@ export const keys: Keys = {
   canWrite: 'canWrite',
   permission: 'permission',
   sharedFolder: 'sharedFolder',
+  permissionDenied: 'permissionDenied',
+  accNotExisting: 'accNotExisting',
+  sharedInfo: 'sharedInfo',
+  sharedFrom: 'sharedFrom',
 };

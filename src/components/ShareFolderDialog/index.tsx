@@ -10,6 +10,7 @@ import { Add, Cancel } from 'src/components/icons';
 import { addSharedFolder, removeSharedFolder } from 'src/api/shared';
 import { ApiResult, sharedFolderPermsType } from 'src/constants';
 import { Share } from 'src/interface/common';
+import { addMessage, MessageType } from 'src/components/Message';
 
 import styles from './style.module.scss';
 
@@ -43,7 +44,9 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
       dispatch(updateSharedFolderList(userProfile.token));
 
     }).catch((error) => {
-      console.log(error);
+      if (error.status && error.status === ApiResult.DBError) {
+        dispatch(addMessage(intl(keys.accNotExisting), MessageType.warning));
+      }
 
     }).finally(() => {
       onLoading.current = false;

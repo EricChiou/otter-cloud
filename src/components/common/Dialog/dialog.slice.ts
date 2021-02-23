@@ -29,12 +29,12 @@ const dialogSlice = createSlice({
 
 const dialogReducer = dialogSlice.reducer;
 
-export const addDialog = (dialogData: DialogData): AppThunk => dispatch => {
+export const addDialog = (dialogData: DialogData): AppThunk => (dispatch) => {
   const { addDialog } = dialogSlice.actions;
   dispatch(addDialog(dialogData));
 };
 
-export const removeDialog = (): AppThunk => dispatch => {
+export const removeDialog = (): AppThunk => (dispatch) => {
   const { removeDialog } = dialogSlice.actions;
   dispatch(removeDialog());
 };
