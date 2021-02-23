@@ -10,6 +10,9 @@ import { addDialog, removeDialog } from 'src/components/common';
 import { removeFile } from 'src/api/file';
 import DeleteFileDialog from 'src/components/DeleteFileDialog';
 import MoveFile from './MoveFile';
+import { ApiResult } from 'src/constants';
+import { addMessage, MessageType } from 'src/components/Message';
+import { intl, keys, IntlType } from 'src/i18n';
 
 import styles from './style.module.scss';
 
@@ -50,9 +53,18 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
 
       const files = fileList.filter((file) => file.selected);
       const removeAllFiles = files
-        .map((file) => removeFile(prefix.path, file.name, userProfile.token));
+        .map((file) => removeFile(prefix, file.name, userProfile.token));
 
-      Promise.all(removeAllFiles).then(() => { removeFileNext(); });
+      Promise.all(removeAllFiles)
+        .then(() => { removeFileNext(); })
+        .catch((error) => {
+          if (error.status && error.status === ApiResult.PermissionDenied) {
+            dispatch(addMessage(
+              intl(keys.permissionDenied, IntlType.perUpper),
+              MessageType.warning,
+            ));
+          }
+        });
     };
     const cancel = () => { dispatch(removeDialog()); };
 

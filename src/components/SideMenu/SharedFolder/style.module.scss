@@ -15,7 +15,8 @@
 
     .expand,
     .icon,
-    .text {
+    .text,
+    .sharedFolderInfo {
       display: inline-block;
       vertical-align: middle;
 
@@ -63,6 +64,7 @@
     }
   }
 
+  // when window.innerWidth <= 1024
   .sharedFolderContainer {
     position: fixed;
     top: 75px;
@@ -79,6 +81,14 @@
     height: 26px;
     cursor: pointer;
 
+    &:hover {
+      background-color: theme(pink, light);
+    }
+
+    &:active {
+      background-color: theme(pink);
+    }
+
     .icon {
       svg {
         width: 22px;
@@ -87,7 +97,60 @@
     }
 
     .text {
-      width: calc(100% - 5px - 22px);
+      width: calc(100% - 5px - 22px - 26px);
     }
+
+    .sharedFolderInfo {
+      width: 26px;
+      height: 26px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+
+      svg {
+        margin: 2px;
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+
+  .active {
+    background-color: theme(pink);
+  }
+}
+
+.sharedInfoDialog {
+  width: 300px;
+
+  .dialogHeader {
+    padding: 0 5px;
+    height: 35px;
+    font-size: 20px;
+    text-align: left;
+    line-height: 35px;
+    color: theme(white);
+    background-color: theme(blue);
+  }
+
+  .dialogBody {
+    padding: 10px 5px 0 5px;
+    text-align: left;
+
+    .dialogText {
+      margin-top: 1px;
+      margin-bottom: 5px;
+      padding: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      background-color: theme(white, deep);
+      border: 1px solid theme(gray);
+      overflow: hidden;
+    }
+  }
+
+  .dialogFooter {
+    margin: 8px 0;
   }
 }

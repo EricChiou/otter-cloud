@@ -19,6 +19,7 @@ import {
   GetShareableLinkResVo,
   RenameFileReqVo,
   MoveFilesReqVo,
+  GetShareableLinkReqVo,
 } from './vo';
 import { ApiUrl, ApiResult } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
@@ -48,13 +49,16 @@ export const uploadFile = (
   token: string,
   progress?: (event: ProgressEvent<EventTarget>) => void,
 ): Promise<RespVo> => {
-  const search = { prefix: encodeURIComponent(task.prefix.path) };
+  const search = {
+    id: task.prefix.sharedId ? task.prefix.sharedId : undefined,
+    prefix: encodeURIComponent(task.prefix.path),
+  };
   const formData = new FormData();
   formData.append('file', file);
 
   return new Promise((resolve, reject) => {
     uploadPostFile(
-      ApiUrl.UPLOAD_FILES,
+      task.prefix.sharedId ? ApiUrl.UPLOAD_SHARED_FILE : ApiUrl.UPLOAD_FILES,
       formData,
       search,
       token,
@@ -139,19 +143,20 @@ export const downloadFile = (
 };
 
 export const removeFile = (
-  prefix: string,
+  prefix: Prefix,
   fileName: string,
   token: string,
 ): Promise<RespVo> => {
 
   const search: RemoveFileReqVo = {
-    prefix: encodeURIComponent(prefix),
+    id: prefix.sharedId ? prefix.sharedId : undefined,
+    prefix: encodeURIComponent(prefix.path),
     fileName: encodeURIComponent(fileName),
   };
 
   return new Promise((resolve, reject) => {
     del(
-      ApiUrl.REMOVE_FILE,
+      prefix.sharedId ? ApiUrl.REMOVE_SHARED_FILE : ApiUrl.REMOVE_FILE,
       search,
       token,
     ).then((resp: RespVo) => {
@@ -185,20 +190,21 @@ export const removeFolder = (
 };
 
 export const getShareableLinkUrl = (
-  prefix: string,
+  prefix: Prefix,
   fileName: string,
   expiresSeconds: number,
   token: string,
 ): Promise<GetShareableLinkResVo> => {
-  const body = {
+  const body: GetShareableLinkReqVo = {
+    id: prefix.sharedId ? prefix.sharedId : undefined,
     fileName,
-    prefix,
+    prefix: prefix.path,
     expiresSeconds,
   };
 
   return new Promise((resolve, reject) => {
     post(
-      ApiUrl.GET_SHAREABLE_LINK_URL,
+      prefix.sharedId ? ApiUrl.GET_SHARED_FILE_SHAREABLE_LINK : ApiUrl.GET_SHAREABLE_LINK,
       body,
       undefined,
       token,

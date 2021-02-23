@@ -1,11 +1,13 @@
 import React, { FunctionComponent, MouseEvent } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { ArrowRight, ArrowDown, FolderShared } from 'src/components/icons';
+import { ArrowRight, ArrowDown, FolderShared, SimpleInfo } from 'src/components/icons';
 import { selectUserProfile } from 'src/store/user.slice';
+import { selectPrefix } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import { Share } from 'src/interface/common';
-import { BaseTooltip } from 'src/components/common';
+import { BaseTooltip, BaseButton, addDialog, removeDialog } from 'src/components/common';
+import { sharedFolderPermsType } from 'src/constants';
 
 import styles from './style.module.scss';
 
@@ -22,11 +24,61 @@ const SharedFolder: FunctionComponent<Props> = ({
   expandOnClick,
   onSelect,
 }) => {
+  const dispatch = useDispatch();
   const userProfile = useSelector(selectUserProfile);
+  const prefix = useSelector(selectPrefix);
+
+  const getSharedFolderClassName = (sharedFolder: Share): string => {
+    return styles.sharedFolder + ((prefix.sharedId === sharedFolder.id) ? ` ${styles.active}` : '');
+  };
 
   const sharedFolderOnSelect = (e: MouseEvent<HTMLDivElement>, sharedFolder: Share) => {
     onSelect(e.currentTarget, sharedFolder);
   };
+
+  const getPermissionText = (permission: string): string => {
+    switch (permission) {
+      case sharedFolderPermsType.read:
+        return intl(keys.canRead, IntlType.firstUpper);
+
+      case sharedFolderPermsType.write:
+        return intl(keys.canWrite, IntlType.firstUpper);
+    }
+
+    return permission;
+  };
+
+  const showSharedInfoDialog = (sharedFolder: Share) => {
+    const component = (
+      <div className={styles.sharedInfoDialog}>
+        <div className={styles.dialogHeader}>{intl(keys.sharedInfo, IntlType.perUpper)}</div>
+        <div className={styles.dialogBody}>
+          {intl(keys.sharedFrom, IntlType.firstUpper)}：
+          <BaseTooltip content={`${sharedFolder.ownerName}, ${sharedFolder.ownerAcc}`}>
+            <div className={styles.dialogText}>
+              {`${sharedFolder.ownerName}, ${sharedFolder.ownerAcc}`}
+            </div>
+          </BaseTooltip>
+          {intl(keys.permission, IntlType.firstUpper)}：
+          <BaseTooltip content={getPermissionText(sharedFolder.permission)}>
+            <div className={styles.dialogText}>
+              {getPermissionText(sharedFolder.permission)}
+            </div>
+          </BaseTooltip>
+        </div>
+        <div className={styles.dialogFooter} onClick={() => { dispatch(removeDialog()); }}>
+          <BaseButton>{intl(keys.confirm, IntlType.firstUpper)}</BaseButton>
+        </div>
+      </div>
+    );
+
+    dispatch(addDialog({
+      component: component,
+      closeUI: true,
+      closeByClick: true,
+    }));
+  };
+
 
   const renderSharedFolder = () => {
     return sharedFolderList
@@ -37,7 +89,7 @@ const SharedFolder: FunctionComponent<Props> = ({
         return (
           <div
             key={sharedFolder.id}
-            className={styles.sharedFolder}
+            className={getSharedFolderClassName(sharedFolder)}
             onClick={(e) => { sharedFolderOnSelect(e, sharedFolder); }}>
             <span className={styles.icon}><FolderShared></FolderShared></span>
             <span className={styles.text}>
@@ -51,6 +103,15 @@ const SharedFolder: FunctionComponent<Props> = ({
               >
                 {sharedPaths[sharedPaths.length - 2]}
               </BaseTooltip>
+            </span>
+            <span
+              className={styles.sharedFolderInfo}
+              onClick={(e) => {
+                e.stopPropagation();
+                showSharedInfoDialog(sharedFolder);
+              }}
+            >
+              <SimpleInfo></SimpleInfo>
             </span>
           </div >
         );

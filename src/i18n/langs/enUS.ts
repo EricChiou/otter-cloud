@@ -50,4 +50,8 @@ export const enUS: Keys = {
   canWrite: 'write',
   permission: 'perms',
   sharedFolder: 'shared folder',
+  permissionDenied: 'permission denied',
+  accNotExisting: 'Account not existing.',
+  sharedInfo: 'shared info',
+  sharedFrom: 'shared from',
 };

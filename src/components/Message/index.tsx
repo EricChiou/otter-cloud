@@ -89,7 +89,7 @@ export const addMessage = (
   msg: string,
   type?: MessageType,
   callback?: () => void,
-): AppThunk => dispatch => {
+): AppThunk => (dispatch) => {
 
   const config = getConfig(type);
   config.callback = callback;

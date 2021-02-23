@@ -12,6 +12,7 @@ export interface DownloadFileReqVo {
 }
 
 export interface RemoveFileReqVo {
+  id?: number;
   prefix: string;
   fileName: string;
 }
@@ -30,6 +31,13 @@ export interface MoveFilesReqVo {
   prefix: string;
   targetPrefix: string;
   filenames: string[];
+}
+
+export interface GetShareableLinkReqVo {
+  id?: number;
+  fileName: string;
+  prefix: string;
+  expiresSeconds: number;
 }
 
 // response vo
