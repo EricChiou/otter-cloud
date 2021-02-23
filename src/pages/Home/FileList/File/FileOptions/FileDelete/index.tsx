@@ -29,7 +29,11 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   const deleteFolder = () => {
     // console.log('deleteFolder', file);
     dispatch(removeDialog());
-    removeFolder(prefix.path + file.name, userProfile.token).then(() => { removeFileNext(); });
+    removeFolder(
+      prefix.sharedId,
+      prefix.path + file.name,
+      userProfile.token,
+    ).then(() => { removeFileNext(); });
   };
 
   const deleteFile = () => {
