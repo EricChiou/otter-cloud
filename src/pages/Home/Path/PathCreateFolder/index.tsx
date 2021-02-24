@@ -67,8 +67,8 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
     createFolder();
   };
 
-  const createOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    inputValue = e.currentTarget.value;
+  const createOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
+    inputValue = e ? e.currentTarget.value : value;
   };
 
   return (
@@ -76,7 +76,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
       {isCreating ?
         <div className={styles.createInput}>
           <BaseInput onFocus={true} onChange={createOnChange} onKeyUp={createOnKeyUp}></BaseInput>
-          <BaseButton style={{ height: '23px' }} onClick={createFolder}>
+          <BaseButton style={{ height: '23px', verticalAlign: 'top' }} onClick={createFolder}>
             <Check></Check>
           </BaseButton>
         </div> :

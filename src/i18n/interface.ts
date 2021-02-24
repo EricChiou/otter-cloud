@@ -60,4 +60,6 @@ export interface Keys {
   accNotExisting: string;
   sharedInfo: string;
   sharedFrom: string;
+  moveFileDuplicate: string;
+  sharedDuplicate: string;
 }

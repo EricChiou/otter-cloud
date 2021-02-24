@@ -9,6 +9,7 @@ export class ApiUrl {
     // user
     public static readonly SIGN_UP = userGroupUrl + '/signUp';
     public static readonly SIGN_IN = userGroupUrl + '/signIn';
+    public static readonly GET_USER_FUZZY_LIST = userGroupUrl + '/fuzzy/list';
 
     // file
     public static readonly GET_FILE_LIST = fileGroupUrl + '/list';
@@ -24,6 +25,7 @@ export class ApiUrl {
 
     // share
     public static readonly ADD_SHARED_FOLDER_URL = shareGroupUrl + '/add';
+    public static readonly UPDATE_SHARED_FOLDER_URL = shareGroupUrl + '/update';
     public static readonly REMOVE_SHARED_FOLDER_URL = shareGroupUrl + '/remove';
     public static readonly GET_SHARED_FOLDER_LIST_URL = shareGroupUrl;
     public static readonly GET_SHARED_FILE_LIST_URL = shareGroupUrl + '/file/list';
@@ -33,4 +35,6 @@ export class ApiUrl {
     public static readonly UPLOAD_SHARED_FILE = shareGroupUrl + '/file/upload';
     public static readonly REMOVE_SHARED_FILE = shareGroupUrl + '/file';
     public static readonly REMOVE_SHARED_FOLDER = shareGroupUrl + '/folder';
+    public static readonly RENAME_SHARED_FILE = shareGroupUrl + '/file/rename';
+    public static readonly MOVE_SHARED_FILES = shareGroupUrl + '/file/move';
 }

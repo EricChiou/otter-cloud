@@ -60,7 +60,11 @@ const SideMenu: FunctionComponent<{}> = () => {
     refreshFileList();
     const subscribe = subFileShared((data) => {
       // console.log('subFileShared:', data);
-      if (data.action === fileSharedActs.uploadFile) { refreshFileList(); }
+      if (
+        data.action === fileSharedActs.uploadFile ||
+        data.action === fileSharedActs.moveFiles ||
+        data.action === fileSharedActs.removeFile
+      ) { refreshFileList(); }
     });
 
     return () => { subscribe.unsubscribe(); };

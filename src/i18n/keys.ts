@@ -54,4 +54,6 @@ export const keys: Keys = {
   accNotExisting: 'accNotExisting',
   sharedInfo: 'sharedInfo',
   sharedFrom: 'sharedFrom',
+  moveFileDuplicate: 'moveFileDuplicate',
+  sharedDuplicate: 'sharedDuplicate',
 };

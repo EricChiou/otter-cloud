@@ -4,7 +4,6 @@ import { RootState, AppThunk } from './store';
 import { Prefix, File, Share } from 'src/interface/common';
 import { getFileList } from 'src/api/file';
 import { getSharedFolderList, getSharedFileList } from 'src/api/shared';
-import { GetFileListResVo } from 'src/api/file/vo';
 
 interface SystemState {
   bucket: string;
@@ -71,18 +70,15 @@ export const updateFileList = (
   prefix: Prefix,
   token: string,
 ): AppThunk => (dispatch) => {
-  const { setFileList, setFileListOnLoading } = systemSlice.actions;
+  const { setFileList, setFileListOnLoading, setPrefix } = systemSlice.actions;
 
-  const getFileListApi = (): Promise<GetFileListResVo> => {
-    return prefix.sharedId ?
-      getSharedFileList(prefix.sharedId, prefix.path, token) :
-      getFileList(prefix.path, token);
-  };
+  const getFileListApi = prefix.sharedId ?
+    getSharedFileList(prefix.sharedId, prefix.path, token) :
+    getFileList(prefix.path, token);
 
   dispatch(setFileListOnLoading(true));
-  getFileListApi().then((resp) => {
-
-    const fileList: File[] = resp.data.map((file) => {
+  getFileListApi.then((resp) => {
+    const fileList: File[] = resp.data ? resp.data.map((file) => {
       const fileNameSep = file.name.split('/');
       const length = fileNameSep.length;
       return {
@@ -92,13 +88,13 @@ export const updateFileList = (
         lastModified: file.lastModified,
         selected: false,
       };
-    });
-
+    }) : [];
     dispatch(setFileList(fileList));
 
-  }).catch((error) => {
-    console.log(error);
-    dispatch(setFileList([]));
+  }).catch(() => {
+    // console.log(error);
+    window.history.pushState({}, '', window.location.href.split('?')[0]);
+    dispatch(setPrefix({ sharedId: null, path: '' }));
 
   }).finally(() => {
     dispatch(setFileListOnLoading(false));
@@ -107,7 +103,7 @@ export const updateFileList = (
 
 export const updateSharedFolderList = (token: string): AppThunk => (dispatch) => {
   getSharedFolderList(token).then((resp) => {
-    const shareToList = resp.data.map((sharedFolder) => ({
+    const shareToList = resp.data ? resp.data.map((sharedFolder) => ({
       id: sharedFolder.id,
       ownerAcc: sharedFolder.ownerAcc,
       ownerName: sharedFolder.ownerName,
@@ -117,7 +113,7 @@ export const updateSharedFolderList = (token: string): AppThunk => (dispatch) =>
       permission: sharedFolder.permission,
       createdDate: 0,
       updatedDate: 0,
-    }));
+    })) : [];
 
     const { setSharedFolderList } = systemSlice.actions;
     dispatch(setSharedFolderList(shareToList));

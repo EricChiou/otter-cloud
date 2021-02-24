@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 import Header from 'src/components/Header';
 import { intl, keys, IntlType } from 'src/i18n';
@@ -88,29 +88,29 @@ const SignUp: FunctionComponent<{}> = () => {
     }
   };
 
-  const eMailOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const eMailOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
     const newUserData = { ...userData };
-    newUserData.email = e.target.value;
+    newUserData.email = e ? e.target.value : value;
     setUserData(newUserData);
-  }
+  };
 
-  const nameOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const nameOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
     const newUserData = { ...userData };
-    newUserData.name = e.target.value;
+    newUserData.name = e ? e.target.value : value;
     setUserData(newUserData);
-  }
+  };
 
-  const pwdOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const pwdOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
     const newUserData = { ...userData };
-    newUserData.password = e.target.value;
+    newUserData.password = e ? e.target.value : value;
     setUserData(newUserData);
-  }
+  };
 
-  const confirmPwdOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const confirmPwdOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
     const newUserData = { ...userData };
-    newUserData.confirmPassword = e.target.value;
+    newUserData.confirmPassword = e ? e.target.value : value;
     setUserData(newUserData);
-  }
+  };
 
   return (
     <div id={styles.signUp} className={className}>
@@ -132,21 +132,23 @@ const SignUp: FunctionComponent<{}> = () => {
             <div className={`${styles.infoTitle} ${checkPassword() ? styles.ok : styles.error}`}>
               {intl(keys.password, IntlType.perUpper)}:
               {checkPassword() !== null ?
-                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>)
-                : null
+                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>) : null
               }
             </div>
-            <BaseInput type={"password"} style={inputStyle} onChange={pwdOnChange}></BaseInput>
+            <BaseInput type={'password'} style={inputStyle} onChange={pwdOnChange}></BaseInput>
           </span>
           <span className={styles.info}>
             <div className={`${styles.infoTitle} ${checkPassword() ? styles.ok : styles.error}`}>
               {intl(keys.confirmPwd, IntlType.perUpper)}:
               {checkPassword() !== null ?
-                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>)
-                : null
+                (checkPassword() ? <CheckCircle></CheckCircle> : <ErrorCircle></ErrorCircle>) : null
               }
             </div>
-            <BaseInput type={"password"} style={inputStyle} onChange={confirmPwdOnChange}></BaseInput>
+            <BaseInput
+              type={'password'}
+              style={inputStyle}
+              onChange={confirmPwdOnChange}
+            ></BaseInput>
           </span>
         </div>
         <div className={styles.confirm}>
@@ -173,6 +175,6 @@ const SignUp: FunctionComponent<{}> = () => {
       <Lang></Lang>
     </div >
   );
-}
+};
 
 export default SignUp;

@@ -249,17 +249,22 @@ export const getObjectByShareableLinkUrl = (url: string): Promise<Blob> => {
 };
 
 export const renameFile = (
-  prefix: string,
-  filename: string,
-  newFilename: string,
+  prefix: Prefix,
+  fileName: string,
+  newFileName: string,
   token: string,
 ): Promise<GetFileListResVo> => {
 
-  const data: RenameFileReqVo = { prefix, filename, newFilename };
+  const data: RenameFileReqVo = {
+    id: prefix.sharedId ? prefix.sharedId : undefined,
+    prefix: prefix.path,
+    fileName,
+    newFileName,
+  };
 
   return new Promise((resolve, reject) => {
     put(
-      ApiUrl.RENAME_FILE_URL,
+      prefix.sharedId ? ApiUrl.RENAME_SHARED_FILE : ApiUrl.RENAME_FILE_URL,
       data,
       undefined,
       token,
@@ -273,17 +278,22 @@ export const renameFile = (
 };
 
 export const moveFiles = (
-  prefix: string,
+  prefix: Prefix,
   targetPrefix: string,
-  filenames: string[],
+  fileNames: string[],
   token: string,
 ): Promise<GetFileListResVo> => {
 
-  const data: MoveFilesReqVo = { prefix, targetPrefix, filenames };
+  const data: MoveFilesReqVo = {
+    id: prefix.sharedId ? prefix.sharedId : undefined,
+    prefix: prefix.path,
+    targetPrefix,
+    fileNames,
+  };
 
   return new Promise((resolve, reject) => {
     put(
-      ApiUrl.MOVE_FILES_URL,
+      prefix.sharedId ? ApiUrl.MOVE_SHARED_FILES : ApiUrl.MOVE_FILES_URL,
       data,
       undefined,
       token,

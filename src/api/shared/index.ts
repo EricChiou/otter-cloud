@@ -1,4 +1,4 @@
-import { RespVo, post, get } from '../request';
+import { RespVo, post, get, put } from '../request';
 import { ApiUrl, ApiResult } from 'src/constants';
 import { AddSharedFolderReqVo, GetSharedFolderResVo } from './vo';
 import { GetFileListResVo } from 'src/api/file/vo';
@@ -18,6 +18,28 @@ export const addSharedFolder = (
   return new Promise((resolve, reject) => {
     post(
       ApiUrl.ADD_SHARED_FOLDER_URL,
+      body,
+      undefined,
+      token,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const updateSharedFolder = (
+  sharedId: number,
+  permission: string,
+  token: string,
+): Promise<RespVo> => {
+  const body = { id: sharedId, permission };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.UPDATE_SHARED_FOLDER_URL,
       body,
       undefined,
       token,

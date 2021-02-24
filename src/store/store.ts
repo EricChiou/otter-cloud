@@ -19,6 +19,7 @@ export const store = configureStore({
         'system/setFileList',
         'system/setPrefix',
         'system/setSharedFolderList',
+        'system/setFileListOnLoading',
       ],
     },
   }),

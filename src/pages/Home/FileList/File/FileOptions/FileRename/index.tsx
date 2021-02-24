@@ -32,8 +32,8 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
   const prefix = useSelector(selectPrefix);
   let newFilename = '';
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    newFilename = e.target.value;
+  const onChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
+    newFilename = e ? e.target.value : value;
   };
 
   const close = () => {
@@ -49,13 +49,19 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
     // console.log(newFilename);
     if (!newFilename) { return; }
 
-    renameFile(prefix.path, file.name, newFilename, userProfile.token).then(() => {
+    renameFile(prefix, file.name, newFilename, userProfile.token).then(() => {
       renameFileNext();
       close();
 
     }).catch((error) => {
       if (error.status === ApiResult.Duplicate) {
         doRenameFailed(intl(keys.renameDuplicate));
+
+      } else if (error.status === ApiResult.PermissionDenied) {
+        dispatch(addMessage(
+          intl(keys.permissionDenied, IntlType.perUpper),
+          MessageType.warning,
+        ));
       }
     });
   };
@@ -66,7 +72,11 @@ const FileRename: FunctionComponent<Props> = ({ file, onClick }) => {
         <div className={styles.header}>{intl(keys.rename, IntlType.firstUpper)}：{file.name}</div>
         <div className={styles.newFilename}>
           {intl(keys.newFilename, IntlType.firstUpper)}：<br />
-          <BaseInput style={{ width: 'calc(100% - 12px)' }} onChange={onChange}></BaseInput>
+          <BaseInput
+            style={{ width: 'calc(100% - 12px)' }}
+            defaultValue={file.name}
+            onChange={onChange}
+          ></BaseInput>
         </div>
         <div className={styles.footer}>
           <BaseButton onClick={doRename}>
