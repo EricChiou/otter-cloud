@@ -96,7 +96,7 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
     if (!inputValue) { return []; }
 
     const resp = await getUserFuzzyList(inputValue, userProfile.token);
-    const options = resp.data ? resp.data : [];
+    const options = resp.data ? resp.data.filter((acc) => acc !== userProfile.acc) : [];
 
     return options;
   };
