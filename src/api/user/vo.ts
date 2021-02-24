@@ -15,3 +15,7 @@ export interface SingInReqVo {
 export interface SingInResVo extends RespVo {
   data: { token: string };
 }
+
+export interface AccListResVo extends RespVo {
+  data: string[];
+}

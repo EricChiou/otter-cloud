@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect, KeyboardEvent } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setUserProfile } from 'src/store/user.slice';
@@ -46,22 +46,6 @@ const Login: FunctionComponent<{}> = () => {
     };
   });
 
-  const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    acc = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      e.currentTarget.blur();
-      doLogin();
-    }
-  }
-
-  const pwdOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    pwd = e.currentTarget.value;
-    if (e.key === 'Enter') {
-      e.currentTarget.blur();
-      doLogin();
-    }
-  }
-
   const doLogin = () => {
     login(acc, pwd).then((resp) => {
       // console.log('login:', resp);
@@ -75,7 +59,23 @@ const Login: FunctionComponent<{}> = () => {
       console.log(error);
       dispatch(addMessage(intl(keys.signInErrorMsg), MessageType.info));
     });
-  }
+  };
+
+  const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    acc = e.currentTarget.value;
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+      doLogin();
+    }
+  };
+
+  const pwdOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    pwd = e.currentTarget.value;
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+      doLogin();
+    }
+  };
 
   return (
     <div id={styles.login} className={className}>
@@ -114,6 +114,6 @@ const Login: FunctionComponent<{}> = () => {
       <Lang></Lang>
     </div>
   );
-}
+};
 
 export default Login;

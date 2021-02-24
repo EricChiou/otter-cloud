@@ -10,7 +10,7 @@ interface Props {
   }[];
   style?: object;
   optionStyle?: object;
-  defaultSelect?: boolean;
+  defaultSelect?: string | number | readonly string[] | undefined;
   onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -22,9 +22,11 @@ const BaseSelect: FunctionComponent<Props> = ({
   defaultSelect,
   onChange,
 }: Props) => {
-  const getDefaultValue = () => {
-    if (placeholder) { return 'select-placeholder'; }
-    if (defaultSelect && options && options[0]) { return options[0].value; }
+  const getDefaultValue = (): string | number | readonly string[] | undefined => {
+    if (placeholder && !defaultSelect) { return 'select-placeholder'; }
+    if (defaultSelect) {
+      return options?.find((option) => option.value === defaultSelect)?.value;
+    }
 
     return undefined;
   };
@@ -48,18 +50,6 @@ const BaseSelect: FunctionComponent<Props> = ({
         </option> : null
       }
       {options?.map((option, i) => {
-        if (!placeholder && defaultSelect && i === 0) {
-          return (
-            <option
-              key={i}
-              className={styles.option}
-              value={option.value}
-              style={optionStyle}
-            >
-              {option.label}
-            </option>
-          );
-        }
         return (
           <option
             key={i}

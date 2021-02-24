@@ -54,4 +54,6 @@ export const zhTW: Keys = {
   accNotExisting: '帳號不存在',
   sharedInfo: '分享資訊',
   sharedFrom: '分享自',
+  moveFileDuplicate: '目的地資料夾存在相同檔案名',
+  sharedDuplicate: '已分享過相同的資料夾',
 };

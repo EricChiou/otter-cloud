@@ -54,4 +54,6 @@ export const enUS: Keys = {
   accNotExisting: 'Account not existing.',
   sharedInfo: 'shared info',
   sharedFrom: 'shared from',
+  moveFileDuplicate: 'There has the same file name in the destination folder.',
+  sharedDuplicate: 'The same folder shared already.',
 };

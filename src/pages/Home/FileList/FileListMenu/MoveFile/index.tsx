@@ -1,16 +1,20 @@
-import React, { FunctionComponent, useState, useEffect, MouseEvent } from 'react';
+import React, { FunctionComponent, useState, useEffect, MouseEvent, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix, selectFileList } from 'src/store/system.slice';
 import { intl, keys, IntlType } from 'src/i18n';
 import { getFileList, moveFiles } from 'src/api/file';
+import { getSharedFileList } from 'src/api/shared';
 import { File } from 'src/interface/common';
 import { Folder, ArrowRight } from 'src/components/icons';
 import { BaseButton } from 'src/components/common';
 import { moveFilesNext } from 'src/shared/file-shared';
 import { removeDialog } from 'src/components/common';
 import { FileService } from 'src/service';
+import loading from 'src/assets/img/loading2.gif';
+import { addMessage, MessageType } from 'src/components/Message';
+import { ApiResult } from 'src/constants';
 
 import styles from './style.module.scss';
 
@@ -19,25 +23,44 @@ const MoveFile: FunctionComponent<{}> = () => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const fileList = useSelector(selectFileList);
-  const [listPrefix, setListPrefix] = useState('');
-  const [targetPrefix, setTargetPrefix] = useState('');
+  const [listPrefix, setListPrefix] = useState(prefix.sharedId ?
+    prefix.path.split('/')[0] + '/' : '');
+  const [targetPrefix, setTargetPrefix] = useState(prefix.sharedId ?
+    prefix.path.split('/')[0] + '/' : '');
   const [folderList, setFolderList] = useState<File[]>([]);
+  const [onLoading, setOnloading] = useState(false);
+
+  const parseFolderName = useCallback((folderName: string): string => {
+    const root = prefix.path.split('/')[0] + '/';
+    const index = folderName.indexOf(root);
+
+    return folderName.slice(index);
+  }, [prefix]);
 
   useEffect(() => {
-    getFileList(listPrefix, userProfile.token).then((resp) => {
-      if (resp.data) {
-        const newFolderList = resp.data.filter((file) => !FileService.isFile(file))
-          .map((folder) => {
-            return { ...folder, selected: false };
-          });
-        setFolderList(newFolderList);
+    const promise = prefix.sharedId ?
+      getSharedFileList(prefix.sharedId, listPrefix, userProfile.token) :
+      getFileList(listPrefix, userProfile.token);
 
-      } else {
-        setFolderList([]);
-      }
+    setOnloading(true);
+    promise.then((resp) => {
+      const newFolderList = resp.data
+        .filter((file) => !FileService.isFile(file))
+        .map((folder) => {
+          return prefix.sharedId ?
+            { ...folder, name: parseFolderName(folder.name), selected: false } :
+            { ...folder, selected: false };
+        });
+      setFolderList(newFolderList);
+
+    }).catch(() => {
+      setFolderList([]);
+
+    }).finally(() => {
+      setOnloading(false);
     });
 
-  }, [userProfile, listPrefix]);
+  }, [userProfile, listPrefix, prefix, parseFolderName]);
 
   const changePrefix = (newPrefix: string) => {
     setListPrefix(newPrefix);
@@ -66,17 +89,42 @@ const MoveFile: FunctionComponent<{}> = () => {
 
   const move = () => {
     const filenames = fileList.filter((file) => (file.selected)).map((file) => (file.name));
-    moveFiles(prefix.path, targetPrefix, filenames, userProfile.token).then(() => {
+    moveFiles(prefix, targetPrefix, filenames, userProfile.token).then(() => {
       moveFilesNext();
+    }).catch((error) => {
+      if (error.status === ApiResult.Duplicate) {
+        dispatch(addMessage(
+          intl(keys.moveFileDuplicate),
+          MessageType.warning,
+        ));
+
+      } else if (error.status === ApiResult.PermissionDenied) {
+        dispatch(addMessage(
+          intl(keys.permissionDenied, IntlType.perUpper),
+          MessageType.warning,
+        ));
+      }
     });
 
     dispatch(removeDialog());
   };
 
+  const showBack2PreLayer = (): boolean => {
+    if (prefix.sharedId) {
+      return !(listPrefix.split('/').length === 2);
+    }
+
+    return listPrefix ? true : false;
+  };
+
   const renderFolderList = () => {
+    if (onLoading) {
+      return <div><img className={styles.onLoading} src={loading} alt="onLoading"></img></div>;
+    }
+
     return (
       <div className={styles.folderList}>
-        {listPrefix ?
+        {showBack2PreLayer() ?
           <div className={styles.folder} onClick={back2PreLayer}>
             <span className={styles.folderIcon}><Folder></Folder></span>
             <div className={styles.fileName}>..</div>

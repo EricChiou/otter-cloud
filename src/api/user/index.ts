@@ -1,5 +1,5 @@
-import { post } from '../request';
-import { SingInReqVo, SingInResVo, SingUpReqVo } from './vo';
+import { post, get } from '../request';
+import { SingInReqVo, SingInResVo, SingUpReqVo, AccListResVo } from './vo';
 import { ApiUrl } from 'src/constants';
 import { RespVo } from '../request';
 
@@ -35,6 +35,23 @@ export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
       body,
     ).then((resp) => {
       resolve(resp as SingInResVo);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const getUserFuzzyList = (acc: string, token: string): Promise<AccListResVo> => {
+  const search = { keyword: encodeURIComponent(acc) };
+
+  return new Promise((resolve, reject) => {
+    get(
+      ApiUrl.GET_USER_FUZZY_LIST,
+      search,
+      token,
+    ).then((resp) => {
+      resolve(resp as AccListResVo);
 
     }).catch((error) => {
       reject(error);

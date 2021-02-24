@@ -7,10 +7,11 @@ import { selectSharedFolderList, updateSharedFolderList } from 'src/store/system
 import { intl, keys, IntlType } from 'src/i18n';
 import { BaseInput, BaseButton, ButtonType, BaseTooltip, BaseSelect } from 'src/components/common';
 import { Add, Cancel } from 'src/components/icons';
-import { addSharedFolder, removeSharedFolder } from 'src/api/shared';
+import { addSharedFolder, removeSharedFolder, updateSharedFolder } from 'src/api/shared';
 import { ApiResult, sharedFolderPermsType } from 'src/constants';
 import { Share } from 'src/interface/common';
 import { addMessage, MessageType } from 'src/components/Message';
+import { getUserFuzzyList } from 'src/api/user';
 
 import styles from './style.module.scss';
 
@@ -46,6 +47,9 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
     }).catch((error) => {
       if (error.status && error.status === ApiResult.DBError) {
         dispatch(addMessage(intl(keys.accNotExisting), MessageType.warning));
+
+      } else if (error.status && error.status === ApiResult.Duplicate) {
+        dispatch(addMessage(intl(keys.sharedDuplicate), MessageType.warning));
       }
 
     }).finally(() => {
@@ -69,15 +73,32 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
     });
   };
 
-  const shareToOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    sharedAcc = e.target.value;
+  const shareToOnChange = (e: ChangeEvent<HTMLInputElement> | null, value: string) => {
+    sharedAcc = e ? e.target.value : value;
   };
 
-  const getPermissionLabel = (sharedFolder: Share): string => {
-    const targetPerms =
-      permissionOptions.find((permission) => (permission.value === sharedFolder.permission));
+  const updatePermission = (sharedFolder: Share, permission: string) => {
+    if (onLoading.current) { return; }
 
-    return targetPerms ? targetPerms.label : sharedFolder.permission;
+    onLoading.current = true;
+    updateSharedFolder(sharedFolder.id, permission, userProfile.token).then(() => {
+      // do nothing
+    }).catch((error) => {
+      console.log(error);
+
+    }).finally(() => {
+      dispatch(updateSharedFolderList(userProfile.token));
+      onLoading.current = false;
+    });
+  };
+
+  const getAutoCompleteOptions = async (inputValue: string): Promise<string[]> => {
+    if (!inputValue) { return []; }
+
+    const resp = await getUserFuzzyList(inputValue, userProfile.token);
+    const options = resp.data ? resp.data : [];
+
+    return options;
   };
 
   const renderShareFolderList = () => {
@@ -94,9 +115,13 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
               <span className={styles.sharedName}>
                 {sharedFolder.sharedName}, {sharedFolder.sharedAcc}
               </span>
-              <span className={styles.sharedPerms}>
-                {getPermissionLabel(sharedFolder)}
-              </span>
+              <BaseSelect
+                style={{ width: '75px', height: '28px', verticalAlign: 'middle' }}
+                options={permissionOptions}
+                defaultSelect={sharedFolder.permission}
+                onChange={(e) => { updatePermission(sharedFolder, e.target.value); }}
+              >
+              </BaseSelect>
               <BaseButton
                 style={{ padding: '0', verticalAlign: 'middle' }}
                 type={ButtonType.danger}
@@ -121,12 +146,13 @@ const ShareFolderDialog: FunctionComponent<Props> = ({ folder }) => {
         <BaseInput
           style={{ width: 'calc(100% - 75px - 36px)', height: '22px', verticalAlign: 'middle' }}
           placeholder={intl(keys.account, IntlType.perUpper)}
+          autoComplete={getAutoCompleteOptions}
           onChange={shareToOnChange}
         ></BaseInput>
         <BaseSelect
           style={{ width: '75px', height: '28px', verticalAlign: 'middle' }}
           options={permissionOptions}
-          defaultSelect={true}
+          defaultSelect={permissionOptions[0].value}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => { permission = e.target.value; }}
         ></BaseSelect>
         <BaseButton

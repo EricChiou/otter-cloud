@@ -23,15 +23,17 @@ export interface RemoveFolderReqVo {
 }
 
 export interface RenameFileReqVo {
+  id?: number;
   prefix: string;
-  filename: string;
-  newFilename: string;
+  fileName: string;
+  newFileName: string;
 }
 
 export interface MoveFilesReqVo {
+  id?: number;
   prefix: string;
   targetPrefix: string;
-  filenames: string[];
+  fileNames: string[];
 }
 
 export interface GetShareableLinkReqVo {
