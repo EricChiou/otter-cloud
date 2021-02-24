@@ -103,7 +103,7 @@ export const updateFileList = (
 
 export const updateSharedFolderList = (token: string): AppThunk => (dispatch) => {
   getSharedFolderList(token).then((resp) => {
-    const shareToList = resp.data.map((sharedFolder) => ({
+    const shareToList = resp.data ? resp.data.map((sharedFolder) => ({
       id: sharedFolder.id,
       ownerAcc: sharedFolder.ownerAcc,
       ownerName: sharedFolder.ownerName,
@@ -113,7 +113,7 @@ export const updateSharedFolderList = (token: string): AppThunk => (dispatch) =>
       permission: sharedFolder.permission,
       createdDate: 0,
       updatedDate: 0,
-    }));
+    })) : [];
 
     const { setSharedFolderList } = systemSlice.actions;
     dispatch(setSharedFolderList(shareToList));
