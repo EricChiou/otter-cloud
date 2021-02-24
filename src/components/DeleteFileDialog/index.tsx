@@ -7,11 +7,12 @@ import { BaseButton, ButtonType } from 'src/components/common/BaseButton';
 import styles from './style.module.scss';
 
 interface Props {
+  fileName: string;
   confirm: () => void;
   cancel: () => void;
 }
 
-const DeleteFileDialog: FunctionComponent<Props> = ({ confirm, cancel }) => {
+const DeleteFileDialog: FunctionComponent<Props> = ({ fileName, confirm, cancel }) => {
   const buttonStyle = {
     width: '80px',
     textAlign: 'center',
@@ -23,6 +24,7 @@ const DeleteFileDialog: FunctionComponent<Props> = ({ confirm, cancel }) => {
         <Warning></Warning>
       </div>
       <div className={styles.text}>
+        <div className={styles.fileName}>{fileName}</div>
         {intl(keys.checkToDelete)}
         <br></br>
         {intl(keys.cannotUndone)}
@@ -34,7 +36,7 @@ const DeleteFileDialog: FunctionComponent<Props> = ({ confirm, cancel }) => {
       <BaseButton style={buttonStyle} onClick={cancel}>
         {intl(keys.cancel, IntlType.perUpper)}
       </BaseButton>
-    </div>
+    </div >
   );
 };
 
