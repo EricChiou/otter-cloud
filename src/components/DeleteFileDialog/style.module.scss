@@ -2,6 +2,7 @@
 
 .delete {
   padding: 25px 30px;
+  max-width: 300px;
 
   .icon {
     display: inline-block;
@@ -18,5 +19,15 @@
   .text {
     margin-bottom: 20px;
     line-height: 25px;
+
+    .fileName {
+      margin-bottom: 5px;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 }

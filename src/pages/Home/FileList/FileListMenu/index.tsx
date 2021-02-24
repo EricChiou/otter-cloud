@@ -68,7 +68,19 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
     };
     const cancel = () => { dispatch(removeDialog()); };
 
-    const component = <DeleteFileDialog confirm={confirm} cancel={cancel}></DeleteFileDialog>;
+    let fileName = '';
+    fileList.forEach((file) => {
+      if (file.selected) {
+        fileName += file.name + ', ';
+      }
+    });
+    const component = (
+      <DeleteFileDialog
+        fileName={fileName.slice(0, -2)}
+        confirm={confirm}
+        cancel={cancel}
+      ></DeleteFileDialog>
+    );
 
     dispatch(addDialog({ component }));
   };
