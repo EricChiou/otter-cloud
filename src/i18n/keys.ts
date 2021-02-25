@@ -56,4 +56,7 @@ export const keys: Keys = {
   sharedFrom: 'sharedFrom',
   moveFileDuplicate: 'moveFileDuplicate',
   sharedDuplicate: 'sharedDuplicate',
+  accInactive: 'accInactive',
+  invalidActiveCode: 'invalidActiveCode',
+  activateSuccess: 'activateSuccess',
 };

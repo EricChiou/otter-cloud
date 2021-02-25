@@ -62,4 +62,7 @@ export interface Keys {
   sharedFrom: string;
   moveFileDuplicate: string;
   sharedDuplicate: string;
+  accInactive: string;
+  invalidActiveCode: string;
+  activateSuccess: string;
 }
