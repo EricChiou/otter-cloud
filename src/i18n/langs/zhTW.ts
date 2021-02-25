@@ -59,4 +59,5 @@ export const zhTW: Keys = {
   accInactive: '帳號未啟用',
   invalidActiveCode: '啟用碼無效',
   activateSuccess: '啟用成功，請返回登入頁面進行登入',
+  emptySharedFolderList: '無任何分享資料夾',
 };

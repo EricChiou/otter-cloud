@@ -81,7 +81,7 @@ const SharedFolder: FunctionComponent<Props> = ({
 
 
   const renderSharedFolder = () => {
-    return sharedFolderList
+    const sharedFolderListEles = sharedFolderList
       .filter((sharedFolder) => sharedFolder.sharedAcc === userProfile.acc)
       .map((sharedFolder) => {
         const sharedPaths = sharedFolder.prefix.split('/');
@@ -116,6 +116,10 @@ const SharedFolder: FunctionComponent<Props> = ({
           </div >
         );
       });
+
+    return sharedFolderListEles.length ?
+      sharedFolderListEles.length :
+      <div className={styles.empty}>{intl(keys.emptySharedFolderList)}</div>;
   };
 
   return (

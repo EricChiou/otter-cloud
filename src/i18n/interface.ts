@@ -65,4 +65,5 @@ export interface Keys {
   accInactive: string;
   invalidActiveCode: string;
   activateSuccess: string;
+  emptySharedFolderList: string;
 }
