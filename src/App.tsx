@@ -56,6 +56,7 @@ const App = () => {
       location.pathname !== Routes.SIGN_UP &&
       location.pathname !== Routes.SHARE_LINK &&
       location.pathname.indexOf('/activate') < 0 &&
+      location.pathname !== Routes.OTHER_LINK &&
       !StatusService.isLogin()
     ) {
       history.push({ pathname: Routes.LOGIN, search: '' });
@@ -66,7 +67,7 @@ const App = () => {
   useEffect(() => {
     const subscribe = subUserShared((data) => {
       if (data.action === userSharedActs.tokenError) {
-        if (StatusService.isLogin()) {
+        if (StatusService.isLogin() && location.pathname.indexOf('/activate') < 0) {
           dispatch(logout());
           dispatch(addMessage(intl(keys.tokenErrorMsg), MessageType.info));
         }
@@ -74,7 +75,7 @@ const App = () => {
     });
 
     return () => { subscribe.unsubscribe(); };
-  }, [history, dispatch]);
+  }, [history, dispatch, location]);
 
   return (
     <div id="app">

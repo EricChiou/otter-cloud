@@ -6,6 +6,7 @@ import { activateAcc } from 'src/api/user';
 import { Routes } from 'src/constants';
 import { addMessage, MessageType } from 'src/components/Message';
 import { intl, keys, IntlType } from 'src/i18n';
+import { logout } from 'src/store/user.slice';
 
 import styles from './style.module.scss';
 
@@ -41,7 +42,10 @@ const Activate: FunctionComponent<{}> = () => {
       dispatch(addMessage(
         intl(keys.activateSuccess),
         MessageType.success,
-        () => { history.push({ pathname: Routes.LOGIN, search: '' }); },
+        () => {
+          dispatch(logout());
+          history.push({ pathname: Routes.LOGIN, search: '' });
+        },
       ));
 
     }).catch(() => {

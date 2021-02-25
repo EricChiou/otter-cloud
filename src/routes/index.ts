@@ -8,6 +8,7 @@ import Login from 'src/pages/Login';
 import SignUp from 'src/pages/SignUp';
 import ShareLink from 'src/pages/ShareLink';
 import Activate from 'src/pages/Activate';
+import Other from 'src/pages/Other';
 
 export const routes = [
   {
@@ -34,5 +35,10 @@ export const routes = [
     path: Routes.ACTIVATE_LINK,
     layout: Plain,
     component: Activate,
+  },
+  {
+    path: Routes.OTHER_LINK,
+    layout: Plain,
+    component: Other,
   },
 ];

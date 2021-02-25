@@ -4,12 +4,13 @@ import { useHistory } from 'react-router-dom';
 
 import Header from 'src/components/Header';
 import { intl, keys, IntlType } from 'src/i18n';
-import { BaseInput, BaseButton, ButtonType } from 'src/components/common';
+import { BaseInput, BaseButton } from 'src/components/common';
 import Lang from 'src/components/Lang';
 import { Routes, ApiResult } from 'src/constants';
 import { CheckCircle, ErrorCircle } from 'src/components/icons';
 import { signUp } from 'src/api/user';
 import { addMessage, MessageType } from 'src/components/Message';
+import { GoBack } from 'src/components/icons';
 
 import styles from './style.module.scss';
 
@@ -122,7 +123,15 @@ const SignUp: FunctionComponent<{}> = () => {
       <div className={styles.mask}></div>
       <div className="vert-align-mid"></div>
       <div className={styles.signUpBlock}>
-        <div className={styles.header}><Header fontSize={20} showSetting={false}></Header></div>
+        <div className={styles.header}>
+          <Header fontSize={20} showSetting={false}></Header>
+          <div
+            className={styles.goBack}
+            onClick={() => { history.push({ pathname: Routes.LOGIN, search: '' }); }}
+          >
+            <GoBack></GoBack>
+          </div>
+        </div>
         <div className={styles.title}>{intl(keys.signUp, IntlType.upper)}</div>
         <div className={styles.infoBlock}>
           <span className={styles.info}>
@@ -164,15 +173,6 @@ const SignUp: FunctionComponent<{}> = () => {
               onClick={doSignUp}
             >
               {intl(keys.signUp, IntlType.perUpper)}
-            </BaseButton>
-          </div>
-          <div className={styles.confirmBtn}>
-            <BaseButton
-              type={ButtonType.normal}
-              style={btnStyle}
-              onClick={() => { history.push({ pathname: Routes.LOGIN, search: '' }); }}
-            >
-              {intl(keys.cancel, IntlType.perUpper)}
             </BaseButton>
           </div>
         </div>

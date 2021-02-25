@@ -54,23 +54,32 @@
       }
     }
 
+    .other,
     .signUp {
-      display: inline-block;
-      position: absolute;
-      right: 4px;
-      bottom: 3px;
-      padding: 2px 3px;
       font-weight: normal;
-      text-align: right;
       text-decoration: underline;
       color: theme(blue, deep);
       user-select: none;
       cursor: pointer;
 
       &:hover {
+        font-weight: bold;
         font-size: 17px;
       }
     }
+
+    .other {
+      position: absolute;
+      bottom: 3px;
+      left: 4px;
+    }
+
+    .signUp {
+      position: absolute;
+      right: 4px;
+      bottom: 3px;
+    }
+
   }
 }
 
