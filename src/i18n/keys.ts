@@ -59,4 +59,5 @@ export const keys: Keys = {
   accInactive: 'accInactive',
   invalidActiveCode: 'invalidActiveCode',
   activateSuccess: 'activateSuccess',
+  emptySharedFolderList: 'emptySharedFolderList',
 };

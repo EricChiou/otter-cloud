@@ -59,4 +59,5 @@ export const enUS: Keys = {
   accInactive: 'account inactive',
   invalidActiveCode: 'invalid activation code',
   activateSuccess: 'Activate is successful, please return to login page to sign in.',
+  emptySharedFolderList: 'Has no shared folder',
 };

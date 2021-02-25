@@ -67,13 +67,21 @@
   // when window.innerWidth <= 1024
   .sharedFolderContainer {
     position: fixed;
-    top: 75px;
+    top: 95px;
     right: 0;
     left: 0;
     background-color: theme(white, deep);
     border-bottom: 1px solid theme(gray);
     overflow: hidden;
     z-index: 99;
+
+    @include breakpoint(m) {
+      top: 85px;
+    }
+
+    @include breakpoint(s) {
+      top: 75px;
+    }
   }
 
   .sharedFolder {
@@ -114,6 +122,12 @@
         height: 22px;
       }
     }
+  }
+
+  .empty {
+    padding: 2px 8px 2px 48px;
+    height: 26px;
+    font-weight: bold;
   }
 
   .active {

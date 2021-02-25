@@ -111,11 +111,19 @@
 
     @include breakpoint(l) {
       position: fixed;
-      top: 75px;
+      top: 95px;
       right: 0;
       left: 0;
       background-color: theme(white, deep);
       z-index: 99;
+    }
+
+    @include breakpoint(m) {
+      top: 85px;
+    }
+
+    @include breakpoint(s) {
+      top: 75px;
     }
   }
 
