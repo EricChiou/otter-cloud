@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState, ChangeEvent } from 'react';
+import React, { FunctionComponent, useEffect, useState, ChangeEvent, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -26,6 +26,7 @@ const SignUp: FunctionComponent<{}> = () => {
   });
   const inputStyle = { width: '252px' };
   const btnStyle = { width: '75px' };
+  const onLoading = useRef(false);
 
   useEffect(() => {
     const onResize = () => {
@@ -46,23 +47,27 @@ const SignUp: FunctionComponent<{}> = () => {
   });
 
   const doSignUp = () => {
+    if (onLoading.current) { return; }
+
+    onLoading.current = true;
     signUp(userData.email, userData.name, userData.password).then((resp) => {
       console.log(resp);
       if (resp.status === ApiResult.Success) {
         dispatch(addMessage(
           intl(keys.signUpSuccess),
-          MessageType.info,
+          MessageType.success,
           () => { history.push({ pathname: Routes.LOGIN, search: '' }); },
         ));
       } else if (resp.status === ApiResult.Duplicate) {
-        dispatch(addMessage(intl(keys.signUpDuplicate), MessageType.warning));
+        dispatch(addMessage(intl(keys.signUpDuplicate, IntlType.perUpper), MessageType.warning));
       } else {
-        dispatch(addMessage(intl(keys.signUpFail), MessageType.error));
+        dispatch(addMessage(intl(keys.signUpFail, IntlType.perUpper), MessageType.error));
       }
 
     }).catch(() => {
-      dispatch(addMessage(intl(keys.signUpFail), MessageType.error));
-    });
+      dispatch(addMessage(intl(keys.signUpFail, IntlType.perUpper), MessageType.error));
+
+    }).finally(() => { onLoading.current = false; });
   };
 
   const checkUserData = (): boolean => {

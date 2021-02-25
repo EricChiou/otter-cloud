@@ -10,6 +10,7 @@ export class ApiUrl {
     public static readonly SIGN_UP = userGroupUrl + '/signUp';
     public static readonly SIGN_IN = userGroupUrl + '/signIn';
     public static readonly GET_USER_FUZZY_LIST = userGroupUrl + '/fuzzy/list';
+    public static readonly ACTIVATE_ACCOUNT = userGroupUrl + '/activate';
 
     // file
     public static readonly GET_FILE_LIST = fileGroupUrl + '/list';

@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useState, useEffect, KeyboardEvent } from 'react';
+import React, { FunctionComponent, useState, useEffect, KeyboardEvent, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setUserProfile } from 'src/store/user.slice';
-import { Routes } from 'src/constants';
+import { ApiResult, Routes } from 'src/constants';
 import { intl, keys, IntlType } from 'src/i18n';
 import { StatusService, UserService } from 'src/service';
 import Header from 'src/components/Header';
@@ -17,8 +17,9 @@ import styles from './style.module.scss';
 const Login: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [className, setClassName] =
-    useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
+  const [className, setClassName] = useState(window.innerHeight > window.innerWidth ?
+    styles.vertical : styles.horizontal);
+  const onLoading = useRef(false);
   let acc = '';
   let pwd = '';
 
@@ -47,6 +48,9 @@ const Login: FunctionComponent<{}> = () => {
   });
 
   const doLogin = () => {
+    if (onLoading.current) { return; }
+
+    onLoading.current = true;
     login(acc, pwd).then((resp) => {
       // console.log('login:', resp);
       const userProfile = UserService.parseToken(resp.data.token);
@@ -57,8 +61,14 @@ const Login: FunctionComponent<{}> = () => {
 
     }).catch((error) => {
       console.log(error);
-      dispatch(addMessage(intl(keys.signInErrorMsg), MessageType.info));
-    });
+      if (error.status === ApiResult.DataError) {
+        dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.perUpper), MessageType.info));
+
+      } else if (error.status === ApiResult.AccInactive) {
+        dispatch(addMessage(intl(keys.accInactive, IntlType.perUpper), MessageType.info));
+      }
+
+    }).finally(() => { onLoading.current = false; });
   };
 
   const accOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {

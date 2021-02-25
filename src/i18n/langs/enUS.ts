@@ -33,7 +33,7 @@ export const enUS: Keys = {
   days: 'days',
   hours: 'hours',
   minutes: 'minutes',
-  signUpSuccess: 'Sign up is successful, please return to the login page to log in.',
+  signUpSuccess: 'Sign up is successful, please go to Email to receive activation letter.',
   signUpDuplicate: 'Email duplicated.',
   signUpFail: 'Sign up is failed, please try again.',
   shareableLinkInvalid: 'The shareable link is invalid.',
@@ -56,4 +56,7 @@ export const enUS: Keys = {
   sharedFrom: 'shared from',
   moveFileDuplicate: 'There has the same file name in the destination folder.',
   sharedDuplicate: 'The same folder shared already.',
+  accInactive: 'account inactive',
+  invalidActiveCode: 'invalid activation code',
+  activateSuccess: 'Activate is successful, please return to login page to sign in.',
 };

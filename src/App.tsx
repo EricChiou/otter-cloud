@@ -55,6 +55,7 @@ const App = () => {
       location.pathname !== Routes.LOGIN &&
       location.pathname !== Routes.SIGN_UP &&
       location.pathname !== Routes.SHARE_LINK &&
+      location.pathname.indexOf('/activate') < 0 &&
       !StatusService.isLogin()
     ) {
       history.push({ pathname: Routes.LOGIN, search: '' });

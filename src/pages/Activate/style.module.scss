@@ -1,0 +1,16 @@
+@import 'src/assets/css/theme.scss';
+
+#avtivate {
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+.horizontal {
+  background-image: url('../../assets/img/background_horizontal.jpg');
+}
+
+.vertical {
+  background-image: url('../../assets/img/background_vertical.jpg');
+}

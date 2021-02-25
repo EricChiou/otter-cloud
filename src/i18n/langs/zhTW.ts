@@ -33,7 +33,7 @@ export const zhTW: Keys = {
   days: '天',
   hours: '時',
   minutes: '分',
-  signUpSuccess: '註冊成功，請返回登入頁面登入',
+  signUpSuccess: '註冊成功，請至 Email 收取啟用信件',
   signUpDuplicate: 'Email 已存在',
   signUpFail: '註冊失敗，請再試一次',
   shareableLinkInvalid: '此分享連結已失效',
@@ -56,4 +56,7 @@ export const zhTW: Keys = {
   sharedFrom: '分享自',
   moveFileDuplicate: '目的地資料夾存在相同檔案名',
   sharedDuplicate: '已分享過相同的資料夾',
+  accInactive: '帳號未啟用',
+  invalidActiveCode: '啟用碼無效',
+  activateSuccess: '啟用成功，請返回登入頁面進行登入',
 };

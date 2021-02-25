@@ -1,6 +1,6 @@
-import { post, get } from '../request';
+import { post, get, put } from '../request';
 import { SingInReqVo, SingInResVo, SingUpReqVo, AccListResVo } from './vo';
-import { ApiUrl } from 'src/constants';
+import { ApiResult, ApiUrl } from 'src/constants';
 import { RespVo } from '../request';
 
 export const signUp = (acc: string, name: string, pwd: string): Promise<RespVo> => {
@@ -15,7 +15,7 @@ export const signUp = (acc: string, name: string, pwd: string): Promise<RespVo> 
       ApiUrl.SIGN_UP,
       body,
     ).then((resp: RespVo) => {
-      resolve(resp);
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
     }).catch((error) => {
       reject(error);
@@ -34,7 +34,7 @@ export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
       ApiUrl.SIGN_IN,
       body,
     ).then((resp) => {
-      resolve(resp as SingInResVo);
+      resp.status === ApiResult.Success ? resolve(resp as SingInResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);
@@ -51,7 +51,25 @@ export const getUserFuzzyList = (acc: string, token: string): Promise<AccListRes
       search,
       token,
     ).then((resp) => {
-      resolve(resp as AccListResVo);
+      resp.status === ApiResult.Success ? resolve(resp as AccListResVo) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const activateAcc = (activeCode: string): Promise<RespVo> => {
+  const body = { activeCode };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.ACTIVATE_ACCOUNT,
+      body,
+      undefined,
+      undefined,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
 
     }).catch((error) => {
       reject(error);
