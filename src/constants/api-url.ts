@@ -11,6 +11,8 @@ export class ApiUrl {
     public static readonly SIGN_IN = userGroupUrl + '/signIn';
     public static readonly GET_USER_FUZZY_LIST = userGroupUrl + '/fuzzy/list';
     public static readonly ACTIVATE_ACCOUNT = userGroupUrl + '/activate';
+    public static readonly SEND_ACTIVATION_CODE = userGroupUrl + '/send/activation/code';
+    public static readonly RESET_PWD = userGroupUrl + '/reset/password';
 
     // file
     public static readonly GET_FILE_LIST = fileGroupUrl + '/list';

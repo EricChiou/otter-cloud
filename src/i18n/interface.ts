@@ -66,4 +66,13 @@ export interface Keys {
   invalidActiveCode: string;
   activateSuccess: string;
   emptySharedFolderList: string;
+  forgetPwd: string;
+  activeCode: string;
+  other: string;
+  resetPwd: string;
+  sendActiveCode: string;
+  sendActiveCodeSuccess: string;
+  sendActiveCodeFail: string;
+  resetPwdSuccess: string;
+  resetPwdFail: string;
 }

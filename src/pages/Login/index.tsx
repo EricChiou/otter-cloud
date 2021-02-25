@@ -17,8 +17,8 @@ import styles from './style.module.scss';
 const Login: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [className, setClassName] = useState(window.innerHeight > window.innerWidth ?
-    styles.vertical : styles.horizontal);
+  const [className, setClassName] =
+    useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
   const onLoading = useRef(false);
   let acc = '';
   let pwd = '';
@@ -113,6 +113,12 @@ const Login: FunctionComponent<{}> = () => {
         </div>
         <div className={styles.loginBtn}>
           <BaseButton onClick={doLogin}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
+        </div>
+        <div
+          className={styles.other}
+          onClick={() => { history.push({ pathname: Routes.OTHER_LINK, search: '' }); }}
+        >
+          {intl(keys.other)}
         </div>
         <div
           className={styles.signUp}

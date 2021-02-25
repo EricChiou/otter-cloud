@@ -60,4 +60,13 @@ export const keys: Keys = {
   invalidActiveCode: 'invalidActiveCode',
   activateSuccess: 'activateSuccess',
   emptySharedFolderList: 'emptySharedFolderList',
+  forgetPwd: 'forgetPwd',
+  activeCode: 'activeCode',
+  other: 'other',
+  resetPwd: 'resetPwd',
+  sendActiveCode: 'sendActiveCode',
+  sendActiveCodeSuccess: 'sendActiveCodeSuccess',
+  sendActiveCodeFail: 'sendActiveCodeFail',
+  resetPwdSuccess: 'resetPwdSuccess',
+  resetPwdFail: 'resetPwdFail',
 };

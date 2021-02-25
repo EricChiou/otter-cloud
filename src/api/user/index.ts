@@ -76,3 +76,39 @@ export const activateAcc = (activeCode: string): Promise<RespVo> => {
     });
   });
 };
+
+export const sendActivationCode = (acc: string): Promise<RespVo> => {
+  const body = { acc };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.SEND_ACTIVATION_CODE,
+      body,
+      undefined,
+      undefined,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const resetPwd = (acc: string): Promise<RespVo> => {
+  const body = { acc };
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.RESET_PWD,
+      body,
+      undefined,
+      undefined,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
