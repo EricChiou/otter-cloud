@@ -41,14 +41,15 @@ const SideMenu: FunctionComponent<{}> = () => {
     if (!StatusService.isLogin()) { return; }
 
     getFileList('', userProfile.token).then((resp) => {
-      const newFolderList: Folder[] = resp.data
-        .filter((data) => (!FileService.isFile(data)))
-        .map((data) => {
-          return {
-            name: data.name.slice(0, -1), // remove '/' at last of name
-            data: { prefix: data.name },
-          };
-        });
+      const newFolderList: Folder[] = resp.data ?
+        resp.data
+          .filter((data) => (!FileService.isFile(data)))
+          .map((data) => {
+            return {
+              name: data.name.slice(0, -1), // remove '/' at last of name
+              data: { prefix: data.name },
+            };
+          }) : [];
 
       setFolderList(newFolderList);
 
@@ -106,16 +107,16 @@ const SideMenu: FunctionComponent<{}> = () => {
     setFolderList(folders);
   };
 
-  const cloudExpandOnClick = (e: MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
+  const cloudExpandOnClick = (e?: MouseEvent<HTMLElement>) => {
+    if (e) { e.stopPropagation(); }
     setExpand({
       cloud: !expand.cloud,
       shared: window.innerWidth > 1024 ? expand.shared : (!expand.cloud ? false : expand.shared),
     });
   };
 
-  const sharedExpandOnClick = (e: MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
+  const sharedExpandOnClick = (e?: MouseEvent<HTMLElement>) => {
+    if (e) { e.stopPropagation(); }
     setExpand({
       cloud: window.innerWidth > 1024 ? expand.cloud : (!expand.shared ? false : expand.cloud),
       shared: !expand.shared,

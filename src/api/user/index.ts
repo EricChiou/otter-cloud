@@ -112,3 +112,23 @@ export const resetPwd = (acc: string): Promise<RespVo> => {
     });
   });
 };
+
+export const updateUser = (
+  body: { name?: string; oldPwd?: string; newPwd?: string },
+  token: string,
+): Promise<RespVo> => {
+
+  return new Promise((resolve, reject) => {
+    put(
+      ApiUrl.UPDATE_USER,
+      body,
+      undefined,
+      token,
+    ).then((resp) => {
+      resp.status === ApiResult.Success ? resolve(resp) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};

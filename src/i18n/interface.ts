@@ -75,4 +75,11 @@ export interface Keys {
   sendActiveCodeFail: string;
   resetPwdSuccess: string;
   resetPwdFail: string;
+  modify: string;
+  personalSettings: string;
+  oldPwd: string;
+  newPwd: string;
+  modifySuccess: string;
+  modifyFail: string;
+  pwdError: string;
 }

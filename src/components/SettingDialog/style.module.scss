@@ -1,0 +1,41 @@
+@import 'src/assets/css/theme.scss';
+
+.setting {
+  .header {
+    padding: 0 5px;
+    height: 35px;
+    font-size: 20px;
+    line-height: 36px;
+    text-align: left;
+    color: theme(white);
+    background-color: theme(blue);
+  }
+
+  .body {
+    margin: 5px;
+    text-align: left;
+
+    .bodyBlock {
+      margin-bottom: 15px;
+
+      .title {
+        margin-bottom: 2px;
+        font-weight: bold;
+      }
+
+      .text {
+        padding: 6px 8px;
+        height: 20px;
+        line-height: 20px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background-color: theme(gray, light);
+        overflow: hidden;
+      }
+
+      .content {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

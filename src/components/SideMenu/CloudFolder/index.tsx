@@ -35,7 +35,7 @@ interface Props {
   folderList: Folder[];
   sharedFolderList: Share[];
   expand: boolean;
-  expandOnClick: (e: MouseEvent<HTMLElement>) => void;
+  expandOnClick: (e?: MouseEvent<HTMLElement>) => void;
   onSelect: (ele: HTMLElement, folder: Folder) => void;
   createFolder: (folderName: string) => void;
 }
@@ -70,6 +70,8 @@ const CloudFolder: FunctionComponent<Props> = ({
     removeActiveEle();
     e.currentTarget.classList.add(styles.active);
 
+    if (window.innerWidth < 1024) { expandOnClick(); }
+
     onSelect(e.currentTarget, folder);
   };
 
@@ -82,6 +84,8 @@ const CloudFolder: FunctionComponent<Props> = ({
   };
 
   const shareFolder = (folder: Folder) => {
+    if (window.innerWidth < 1024) { expandOnClick(); }
+
     dispatch(addDialog({
       component: (
         <ShareFolderDialog

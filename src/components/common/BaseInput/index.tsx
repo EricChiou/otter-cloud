@@ -8,6 +8,8 @@ import React, {
   useEffect,
 } from 'react';
 
+import { Eye } from 'src/components/icons';
+
 import styles from './style.module.scss';
 
 interface Props {
@@ -46,6 +48,7 @@ const BaseInput: FunctionComponent<Props> = ({
   const [options, setOptions] = useState<string[]>([]);
   const [position, setPosition] = useState({ top: 0, right: 0, left: 0 });
   const optionsRef: RefObject<HTMLInputElement> = useRef(null);
+  const [showPwd, setShowPwd] = useState(false);
 
   const setValue = (value: string) => {
     if (inputRef.current) {
@@ -128,7 +131,7 @@ const BaseInput: FunctionComponent<Props> = ({
   return (
     <span ref={inputContainerRef} className={styles.inputContainer} style={style}>
       <input ref={inputRef} className={styles.input}
-        type={type ? type : 'text'}
+        type={(type && !showPwd) ? type : 'text'}
         placeholder={placeholder ? placeholder : ''}
         defaultValue={defaultValue ? defaultValue : undefined}
         readOnly={readonly ? true : false}
@@ -141,6 +144,11 @@ const BaseInput: FunctionComponent<Props> = ({
         onKeyPress={(e) => { if (onKeyPerss) { onKeyPerss(e); } }}
         onKeyUp={keyUp}
       ></input>
+      {type === 'password' ?
+        <div className={showPwd ? styles.eyeActive : styles.eye}>
+          <Eye onClick={() => { setShowPwd(!showPwd); }}></Eye>
+        </div> : null
+      }
       {options.length ?
         <div
           ref={optionsRef}

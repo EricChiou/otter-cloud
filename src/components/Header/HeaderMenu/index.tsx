@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { intl, keys, IntlType } from 'src/i18n';
 import { logout } from 'src/store/user.slice';
-import { Language, Logout } from 'src/components/icons';
+import { Language, Logout, Person } from 'src/components/icons';
 import LangList from 'src/components/LangList';
 import { selectUserProfile } from 'src/store/user.slice';
+import { addDialog } from 'src/components/common';
+import SettingDialog from 'src/components/SettingDialog';
 
 import styles from './style.module.scss';
 
 interface Props {
-  close?: () => void;
+  close: () => void;
 }
 
 const Menu: FunctionComponent<Props> = ({ close }) => {
@@ -28,16 +30,32 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
         ele = ele.parentElement;
       }
 
-      if (close) { close(); }
+      close();
     };
     window.addEventListener('click', onClick);
 
-    return () => { window.removeEventListener('click', onClick) };
+    return () => { window.removeEventListener('click', onClick); };
   });
 
   const doLogout = () => {
     dispatch(logout());
-  }
+  };
+
+  const showPersonalSettingsDialog = () => {
+    dispatch(addDialog({
+      component: <SettingDialog></SettingDialog>,
+      closeUI: true,
+      closeByClick: false,
+      defaultSize: false,
+      blockStyle: {
+        marginTop: 'calc(50vh - 220px)',
+        width: '300px',
+        height: '435px',
+      },
+    }));
+
+    close();
+  };
 
   return (
     <div className={styles.menu}>
@@ -48,6 +66,14 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
             <hr></hr>
           </> : null
         }
+        <li onClick={showPersonalSettingsDialog}>
+          <div className={'vert-align-mid'}></div>
+          <Person></Person>
+          <span className={styles.optionText}>
+            {intl(keys.personalSettings, IntlType.perUpper)}
+          </span>
+        </li>
+        <hr></hr>
         <li onClick={() => { setShowLangList(!showLangList); }}>
           <div className={'vert-align-mid'}></div>
           <Language></Language>

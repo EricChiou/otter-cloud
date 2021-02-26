@@ -20,6 +20,7 @@ const Login: FunctionComponent<{}> = () => {
   const [className, setClassName] =
     useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
   const onLoading = useRef(false);
+  const inputStyle = { padding: '2px 3px', width: '195px' };
   let acc = '';
   let pwd = '';
 
@@ -60,7 +61,7 @@ const Login: FunctionComponent<{}> = () => {
       history.push({ pathname: Routes.HOME, search: '' });
 
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       if (error.status === ApiResult.DataError) {
         dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.perUpper), MessageType.info));
 
@@ -98,16 +99,16 @@ const Login: FunctionComponent<{}> = () => {
           <span className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</span>
           <BaseInput
             placeholder={intl(keys.email)}
-            style={{ padding: '2px 3px' }}
+            style={inputStyle}
             onKeyUp={accOnKeyUp}
           ></BaseInput>
         </div>
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.password, IntlType.firstUpper)}:</span>
           <BaseInput
-            type="password"
+            type={'password'}
             placeholder={intl(keys.password)}
-            style={{ padding: '2px 3px' }}
+            style={inputStyle}
             onKeyUp={pwdOnKeyUp}
           ></BaseInput>
         </div>

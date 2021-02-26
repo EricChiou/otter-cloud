@@ -5,6 +5,7 @@ import React,
   useRef,
   useCallback,
   RefObject,
+  useState,
 } from 'react';
 import { useSelector } from 'react-redux';
 import axios, { CancelTokenSource } from 'axios';
@@ -26,31 +27,18 @@ interface Props {
 const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
-  const url = useRef('');
+  const [url, setUrl] = useState(loading);
   const onLoading = useRef(false);
   const retry = useRef(0);
   const imgRef: RefObject<HTMLImageElement> = useRef(null);
   const cancelToken = useRef<CancelTokenSource | null>(null);
 
-  const setOnLoading = (isOnloading: boolean) => {
-    onLoading.current = isOnloading;
-
-    if (imgRef.current) {
-      if (isOnloading) {
-        imgRef.current.src = loading;
-        imgRef.current.classList.add(styles.onLoading);
-
-      } else {
-        imgRef.current.classList.remove(styles.onLoading);
-      }
-    }
-  };
-
   const getPreview = useCallback(() => {
-    setOnLoading(true);
+    if (onLoading.current) { return; }
 
     if (cancelToken.current) { cancelToken.current.cancel(); }
     cancelToken.current = axios.CancelToken.source();
+    onLoading.current = true;
     getPreviewUrl(
       prefix,
       file.name,
@@ -59,15 +47,14 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
       cancelToken.current,
     ).then((resp) => {
       const urlCreator = window.URL || window.webkitURL;
-      url.current = urlCreator.createObjectURL(resp);
+      setUrl(urlCreator.createObjectURL(resp));
 
     }).catch(() => {
-      url.current = '';
+      setUrl('');
 
     }).finally(() => {
       retry.current += 1;
-      if (imgRef.current) { imgRef.current.src = url.current; }
-      setOnLoading(false);
+      onLoading.current = false;
     });
 
   }, [prefix, userProfile, file]);
@@ -76,7 +63,7 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
     const detectInViewport = () => {
       if (imgRef.current) {
         const rect = imgRef.current.getBoundingClientRect();
-        if (rect.top < window.innerHeight && !url.current && !onLoading.current) {
+        if (rect.top < window.innerHeight && url === loading && !onLoading.current) {
           getPreview();
         }
       }
@@ -94,18 +81,20 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
       if (cancelToken.current) { cancelToken.current.cancel(); }
     };
 
-  }, [getPreview]);
+  }, [getPreview, url]);
 
   const onError = () => {
-    if (url.current && !onLoading.current && retry.current < 3) {
+    if (url && !onLoading.current && retry.current < 3) {
       getPreview();
     }
   };
 
   return (
     <img
+      src={url}
       ref={imgRef}
       className={styles.previewImg}
+      style={url === loading ? { width: '20%', height: '20%' } : undefined}
       alt="preview"
       onError={onError}
     ></img>

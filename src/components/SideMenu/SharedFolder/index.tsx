@@ -14,7 +14,7 @@ import styles from './style.module.scss';
 interface Props {
   sharedFolderList: Share[];
   expand: boolean;
-  expandOnClick: (e: MouseEvent<HTMLElement>) => void;
+  expandOnClick: (e?: MouseEvent<HTMLElement>) => void;
   onSelect: (ele: HTMLElement, sharedfolder: Share) => void;
 }
 
@@ -33,6 +33,8 @@ const SharedFolder: FunctionComponent<Props> = ({
   };
 
   const sharedFolderOnSelect = (e: MouseEvent<HTMLDivElement>, sharedFolder: Share) => {
+    if (window.innerWidth < 1024) { expandOnClick(); }
+
     onSelect(e.currentTarget, sharedFolder);
   };
 

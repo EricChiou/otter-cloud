@@ -23,6 +23,28 @@
     outline: none;
   }
 
+  .eye,
+  .eyeActive {
+    position: absolute;
+    top: calc(50% - 12px);
+    right: 3px;
+    cursor: pointer;
+
+    svg {
+      display: block;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .eye {
+    color: theme(gray);
+  }
+
+  .eyeActive {
+    color: theme(black, light);
+  }
+
   .autoComplete {
     position: fixed;
     max-height: 200px;
