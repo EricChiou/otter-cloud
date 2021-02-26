@@ -107,16 +107,16 @@ const SideMenu: FunctionComponent<{}> = () => {
     setFolderList(folders);
   };
 
-  const cloudExpandOnClick = (e: MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
+  const cloudExpandOnClick = (e?: MouseEvent<HTMLElement>) => {
+    if (e) { e.stopPropagation(); }
     setExpand({
       cloud: !expand.cloud,
       shared: window.innerWidth > 1024 ? expand.shared : (!expand.cloud ? false : expand.shared),
     });
   };
 
-  const sharedExpandOnClick = (e: MouseEvent<HTMLElement>) => {
-    e.stopPropagation();
+  const sharedExpandOnClick = (e?: MouseEvent<HTMLElement>) => {
+    if (e) { e.stopPropagation(); }
     setExpand({
       cloud: window.innerWidth > 1024 ? expand.cloud : (!expand.shared ? false : expand.cloud),
       shared: !expand.shared,

@@ -20,6 +20,7 @@ const Login: FunctionComponent<{}> = () => {
   const [className, setClassName] =
     useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
   const onLoading = useRef(false);
+  const inputStyle = { padding: '2px 3px', width: '195px' };
   let acc = '';
   let pwd = '';
 
@@ -98,7 +99,7 @@ const Login: FunctionComponent<{}> = () => {
           <span className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</span>
           <BaseInput
             placeholder={intl(keys.email)}
-            style={{ padding: '2px 3px' }}
+            style={inputStyle}
             onKeyUp={accOnKeyUp}
           ></BaseInput>
         </div>
@@ -107,7 +108,7 @@ const Login: FunctionComponent<{}> = () => {
           <BaseInput
             type={'password'}
             placeholder={intl(keys.password)}
-            style={{ padding: '2px 3px' }}
+            style={inputStyle}
             onKeyUp={pwdOnKeyUp}
           ></BaseInput>
         </div>
