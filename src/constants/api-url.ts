@@ -13,6 +13,7 @@ export class ApiUrl {
     public static readonly ACTIVATE_ACCOUNT = userGroupUrl + '/activate';
     public static readonly SEND_ACTIVATION_CODE = userGroupUrl + '/send/activation/code';
     public static readonly RESET_PWD = userGroupUrl + '/reset/password';
+    public static readonly UPDATE_USER = userGroupUrl + '/update';
 
     // file
     public static readonly GET_FILE_LIST = fileGroupUrl + '/list';

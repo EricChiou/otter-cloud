@@ -69,4 +69,11 @@ export const zhTW: Keys = {
   sendActiveCodeFail: '寄送失敗，請再試一次',
   resetPwdSuccess: '重設密碼成功，請至 Email 獲取新密碼',
   resetPwdFail: '重設密碼失敗，請再試一次',
+  modify: '修改',
+  personalSettings: '個人設定',
+  oldPwd: '舊密碼',
+  newPwd: '新密碼',
+  modifySuccess: '修改成功',
+  modifyFail: '修改失敗，請再試一次',
+  pwdError: '密碼錯誤',
 };

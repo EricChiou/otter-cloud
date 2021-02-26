@@ -60,7 +60,7 @@ const Login: FunctionComponent<{}> = () => {
       history.push({ pathname: Routes.HOME, search: '' });
 
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       if (error.status === ApiResult.DataError) {
         dispatch(addMessage(intl(keys.signInErrorMsg, IntlType.perUpper), MessageType.info));
 
@@ -105,7 +105,7 @@ const Login: FunctionComponent<{}> = () => {
         <div className={styles.input}>
           <span className={styles.title}>{intl(keys.password, IntlType.firstUpper)}:</span>
           <BaseInput
-            type="password"
+            type={'password'}
             placeholder={intl(keys.password)}
             style={{ padding: '2px 3px' }}
             onKeyUp={pwdOnKeyUp}

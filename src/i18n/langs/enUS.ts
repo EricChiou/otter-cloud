@@ -70,4 +70,11 @@ export const enUS: Keys = {
   sendActiveCodeFail: 'Sign up is failed, please try again.',
   resetPwdSuccess: 'Reset password successful. Please go to Email to receive reset letter.',
   resetPwdFail: 'Reset password is failed, please try again.',
+  modify: 'modify',
+  personalSettings: 'personal settings',
+  oldPwd: 'old password',
+  newPwd: 'new password',
+  modifySuccess: 'modify successful',
+  modifyFail: 'Modify fail, please try again.',
+  pwdError: 'password error',
 };

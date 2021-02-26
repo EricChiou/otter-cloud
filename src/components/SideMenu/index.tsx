@@ -41,14 +41,15 @@ const SideMenu: FunctionComponent<{}> = () => {
     if (!StatusService.isLogin()) { return; }
 
     getFileList('', userProfile.token).then((resp) => {
-      const newFolderList: Folder[] = resp.data
-        .filter((data) => (!FileService.isFile(data)))
-        .map((data) => {
-          return {
-            name: data.name.slice(0, -1), // remove '/' at last of name
-            data: { prefix: data.name },
-          };
-        });
+      const newFolderList: Folder[] = resp.data ?
+        resp.data
+          .filter((data) => (!FileService.isFile(data)))
+          .map((data) => {
+            return {
+              name: data.name.slice(0, -1), // remove '/' at last of name
+              data: { prefix: data.name },
+            };
+          }) : [];
 
       setFolderList(newFolderList);
 
