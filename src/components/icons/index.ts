@@ -53,3 +53,5 @@ export { ShareFolder } from './ShareFolder';
 export { FolderShared } from './FolderShared';
 export { SimpleInfo } from './SimpleInfo';
 export { GoBack } from './GoBack';
+export { Person } from './Person';
+export { Eye } from './Eye';

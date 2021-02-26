@@ -69,4 +69,11 @@ export const keys: Keys = {
   sendActiveCodeFail: 'sendActiveCodeFail',
   resetPwdSuccess: 'resetPwdSuccess',
   resetPwdFail: 'resetPwdFail',
+  modify: 'modify',
+  personalSettings: 'personalSettings',
+  oldPwd: 'oldPwd',
+  newPwd: 'newPwd',
+  modifySuccess: 'modifySuccess',
+  modifyFail: 'modifyFail',
+  pwdError: 'pwdError',
 };
