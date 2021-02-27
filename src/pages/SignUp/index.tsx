@@ -42,10 +42,8 @@ const SignUp: FunctionComponent<{}> = () => {
 
     window.addEventListener('resize', onResize);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+    return () => { window.removeEventListener('resize', onResize); };
+  }, [className]);
 
   const doSignUp = () => {
     if (onLoading.current) { return; }

@@ -4,22 +4,30 @@ import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer'
 import { addTask } from 'src/shared/task-shared';
 import { File, Prefix } from 'src/interface/common';
 
+export interface UploadFile {
+  file: globalThis.File;
+  path: string;
+}
+
 export class FileService {
-  public static readonly uploadFiles = (prefix: Prefix, files: FileList) => {
-    // console.log('Upload Files', fileList);
+  public static readonly uploadFiles = (prefix: Prefix, files: UploadFile[]) => {
     const timeStamp = new Date().getTime();
-    const tasks = Array.from(files)
-      .filter((file) => (file.type || file.size))
+    const tasks = files
       .map((file, index) => {
+        const newPrefix: Prefix = {
+          sharedId: prefix.sharedId,
+          path: file.path,
+        };
+
         const task: TaskData = {
           id: `${timeStamp}_${index}`,
           type: TaskType.upload,
-          prefix,
-          fileName: file.name,
+          prefix: newPrefix,
+          fileName: file.file.name,
           status: TaskStatus.waiting,
           progress: 0,
           cancelToken: axios.CancelToken.source(),
-          file: file,
+          file: file.file,
         };
         return task;
       });

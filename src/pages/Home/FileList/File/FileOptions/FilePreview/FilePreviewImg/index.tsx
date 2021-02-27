@@ -27,7 +27,6 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
 
     const percentage = Math.round(event.loaded * 100 / event.total);
     setPercentage(percentage);
-
   }, []);
 
   useEffect(() => {
@@ -47,7 +46,6 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
     });
 
     return () => { cancelToken.cancel(); };
-
   }, [file, prefix, userProfile, progress]);
 
   return (

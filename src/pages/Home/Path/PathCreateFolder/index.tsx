@@ -43,9 +43,7 @@ const PathCreateFolder: FunctionComponent<{}> = () => {
 
     window.addEventListener('click', onClick);
 
-    return () => {
-      window.removeEventListener('click', onClick);
-    };
+    return () => { window.removeEventListener('click', onClick); };
   }, [isCreating]);
 
   const createFolder = (e?: MouseEvent) => {

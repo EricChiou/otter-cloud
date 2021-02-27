@@ -25,7 +25,6 @@ const ShareLinkDownload: FunctionComponent<Props> = ({ shareableFile, showLinkIn
     }).catch(() => {
       showLinkInvalidMessage();
     });
-
   }, [shareableFile, showLinkInvalidMessage]);
 
   return <></>;

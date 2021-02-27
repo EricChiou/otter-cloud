@@ -55,3 +55,5 @@ export { SimpleInfo } from './SimpleInfo';
 export { GoBack } from './GoBack';
 export { Person } from './Person';
 export { Eye } from './Eye';
+export { UploadFile } from './UploadFile';
+export { UploadFolder } from './UploadFolder';

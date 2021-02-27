@@ -54,7 +54,6 @@ const SideMenu: FunctionComponent<{}> = () => {
       setFolderList(newFolderList);
 
     }).catch((error) => { console.log(error); });
-
   }, [userProfile]);
 
   useEffect(() => {
@@ -69,7 +68,6 @@ const SideMenu: FunctionComponent<{}> = () => {
     });
 
     return () => { subscribe.unsubscribe(); };
-
   }, [refreshFileList]);
 
   // get share folder
@@ -77,7 +75,6 @@ const SideMenu: FunctionComponent<{}> = () => {
     if (!StatusService.isLogin()) { return; }
 
     dispatch(updateSharedFolderList(userProfile.token));
-
   }, [dispatch, userProfile]);
 
   const folderOnSelect = (ele: HTMLElement, folder: Folder) => {

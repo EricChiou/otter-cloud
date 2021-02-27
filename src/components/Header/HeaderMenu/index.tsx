@@ -35,7 +35,7 @@ const Menu: FunctionComponent<Props> = ({ close }) => {
     window.addEventListener('click', onClick);
 
     return () => { window.removeEventListener('click', onClick); };
-  });
+  }, [close]);
 
   const doLogout = () => {
     dispatch(logout());

@@ -38,10 +38,8 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
     };
     window.addEventListener('click', onClick);
 
-    return () => {
-      window.removeEventListener('click', onClick);
-    };
-  });
+    return () => { window.removeEventListener('click', onClick); };
+  }, [showOptions]);
 
   const getOptionsClassName = (): string => {
     switch (viewType) {

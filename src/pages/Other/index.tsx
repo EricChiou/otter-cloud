@@ -40,10 +40,8 @@ const Other: FunctionComponent<{}> = () => {
 
     window.addEventListener('resize', onResize);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+    return () => { window.removeEventListener('resize', onResize); };
+  }, [className]);
 
   const doResetPwd = () => {
     if (!resetPwdAcc || onLoading.current) { return; }

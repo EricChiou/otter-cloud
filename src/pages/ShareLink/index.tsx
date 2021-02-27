@@ -57,7 +57,6 @@ const ShareLink: FunctionComponent<{}> = () => {
     } catch (error) {
       showLinkInvalidMessage();
     }
-
   }, [location, shareableFile, showLinkInvalidMessage]);
 
   const renderShareLink = () => {

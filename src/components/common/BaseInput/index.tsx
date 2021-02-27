@@ -58,12 +58,10 @@ const BaseInput: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (value) { setValue(value); }
-
   }, [value]);
 
   useEffect(() => {
     if (onFocus) { inputRef.current?.focus(); }
-
   }, [onFocus, inputRef]);
 
   const getOptions = () => {

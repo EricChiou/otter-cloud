@@ -46,7 +46,6 @@ const App = () => {
     } else if (prefix.path !== '') {
       dispatch(setPrefix(null, ''));
     }
-
   }, [dispatch, location, prefix]);
 
   // if not login and not at login page or sign up page or share link page, redirect to login page.

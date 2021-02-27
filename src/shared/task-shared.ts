@@ -8,7 +8,7 @@ const taskShared = new Subject<SharedInput>();
 /** task shared actions */
 export const taskSharedActs = {
     addTask: 'addTask',
-}
+};
 
 /** subscribe task shared */
 export const subTaskShared = (callback: (data: SharedInput) => void) => {
@@ -17,4 +17,4 @@ export const subTaskShared = (callback: (data: SharedInput) => void) => {
 
 export const addTask = (tasks: TaskData[]) => {
     taskShared.next({ action: taskSharedActs.addTask, tasks });
-}
+};

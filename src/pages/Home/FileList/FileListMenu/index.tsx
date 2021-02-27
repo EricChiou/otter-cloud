@@ -1,8 +1,23 @@
-import React, { FunctionComponent, useRef, RefObject } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, {
+  FunctionComponent,
+  useRef,
+  RefObject,
+  ChangeEvent,
+  useEffect,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Upload, Download, Delete, Move } from 'src/components/icons';
-import { FileService } from 'src/service';
+import {
+  Upload,
+  Download,
+  Delete,
+  Move,
+  UploadFile as UploadFileIcon,
+  UploadFolder,
+} from 'src/components/icons';
+import { FileService, UploadFile } from 'src/service';
 import { removeFileNext } from 'src/shared/file-shared';
 import { selectUserProfile } from 'src/store/user.slice';
 import { selectPrefix, selectFileList } from 'src/store/system.slice';
@@ -26,6 +41,26 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
   const userProfile = useSelector(selectUserProfile);
   const fileList = useSelector(selectFileList);
   const uploadInputEle: RefObject<HTMLInputElement> = useRef(null);
+  const [showUploadOptions, setShowUploadOptions] = useState(false);
+
+  useEffect(() => {
+    if (!showUploadOptions) { return; }
+
+    const onClick = (e: MouseEvent) => {
+      let ele: HTMLElement | null = e.target as HTMLElement;
+      while (ele) {
+        if (ele.className === styles.upload) {
+          return;
+        }
+        ele = ele.parentElement;
+      }
+
+      setShowUploadOptions(false);
+    };
+    window.addEventListener('click', onClick);
+
+    return () => { window.removeEventListener('click', onClick); };
+  }, [showUploadOptions]);
 
   const showMoveFileDialog = () => {
     dispatch(addDialog({
@@ -34,16 +69,33 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
     }));
   };
 
-  const uploadOnClick = () => {
+  const uploadFileOnClick = () => {
+    if (!uploadInputEle.current) { return; }
+
+    uploadInputEle.current.removeAttribute('directory');
+    uploadInputEle.current.removeAttribute('webkitdirectory');
+    uploadInputEle.current.removeAttribute('mozdirectory');
     uploadInputEle.current?.click();
   };
 
-  const doUploadFiles = () => {
-    if (uploadInputEle.current) {
-      if (uploadInputEle.current.files && uploadInputEle.current.files.length) {
-        FileService.uploadFiles(prefix, uploadInputEle.current.files);
-        uploadInputEle.current.value = '';
-      }
+  const uploadFolderOnClick = () => {
+    if (!uploadInputEle.current) { return; }
+
+    uploadInputEle.current.setAttribute('directory', '');
+    uploadInputEle.current.setAttribute('webkitdirectory', '');
+    uploadInputEle.current.setAttribute('mozdirectory', '');
+    uploadInputEle.current?.click();
+  };
+
+  const doUploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const uploadFileList = Array.from(e.target.files).map((file): UploadFile => {
+        return {
+          file,
+          path: prefix.path,
+        };
+      });
+      FileService.uploadFiles(prefix, uploadFileList);
     }
   };
 
@@ -103,8 +155,21 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
           </div>
         </> : null
       }
-      <div className={styles.icon}>
-        <Upload onClick={uploadOnClick}></Upload>
+      <div
+        className={`${styles.icon} ${styles.upload}`}
+        onClick={() => { setShowUploadOptions(!showUploadOptions); }}
+      >
+        <Upload></Upload>
+        {showUploadOptions ?
+          <div className={styles.subIconContainer}>
+            <div className={styles.subIcon} onClick={uploadFolderOnClick}>
+              <UploadFolder></UploadFolder>
+            </div>
+            <div className={styles.subIcon} onClick={uploadFileOnClick}>
+              <UploadFileIcon></UploadFileIcon>
+            </div>
+          </div> : null
+        }
         <input
           ref={uploadInputEle}
           className={styles.uploadInput}
@@ -113,7 +178,7 @@ const FileListMenu: FunctionComponent<Props> = ({ showOtherOptions }) => {
           onChange={doUploadFiles}
         ></input>
       </div>
-    </div>
+    </div >
   );
 };
 

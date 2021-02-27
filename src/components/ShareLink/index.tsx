@@ -44,7 +44,6 @@ const ShareLink: FunctionComponent<Props> = ({ file }) => {
 
       setShareableLink(shareableLink);
     });
-
   }, [shareableLink, file, expires, prefix, userProfile]);
 
   const checkValueRange = (value: number, max: number, min: number): number => {

@@ -56,7 +56,6 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
       retry.current += 1;
       onLoading.current = false;
     });
-
   }, [prefix, userProfile, file]);
 
   useEffect(() => {
@@ -80,7 +79,6 @@ const FileIconPreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
       subscribe.unsubscribe();
       if (cancelToken.current) { cancelToken.current.cancel(); }
     };
-
   }, [getPreview, url]);
 
   const onError = () => {

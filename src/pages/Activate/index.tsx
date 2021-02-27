@@ -30,10 +30,8 @@ const Activate: FunctionComponent<{}> = () => {
 
     window.addEventListener('resize', onResize);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+    return () => { window.removeEventListener('resize', onResize); };
+  }, [className]);
 
   useEffect(() => {
     if (!avtiveCode) { history.push({ pathname: Routes.LOGIN, search: '' }); }
@@ -55,7 +53,6 @@ const Activate: FunctionComponent<{}> = () => {
         () => { history.push({ pathname: Routes.LOGIN, search: '' }); },
       ));
     });
-
   }, [avtiveCode, dispatch, history]);
 
   return <div id={styles.avtivate} className={className}></div>;

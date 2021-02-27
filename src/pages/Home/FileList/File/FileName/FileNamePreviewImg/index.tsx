@@ -27,7 +27,6 @@ const FileNamePreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
 
     const percentage = Math.round(event.loaded * 100 / event.total);
     setPercentage(percentage);
-
   }, []);
 
   const getPreview = useCallback(() => {
@@ -49,7 +48,6 @@ const FileNamePreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
     }).finally(() => {
       retry.current += 1;
     });
-
   }, [file, prefix, userProfile, progress]);
 
   useEffect(() => {
@@ -60,7 +58,6 @@ const FileNamePreviewImg: FunctionComponent<Props> = ({ file }: Props) => {
     return () => {
       if (cancelToken.current) { cancelToken.current.cancel(); }
     };
-
   }, [url, getPreview]);
 
   const onError = () => {

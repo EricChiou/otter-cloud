@@ -43,10 +43,8 @@ const Login: FunctionComponent<{}> = () => {
 
     window.addEventListener('resize', onResize);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+    return () => { window.removeEventListener('resize', onResize); };
+  }, [className]);
 
   const doLogin = () => {
     if (onLoading.current) { return; }
