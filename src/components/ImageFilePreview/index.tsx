@@ -19,7 +19,6 @@ const ImageFilePreview: FunctionComponent<Props> = ({ url, close }) => {
     window.addEventListener('keyup', onKeyPress);
 
     return () => { window.removeEventListener('keyup', onKeyPress); };
-
   }, [close]);
 
   return (

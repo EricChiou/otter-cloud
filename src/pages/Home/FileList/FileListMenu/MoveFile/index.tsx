@@ -59,7 +59,6 @@ const MoveFile: FunctionComponent<{}> = () => {
     }).finally(() => {
       setOnloading(false);
     });
-
   }, [userProfile, listPrefix, prefix, parseFolderName]);
 
   const changePrefix = (newPrefix: string) => {

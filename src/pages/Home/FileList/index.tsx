@@ -44,8 +44,17 @@ const FikeList: FunctionComponent<{}> = () => {
   const fileList = useSelector(selectFileList);
   const fileListOnLoading = useSelector(selectFileListOnLoading);
   const [showOtherOptions, setShowOtherOptions] = useState<boolean>(false);
-  const [viewType, setViewType] = useState<ViewType>(ViewType.icon);
+  const [viewType, setViewType] = useState<ViewType>(ViewType.list);
   const [anchorPoint, setAnchorPoint] = useState<number | null>(null);
+  const [showOnLoading, setShowOnLoading] = useState(true);
+
+  useEffect(() => {
+    if (!fileListOnLoading) { setShowOnLoading(false); }
+  }, [fileListOnLoading]);
+
+  useEffect(() => {
+    setShowOnLoading(true);
+  }, [prefix]);
 
   useEffect(() => {
     if (!StatusService.isLogin()) { return; }
@@ -63,7 +72,6 @@ const FikeList: FunctionComponent<{}> = () => {
     });
 
     return () => { subscribe.unsubscribe(); };
-
   }, [dispatch, userProfile, prefix]);
 
   useEffect(() => {
@@ -174,7 +182,7 @@ const FikeList: FunctionComponent<{}> = () => {
         <FileListMenu showOtherOptions={showOtherOptions}></FileListMenu>
         <FileListDropFile fileListRef={fileListRef}></FileListDropFile>
       </div>
-      {fileListOnLoading ?
+      {fileListOnLoading && showOnLoading ?
         <div className={`${styles.onLoadingContainer}`}>
           <img className={styles.onLoading} src={loading} alt="loading"></img>
         </div> : null

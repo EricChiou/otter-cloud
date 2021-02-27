@@ -35,7 +35,6 @@ const Task: FunctionComponent<Props> = ({
 
     const percentage = Math.round(event.loaded * 100 / event.total);
     setProgress(task.id, percentage);
-
   }, [task, setProgress]);
 
   const dpUploadFile = useCallback(() => {
@@ -48,7 +47,6 @@ const Task: FunctionComponent<Props> = ({
     }).catch(() => {
       setStatus(task.id, TaskStatus.error);
     });
-
   }, [task, userProfile, progress, setStatus]);
 
   const doDownloadFile = useCallback(() => {
@@ -68,7 +66,6 @@ const Task: FunctionComponent<Props> = ({
     }).catch(() => {
       setStatus(task.id, TaskStatus.error);
     });
-
   }, [task, userProfile, progress, setStatus]);
 
   const removeTask = useCallback(() => {
@@ -76,7 +73,6 @@ const Task: FunctionComponent<Props> = ({
       task.cancelToken.cancel('The task was canceled.');
     }
     remove(task.id);
-
   }, [task, remove]);
 
   useEffect(() => {

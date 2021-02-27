@@ -25,10 +25,8 @@ const Main: FunctionComponent<{}> = ({ children }) => {
 
     window.addEventListener('resize', onResize);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  });
+    return () => { window.removeEventListener('resize', onResize); };
+  }, [fontSize]);
 
   return (
     <div id={styles.main}>

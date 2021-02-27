@@ -20,7 +20,6 @@ const TextFilePreview: FunctionComponent<Props> = ({ textBlob, close }) => {
     window.addEventListener('keyup', onKeyPress);
 
     return () => { window.removeEventListener('keyup', onKeyPress); };
-
   }, [close]);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const TextFilePreview: FunctionComponent<Props> = ({ textBlob, close }) => {
         textRef.current.innerText = fileReader.result.toString();
       }
     };
-
   }, [textBlob]);
 
   return (

@@ -21,7 +21,6 @@ const ShareLinkVideo: FunctionComponent<Props> = ({ shareableFile, showLinkInval
     }).catch(() => {
       showLinkInvalidMessage();
     });
-
   }, [shareableFile, showLinkInvalidMessage]);
 
   return (

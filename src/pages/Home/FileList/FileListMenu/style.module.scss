@@ -35,5 +35,40 @@
       top: 100%;
       left: 100%;
     }
+
+    .subIconContainer {
+      position: absolute;
+      right: -5px;
+      bottom: calc(100% + 12px);
+
+      .subIcon {
+        margin-top: 7px;
+        padding: 5px;
+        color: theme(blue, light);
+        border: 5px solid theme(blue, light);
+        border-radius: 50%;
+        cursor: pointer;
+
+        &:hover {
+          color: theme(blue);
+          border-color: theme(blue);
+        }
+
+        &:active {
+          color: theme(blue, deep);
+          border-color: theme(blue, deep);
+        }
+
+        svg {
+          display: block;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  .upload {
+    position: relative;
   }
 }

@@ -37,34 +37,28 @@ const TaskList: FunctionComponent<{}> = () => {
     });
 
     return () => { subscribe.unsubscribe(); };
-
   }, []);
 
   const onMouseLeave = useCallback(() => {
     if (!listRef.current) { return; }
 
     listRef.current.scrollTop = 0;
-
   }, []);
 
   const setProgress = useCallback((id: string, progress: number) => {
     taskListDispatch(updateTaskProgress(id, progress));
-
   }, []);
 
   const setStatus = useCallback((id: string, status: TaskStatus) => {
     taskListDispatch(updateTaskStatus(id, status));
-
   }, []);
 
   const doRemoveTask = useCallback((id: string) => {
     taskListDispatch(removeTask(id));
-
   }, []);
 
   const removeErrorTask = useCallback((id: string) => {
     errorTaskListDispatch(removeTask(id));
-
   }, []);
 
   const move2ErrorList = useCallback((id: string) => {
@@ -73,7 +67,6 @@ const TaskList: FunctionComponent<{}> = () => {
       taskListDispatch(removeTask(id));
       errorTaskListDispatch(addTask(targetTask));
     }
-
   }, [taskList]);
 
   return (

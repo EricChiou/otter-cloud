@@ -32,7 +32,6 @@ const Dialog: FunctionComponent<{}> = () => {
         setDefaultSize(buffer[0].defaultSize);
       }
     }
-
   }, [buffer, defaultSize]);
 
   const close = () => {
