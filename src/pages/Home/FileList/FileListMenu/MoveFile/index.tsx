@@ -180,7 +180,7 @@ const MoveFile: FunctionComponent<{}> = () => {
         })
         }
         {renderCreateFolder()}
-      </div >
+      </div>
     );
   };
 
