@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useState, useEffect, MouseEvent, useCallback } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  MouseEvent,
+  useCallback,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectUserProfile } from 'src/store/user.slice';
@@ -7,14 +13,15 @@ import { intl, keys, IntlType } from 'src/i18n';
 import { getFileList, moveFiles } from 'src/api/file';
 import { getSharedFileList } from 'src/api/shared';
 import { File } from 'src/interface/common';
-import { Folder, ArrowRight } from 'src/components/icons';
+import { Folder, ArrowRight, CreateFolder, Add } from 'src/components/icons';
 import { BaseButton } from 'src/components/common';
 import { moveFilesNext } from 'src/shared/file-shared';
-import { removeDialog } from 'src/components/common';
+import { removeDialog, BaseInput } from 'src/components/common';
 import { FileService } from 'src/service';
 import loading from 'src/assets/img/loading2.gif';
 import { addMessage, MessageType } from 'src/components/Message';
 import { ApiResult } from 'src/constants';
+import onMovingImg from 'src/assets/img/loading2.gif';
 
 import styles from './style.module.scss';
 
@@ -29,6 +36,8 @@ const MoveFile: FunctionComponent<{}> = () => {
     prefix.path.split('/')[0] + '/' : '');
   const [folderList, setFolderList] = useState<File[]>([]);
   const [onLoading, setOnloading] = useState(false);
+  const [onMoving, setOnMoving] = useState(false);
+  let newFolderName = '';
 
   const parseFolderName = useCallback((folderName: string): string => {
     const root = prefix.path.split('/')[0] + '/';
@@ -87,7 +96,11 @@ const MoveFile: FunctionComponent<{}> = () => {
   };
 
   const move = () => {
+    if (onMoving) { return; }
+
     const filenames = fileList.filter((file) => (file.selected)).map((file) => (file.name));
+
+    setOnMoving(true);
     moveFiles(prefix, targetPrefix, filenames, userProfile.token).then(() => {
       moveFilesNext();
     }).catch((error) => {
@@ -103,9 +116,11 @@ const MoveFile: FunctionComponent<{}> = () => {
           MessageType.warning,
         ));
       }
-    });
 
-    dispatch(removeDialog());
+    }).finally(() => {
+      setOnMoving(false);
+      dispatch(removeDialog());
+    });
   };
 
   const showBack2PreLayer = (): boolean => {
@@ -114,6 +129,25 @@ const MoveFile: FunctionComponent<{}> = () => {
     }
 
     return listPrefix ? true : false;
+  };
+
+  const createFolder = () => {
+    changePrefix(listPrefix + newFolderName.replaceAll('/', '') + '/');
+  };
+
+  const renderCreateFolder = () => {
+    return (
+      <div className={styles.folder}>
+        <span className={styles.folderIcon}><CreateFolder></CreateFolder></span>
+        <div className={styles.fileName} style={{ padding: '6px 0' }}>
+          <BaseInput
+            style={{ width: 'calc(100% - 8px)', height: '22px' }}
+            onChange={(e, value) => { newFolderName = e ? e.target.value : value; }}
+          ></BaseInput>
+        </div>
+        <span className={styles.nextLayer} onClick={createFolder}><Add></Add></span>
+      </div>
+    );
   };
 
   const renderFolderList = () => {
@@ -145,24 +179,29 @@ const MoveFile: FunctionComponent<{}> = () => {
           );
         })
         }
+        {renderCreateFolder()}
       </div >
     );
   };
+
 
   return (
     <div className={styles.moveFileDialog}>
       <div className={styles.header}>
         {intl(keys.moveTo)}
         &nbsp;
-        {targetPrefix ?
-          getTargetFolder(targetPrefix) :
-          intl(keys.myCloudStorge, IntlType.perUpper)
-        }
+        {targetPrefix ? getTargetFolder(targetPrefix) : intl(keys.myCloudStorge, IntlType.perUpper)}
       </div>
       {renderFolderList()}
       <div className={styles.footer}>
         <BaseButton disabled={prefix.path === targetPrefix} onClick={move}>
-          {intl(keys.move, IntlType.firstUpper)}
+          {onMoving ?
+            <img
+              src={onMovingImg}
+              style={{ display: 'block', margin: '0 5.5px', width: '21px', height: '21px' }}
+            /> :
+            intl(keys.move, IntlType.firstUpper)
+          }
         </BaseButton>
       </div>
     </div>
