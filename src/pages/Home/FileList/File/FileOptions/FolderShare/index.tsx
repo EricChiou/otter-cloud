@@ -33,6 +33,7 @@ const FolderShare: FunctionComponent<Props> = ({ file, onClick }) => {
         ></ShareFolderDialog>
       ),
       closeUI: true,
+      closeByClick: true,
     }));
 
     onClick();

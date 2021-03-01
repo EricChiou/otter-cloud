@@ -94,6 +94,7 @@ const CloudFolder: FunctionComponent<Props> = ({
         ></ShareFolderDialog>
       ),
       closeUI: true,
+      closeByClick: true,
     }));
   };
 
