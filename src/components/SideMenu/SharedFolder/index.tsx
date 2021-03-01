@@ -120,7 +120,7 @@ const SharedFolder: FunctionComponent<Props> = ({
       });
 
     return sharedFolderListEles.length ?
-      sharedFolderListEles.length :
+      sharedFolderListEles :
       <div className={styles.empty}>{intl(keys.emptySharedFolderList)}</div>;
   };
 
