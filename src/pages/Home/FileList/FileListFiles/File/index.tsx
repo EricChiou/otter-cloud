@@ -8,13 +8,13 @@ import { selectPrefix } from 'src/store/system.slice';
 import { addTask } from 'src/shared/task-shared';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import FileName from './FileName';
-import { ViewType } from '../';
+import { ViewType } from '../..';
 import FileIcon from './FileIcon';
 import { File } from 'src/interface/common';
 import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
-import table from '../table.module.scss';
+import table from '../../table.module.scss';
 
 interface Props {
   file: File;

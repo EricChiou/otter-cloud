@@ -2,8 +2,6 @@ import React, { FunctionComponent } from 'react';
 
 import { ViewType } from '..';
 import { intl, keys, IntlType } from 'src/i18n';
-import { BaseButton } from 'src/components/common';
-import { List, Photo } from 'src/components/icons';
 
 import table from '../table.module.scss';
 

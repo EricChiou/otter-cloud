@@ -4,13 +4,13 @@ import { ContentType } from 'src/constants';
 import { BaseTooltip } from 'src/components/common';
 import { CheckBox } from 'src/components/icons';
 import { File } from 'src/interface/common';
-import { ViewType } from '../../';
+import { ViewType } from '../../..';
 import FileIcon from '../FileIcon';
 import FileNamePreviewImg from './FileNamePreviewImg';
 import { FileService } from 'src/service/file.service';
 
 import styles from './style.module.scss';
-import table from '../../table.module.scss';
+import table from '../../../table.module.scss';
 
 interface Props {
   file: File;
