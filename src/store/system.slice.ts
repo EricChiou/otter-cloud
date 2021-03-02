@@ -70,7 +70,7 @@ export const updateFileList = (
   prefix: Prefix,
   token: string,
 ): AppThunk => (dispatch) => {
-  const { setFileList, setFileListOnLoading, setPrefix } = systemSlice.actions;
+  const { setFileList, setFileListOnLoading } = systemSlice.actions;
 
   const getFileListApi = prefix.sharedId ?
     getSharedFileList(prefix.sharedId, prefix.path, token) :
@@ -94,7 +94,6 @@ export const updateFileList = (
   }).catch(() => {
     // console.log(error);
     window.history.pushState({}, '', window.location.href.split('?')[0]);
-    dispatch(setPrefix({ sharedId: null, path: '' }));
 
   }).finally(() => {
     dispatch(setFileListOnLoading(false));

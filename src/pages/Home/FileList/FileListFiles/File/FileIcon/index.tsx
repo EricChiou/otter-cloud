@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ViewType } from '../../';
+import { ViewType } from '../../..';
 import {
   File as FileSvg, FileText, FileImage, FileAudio, FileVideo,
   FileArchive, FilePdf, FileWord, FileExcel, FilePPT, FileFolder,

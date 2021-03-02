@@ -7,7 +7,7 @@ import FileShare from './FileShare';
 import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
 import FolderShare from './FolderShare';
-import { ViewType } from '../../';
+import { ViewType } from '../../..';
 import { ContentType } from 'src/constants';
 import { FileService } from 'src/service';
 
