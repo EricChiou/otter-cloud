@@ -199,6 +199,7 @@ const MoveFile: FunctionComponent<{}> = () => {
             <img
               src={onMovingImg}
               style={{ display: 'block', margin: '0 5.5px', width: '21px', height: '21px' }}
+              alt="loading"
             /> :
             intl(keys.move, IntlType.firstUpper)
           }

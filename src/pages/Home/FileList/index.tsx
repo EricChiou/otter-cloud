@@ -25,6 +25,8 @@ import { subFileShared, fileSharedActs, fileListOnScroll } from 'src/shared/file
 import Header from './Header';
 import FileListDropFile from './FileListDropFile';
 import { FileService } from 'src/service';
+import { BaseButton, BaseInput } from 'src/components/common';
+import { Check, List, Photo, Seacrh } from 'src/components/icons';
 
 import loading from 'src/assets/img/loading2.gif';
 import styles from './style.module.scss';
@@ -174,7 +176,31 @@ const FikeList: FunctionComponent<{}> = () => {
 
   return (
     <div id={styles.fileList}>
-      <Header viewType={viewType} changeViewType={changeViewType}></Header>
+      <div className={table.toolBar}>
+        <div className={table.viewType}>
+          <BaseButton
+            style={{ display: 'block', padding: '0' }}
+            onClick={changeViewType}
+          >
+            {viewType === ViewType.list ? <List></List> : null}
+            {viewType === ViewType.icon ? <Photo></Photo> : null}
+          </BaseButton>
+        </div>
+        <div className={table.selectAll}>
+          <div className={table.selectAllBtn}>
+            <Check></Check>
+          </div>
+        </div>
+        <div className={table.search}>
+          <BaseInput
+            style={{ width: '180px', height: '22px' }}
+          ></BaseInput>
+          <div className={table.searchIcon}>
+            <Seacrh></Seacrh>
+          </div>
+        </div>
+      </div>
+      <Header viewType={viewType}></Header>
       <div ref={fileListRef} className={styles.fileListContainer}>
         <div className={getFilesClassName()} onScroll={() => { fileListOnScroll(); }}>
           {renderFiles()}

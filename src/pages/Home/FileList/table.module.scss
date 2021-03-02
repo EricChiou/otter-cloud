@@ -1,6 +1,7 @@
 @import 'src/assets/css/theme.scss';
 @import 'src/assets/css/rwd.scss';
 
+.toolBar,
 .header,
 .list .file,
 .icon {
@@ -31,7 +32,7 @@
     .text {
       display: inline-block;
       width: calc(100% - 4px);
-      line-height: 30px;
+      line-height: 28px;
       white-space: nowrap;
       text-overflow: ellipsis;
       vertical-align: middle;
@@ -76,6 +77,65 @@
   }
 }
 
+.toolBar {
+  height: 30px;
+
+  .viewType,
+  .selectAll,
+  .search {
+    display: inline-block;
+    padding: 0 2px;
+    height: 28px;
+    vertical-align: middle;
+  }
+
+  .viewType {
+    display: inline-block;
+    padding: 0 2px;
+    height: 28px;
+    vertical-align: middle;
+
+    svg {
+      display: block;
+    }
+  }
+
+  .selectAll {
+    display: inline-block;
+    padding: 0 2px;
+    height: 28px;
+    vertical-align: middle;
+
+    .selectAllBtn {
+      display: inline-block;
+      padding: 2px;
+      color: theme(white);
+      background-color: theme(blue, light);
+      border-radius: 4px;
+      cursor: pointer;
+
+      svg {
+        display: block;
+      }
+    }
+
+    // .active {
+    //   background-color: theme(blue);
+    // }
+  }
+
+  .search {
+    position: relative;
+
+    .searchIcon {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      color: theme(gray);
+    }
+  }
+}
+
 .header {
   font-weight: bold;
   border-bottom: 1px solid theme(gray, light);
@@ -88,19 +148,6 @@
   }
 
   .nameCol {
-    .viewType {
-      display: inline-block;
-      margin: 0.5px 2px 0 -2px;
-      height: 24px;
-      vertical-align: top;
-
-      svg {
-        display: block;
-        width: 22px;
-        height: 22px;
-      }
-    }
-
     .text {
       width: calc(100% - 4px - 26px);
     }
@@ -109,7 +156,7 @@
 
 .list {
   padding-bottom: 70px;
-  height: calc(100% - 70px - 35px);
+  height: calc(100% - 35px - 70px - 35px);
   overflow: auto;
 
   .file {
@@ -130,6 +177,6 @@
 
 .icon {
   padding-bottom: 70px;
-  height: calc(100% - 70px - 35px);
+  height: calc(100% - 35px - 70px - 35px);
   overflow: auto;
 }

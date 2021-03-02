@@ -9,23 +9,14 @@ import table from '../table.module.scss';
 
 interface Props {
   viewType: string;
-  changeViewType: () => void;
 }
 
-const Header: FunctionComponent<Props> = ({ viewType, changeViewType }) => {
+const Header: FunctionComponent<Props> = ({ viewType }) => {
   return (
     <>
       {viewType === ViewType.list ?
         <div className={table.header}>
           <div className={table.nameCol}>
-            <div className={table.viewType}>
-              <BaseButton
-                style={{ padding: '0' }}
-                onClick={changeViewType}
-              >
-                <List></List>
-              </BaseButton>
-            </div>
             <span className={table.text}>{intl(keys.fileName, IntlType.firstUpper)}</span>
           </div>
           <div className={table.sizeCol}>
@@ -35,24 +26,14 @@ const Header: FunctionComponent<Props> = ({ viewType, changeViewType }) => {
             <span className={table.text}>{intl(keys.lastModified, IntlType.firstUpper)}</span>
           </div>
           <div className={table.optionCol}></div>
-        </div>
-        : null
+        </div> : null
       }
       {viewType === ViewType.icon ?
         <div className={table.header}>
           <div className={table.nameCol}>
-            <div className={table.viewType}>
-              <BaseButton
-                style={{ padding: '0' }}
-                onClick={changeViewType}
-              >
-                <Photo></Photo>
-              </BaseButton>
-            </div>
             <span className={table.text}>{intl(keys.fileList, IntlType.firstUpper)}</span>
           </div>
-        </div>
-        : null
+        </div> : null
       }
     </>
   );
