@@ -22,8 +22,8 @@ const SideMenu: FunctionComponent<{}> = () => {
   const [folderList, setFolderList] = useState<Folder[]>([]);
   const sharedFolderList = useSelector(selectSharedFolderList);
   const [expand, setExpand] = useState({
-    cloud: getDeviceInfo()?.mobile ? false : true,
-    shared: getDeviceInfo()?.mobile ? false : true,
+    cloud: getDeviceInfo()?.mobile || window.innerWidth < 1024 ? false : true,
+    shared: getDeviceInfo()?.mobile || window.innerWidth < 1024 ? false : true,
   });
 
   useEffect(() => {

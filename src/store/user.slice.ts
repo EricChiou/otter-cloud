@@ -18,6 +18,7 @@ const initialState: UseState = {
     acc: '',
     name: '',
     roleCode: '',
+    ip: '',
     exp: 0,
   },
   lang: UserService.getLangFrCookie(),
@@ -54,6 +55,7 @@ export const logout = (): AppThunk => (dispatch) => {
     acc: '',
     name: '',
     roleCode: '',
+    ip: '',
     exp: 0,
   };
   const { setProfile } = userSlice.actions;

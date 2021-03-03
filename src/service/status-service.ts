@@ -8,7 +8,7 @@ export class StatusService {
       userProfile.acc &&
       userProfile.name &&
       userProfile.roleCode &&
-      userProfile.exp) {
+      (userProfile.exp || userProfile.ip)) {
 
       return true;
     }

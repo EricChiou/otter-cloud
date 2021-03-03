@@ -82,4 +82,5 @@ export interface Keys {
   modifySuccess: string;
   modifyFail: string;
   pwdError: string;
+  rememberMe: string;
 }

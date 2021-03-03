@@ -9,6 +9,7 @@ export interface SingUpReqVo {
 export interface SingInReqVo {
   acc: string;
   pwd: string;
+  rememberMe: boolean;
 }
 
 // response vo

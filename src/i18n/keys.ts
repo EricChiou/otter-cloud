@@ -76,4 +76,5 @@ export const keys: Keys = {
   modifySuccess: 'modifySuccess',
   modifyFail: 'modifyFail',
   pwdError: 'pwdError',
+  rememberMe: 'rememberMe',
 };

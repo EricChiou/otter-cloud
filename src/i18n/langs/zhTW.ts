@@ -76,4 +76,5 @@ export const zhTW: Keys = {
   modifySuccess: '修改成功',
   modifyFail: '修改失敗，請再試一次',
   pwdError: '密碼錯誤',
+  rememberMe: '記住我',
 };

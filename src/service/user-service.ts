@@ -10,6 +10,7 @@ export class UserService {
       acc: '',
       name: '',
       roleCode: '',
+      ip: '',
       exp: 0,
     };
 
@@ -28,6 +29,7 @@ export class UserService {
     userProfile.acc = parse.acc;
     userProfile.name = parse.name;
     userProfile.roleCode = parse.roleCode;
+    userProfile.ip = parse.ip;
     userProfile.exp = parse.exp;
     return userProfile;
   };
