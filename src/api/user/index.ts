@@ -23,10 +23,11 @@ export const signUp = (acc: string, name: string, pwd: string): Promise<RespVo> 
   });
 };
 
-export const login = (acc: string, pwd: string): Promise<SingInResVo> => {
+export const login = (acc: string, pwd: string, rememberMe: boolean): Promise<SingInResVo> => {
   const body: SingInReqVo = {
     acc,
     pwd,
+    rememberMe,
   };
 
   return new Promise((resolve, reject) => {

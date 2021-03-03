@@ -77,4 +77,5 @@ export const enUS: Keys = {
   modifySuccess: 'modify successful',
   modifyFail: 'Modify fail, please try again.',
   pwdError: 'password error',
+  rememberMe: 'remember me',
 };

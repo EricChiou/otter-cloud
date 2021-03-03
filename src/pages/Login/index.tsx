@@ -20,9 +20,10 @@ const Login: FunctionComponent<{}> = () => {
   const [className, setClassName] =
     useState(window.innerHeight > window.innerWidth ? styles.vertical : styles.horizontal);
   const onLoading = useRef(false);
-  const inputStyle = { padding: '2px 3px', width: '195px' };
+  const inputStyle = { width: '242px' };
   let acc = '';
   let pwd = '';
+  let rememberMe = false;
 
   useEffect(() => {
     if (StatusService.isLogin()) {
@@ -50,7 +51,7 @@ const Login: FunctionComponent<{}> = () => {
     if (onLoading.current) { return; }
 
     onLoading.current = true;
-    login(acc, pwd).then((resp) => {
+    login(acc, pwd, rememberMe).then((resp) => {
       // console.log('login:', resp);
       const userProfile = UserService.parseToken(resp.data.token);
       UserService.saveToken2Cookie(resp.data.token, userProfile.exp);
@@ -94,7 +95,7 @@ const Login: FunctionComponent<{}> = () => {
           <Header fontSize={20} showSetting={false}></Header>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</span>
+          <div className={styles.title}>{intl(keys.email, IntlType.firstUpper)}:</div>
           <BaseInput
             placeholder={intl(keys.email)}
             style={inputStyle}
@@ -102,7 +103,7 @@ const Login: FunctionComponent<{}> = () => {
           ></BaseInput>
         </div>
         <div className={styles.input}>
-          <span className={styles.title}>{intl(keys.password, IntlType.firstUpper)}:</span>
+          <div className={styles.title}>{intl(keys.password, IntlType.firstUpper)}:</div>
           <BaseInput
             type={'password'}
             placeholder={intl(keys.password)}
@@ -110,8 +111,23 @@ const Login: FunctionComponent<{}> = () => {
             onKeyUp={pwdOnKeyUp}
           ></BaseInput>
         </div>
-        <div className={styles.loginBtn}>
-          <BaseButton onClick={doLogin}>{intl(keys.login, IntlType.firstUpper)}</BaseButton>
+        <div className={styles.loginBtnBlock}>
+          <div className={styles.rememberMe}>
+            <input
+              className={styles.checkbox}
+              type="checkbox"
+              onChange={(e) => { rememberMe = e.target.checked; }}
+            ></input>
+            <span className={styles.text}>{intl(keys.rememberMe, IntlType.perUpper)}</span>
+          </div>
+          <div className={styles.loginBtn}>
+            <BaseButton
+              style={{ padding: '1px 6px' }}
+              onClick={doLogin}
+            >
+              {intl(keys.login, IntlType.firstUpper)}
+            </BaseButton>
+          </div>
         </div>
         <div
           className={styles.other}
