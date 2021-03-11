@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState, useCallback } from 'reac
 import { useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { Routes, ContentType } from 'src/constants';
+import { Routes } from 'src/constants';
 import { intl, keys } from 'src/i18n';
 import { addMessage, MessageType } from 'src/components/Message';
 import ShareLinkDownload from './ShareLinkDownload';
@@ -10,6 +10,7 @@ import ShareLinkImage from './ShareLinkImage';
 import ShareLinkAudio from './ShareLinkAudio';
 import ShareLinkVideo from './ShareLinkVideo';
 import { getSearch } from 'src/util/location.util';
+import { FileService } from 'src/service';
 
 export interface ShareableFile {
   fileName: string;
@@ -63,7 +64,8 @@ const ShareLink: FunctionComponent<{}> = () => {
     if (!shareableFile.fileName || !shareableFile.contentType || !shareableFile.url) { return; }
 
     // console.log('renderShareLink', search);
-    if (shareableFile.contentType.indexOf(ContentType.image) > -1) {
+    const fileType = FileService.getFileType(shareableFile.contentType, 0);
+    if (fileType.isImage) {
       return (
         <ShareLinkImage
           shareableFile={shareableFile}
@@ -71,7 +73,7 @@ const ShareLink: FunctionComponent<{}> = () => {
         ></ShareLinkImage>
       );
 
-    } else if (shareableFile.contentType.indexOf(ContentType.audio) > -1) {
+    } else if (fileType.isAudio) {
       return (
         <ShareLinkAudio
           shareableFile={shareableFile}
@@ -79,7 +81,7 @@ const ShareLink: FunctionComponent<{}> = () => {
         ></ShareLinkAudio>
       );
 
-    } else if (shareableFile.contentType.indexOf(ContentType.video) > -1) {
+    } else if (fileType.isVideo) {
       return (
         <ShareLinkVideo
           shareableFile={shareableFile}

@@ -1,0 +1,24 @@
+@import 'src/assets/css/theme.scss';
+
+.preview {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+
+  .onLoading {
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle;
+  }
+
+  .progress {
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 40px;
+    color: theme(white);
+  }
+}

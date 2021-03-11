@@ -8,7 +8,6 @@ import {
   FolderShared,
 } from 'src/components/icons';
 import { File } from 'src/interface/common';
-import { ContentType } from 'src/constants';
 import PreviewImg from './FileIconPreviewImg';
 import { FileService } from 'src/service';
 import { selectPrefix, selectSharedFolderList } from 'src/store/system.slice';
@@ -25,8 +24,9 @@ const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
   const sharedFolderList = useSelector(selectSharedFolderList);
 
   const renderIcon = () => {
+    const fileType = FileService.getFileType(file.contentType, file.size);
     let icon = <FileSvg></FileSvg>;
-    if (!FileService.isFile(file)) {
+    if (!fileType.isFile) {
       const hasSharedFolder = sharedFolderList.find((sharedFolder) => (
         sharedFolder.ownerAcc === userProfile.acc &&
         sharedFolder.prefix === prefix.path + file.name
@@ -34,10 +34,10 @@ const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
 
       icon = hasSharedFolder ? <FolderShared></FolderShared> : <FileFolder></FileFolder>;
 
-    } else if (file.contentType.indexOf(ContentType.text) > -1) {
+    } else if (fileType.isText) {
       icon = <FileText></FileText>;
 
-    } else if (file.contentType.indexOf(ContentType.image) > -1) {
+    } else if (fileType.isImage) {
       switch (viewType) {
         case ViewType.list:
           icon = <FileImage></FileImage>;
@@ -48,25 +48,25 @@ const FileIcon: FunctionComponent<Props> = ({ file, viewType }) => {
           break;
       }
 
-    } else if (file.contentType.indexOf(ContentType.audio) > -1) {
+    } else if (fileType.isAudio) {
       icon = <FileAudio></FileAudio>;
 
-    } else if (file.contentType.indexOf(ContentType.video) > -1) {
+    } else if (fileType.isVideo) {
       icon = <FileVideo></FileVideo>;
 
-    } else if (file.contentType.indexOf(ContentType.zip) > -1) {
+    } else if (fileType.isZip) {
       icon = <FileArchive></FileArchive>;
 
-    } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
+    } else if (fileType.isPdf) {
       icon = <FilePdf></FilePdf>;
 
-    } else if (file.contentType.indexOf(ContentType.word) > -1) {
+    } else if (fileType.isWord) {
       icon = <FileWord></FileWord>;
 
-    } else if (file.contentType.indexOf(ContentType.excel) > -1) {
+    } else if (fileType.isExcel) {
       icon = <FileExcel></FileExcel>;
 
-    } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
+    } else if (fileType.isPpt) {
       icon = <FilePPT></FilePPT>;
     }
 

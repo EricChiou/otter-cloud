@@ -3,6 +3,7 @@ import axios from 'axios';
 import { TaskType, TaskStatus, TaskData } from 'src/components/TaskList/reducer';
 import { addTask } from 'src/shared/task-shared';
 import { File, Prefix } from 'src/interface/common';
+import { ContentType } from 'src/constants';
 
 export interface UploadFile {
   file: globalThis.File;
@@ -59,10 +60,28 @@ export class FileService {
   public static readonly isFile = (
     file: File | { contentType: string; name: string; size: number; lastModified: string },
   ): boolean => {
-    if (file.contentType || file.size) {
-      return true;
-    }
+    return (file.contentType || file.size) ? true : false;
+  };
 
-    return false;
+  public static readonly getFileType = (contentType: string, size: number) => {
+    const checkFileType =
+      (fileContentType: string, contentTypes: string[]): boolean => {
+        const find =
+          contentTypes.find((contentType) => (fileContentType.indexOf(contentType) > -1));
+        return find ? true : false;
+      };
+
+    return {
+      isFile: (contentType || size) ? true : false,
+      isText: checkFileType(contentType, ContentType.text),
+      isImage: checkFileType(contentType, ContentType.image),
+      isAudio: checkFileType(contentType, ContentType.audio),
+      isVideo: checkFileType(contentType, ContentType.video),
+      isZip: checkFileType(contentType, ContentType.zip),
+      isPdf: checkFileType(contentType, ContentType.pdf),
+      isWord: checkFileType(contentType, ContentType.word),
+      isExcel: checkFileType(contentType, ContentType.excel),
+      isPpt: checkFileType(contentType, ContentType.ppt),
+    };
   };
 }
