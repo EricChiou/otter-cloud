@@ -61,13 +61,13 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
           case fileType.isText:
           case fileType.isImage:
           case fileType.isPdf:
+          case fileType.isExcel:
             return { width: '104px' };
 
           case fileType.isAudio:
           case fileType.isVideo:
           case fileType.isZip:
           case fileType.isWord:
-          case fileType.isExcel:
           case fileType.isPpt:
             return { width: '78px' };
 

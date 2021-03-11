@@ -13,3 +13,5 @@ export const ContentType = {
   ],
   ppt: ['vnd.openxmlformats-officedocument.presentationml.presentation'],
 };
+
+export const previewOfficeFileUrl = 'https://view.officeapps.live.com/op/embed.aspx';
