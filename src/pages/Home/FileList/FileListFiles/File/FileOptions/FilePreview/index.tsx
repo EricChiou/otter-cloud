@@ -34,7 +34,6 @@ const FilePreview: FunctionComponent<Props> = ({ file, onClick }) => {
         case fileType.isExcel:
         case fileType.isPpt:
           return <Preview onClick={previewFile}></Preview>;
-
       }
     }
 

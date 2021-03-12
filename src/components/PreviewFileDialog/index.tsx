@@ -14,35 +14,18 @@ const getComponent = (file: File, close: () => void) => {
 
   switch (true) {
     case fileType.isText:
-      return (
-        <FilePreviewText
-          file={file}
-          close={close}
-        ></FilePreviewText>
-      );
+      return <FilePreviewText file={file} close={close}></FilePreviewText>;
+
     case fileType.isImage:
-      return (
-        <FilePreviewImg
-          file={file}
-          close={close}
-        ></FilePreviewImg>
-      );
+      return <FilePreviewImg file={file} close={close}></FilePreviewImg>;
+
     case fileType.isPdf:
-      return (
-        <FilePreviewPdf
-          file={file}
-          close={close}
-        ></FilePreviewPdf>
-      );
+      return <FilePreviewPdf file={file} close={close}></FilePreviewPdf>;
+
     case fileType.isWord:
     case fileType.isExcel:
     case fileType.isPpt:
-      return (
-        <FilePreviewOffice
-          file={file}
-          close={close}
-        ></FilePreviewOffice>
-      );
+      return <FilePreviewOffice file={file} close={close}></FilePreviewOffice>;
   }
 
   return null;

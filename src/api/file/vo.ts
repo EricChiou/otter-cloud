@@ -59,7 +59,7 @@ export interface GetShareableLinkResVo extends RespVo {
   };
 }
 
-export interface GetOfficeFilePreviewUrlResVo extends RespVo {
+export interface GetFilePreviewUrlResVo extends RespVo {
   data: {
     url: string;
   };

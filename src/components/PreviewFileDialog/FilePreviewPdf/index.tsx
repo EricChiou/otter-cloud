@@ -14,7 +14,7 @@ interface Props {
   close: () => void;
 }
 
-const FilePreviewPdf: FunctionComponent<Props> = ({ file, close }) => {
+const FilePreviewPdf: FunctionComponent<Props> = ({ file }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -36,7 +36,7 @@ const FilePreviewPdf: FunctionComponent<Props> = ({ file, close }) => {
   }, [file, prefix, userProfile, progress]);
 
   return (
-    <div className={styles.preview} onClick={close}>
+    <div className={styles.preview}>
       {pdfUrl ?
         <embed
           type="application/pdf"
