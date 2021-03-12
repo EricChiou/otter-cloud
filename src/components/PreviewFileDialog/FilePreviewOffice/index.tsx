@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { File } from 'src/interface/common';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import { getOfficeFilePreviewUrl } from 'src/api/file';
+import { getFilePreviewUrl } from 'src/api/file';
 import loading from 'src/assets/img/loading2.gif';
 import { previewFileUrl, previewOfficeFileUrl } from 'src/constants/file';
 
@@ -15,7 +15,7 @@ interface Props {
   close: () => void;
 }
 
-const FilePreviewOffice: FunctionComponent<Props> = ({ file, close }) => {
+const FilePreviewOffice: FunctionComponent<Props> = ({ file }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -29,20 +29,20 @@ const FilePreviewOffice: FunctionComponent<Props> = ({ file, close }) => {
   }, []);
 
   useEffect(() => {
-    getOfficeFilePreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
+    getFilePreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
       // console.log(resp);
       setPreviewUrl(`${previewFileUrl}?url=${resp.data.url}`);
     });
   }, [file, prefix, userProfile, progress]);
 
   return (
-    <div className={styles.preview} onClick={close}>
+    <div className={styles.preview}>
       {previewUrl ?
         <iframe
           title="preview-excel"
           src={`${previewOfficeFileUrl}?src=${previewUrl}`}
-          width={`${window.innerWidth}`}
-          height={`${window.innerHeight}`}
+          width={window.innerWidth}
+          height={window.innerHeight - 35}
         >
           This is an embedded
            <a href="http://office.com" target="_blank" rel="noreferrer noopener">
