@@ -6,7 +6,7 @@ import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
 import { getOfficeFilePreviewUrl } from 'src/api/file';
 import loading from 'src/assets/img/loading2.gif';
-import { previewOfficeFileUrl } from 'src/constants/file';
+import { previewFileUrl, previewOfficeFileUrl } from 'src/constants/file';
 
 import styles from './style.module.scss';
 
@@ -15,7 +15,7 @@ interface Props {
   close: () => void;
 }
 
-const FilePreviewPdf: FunctionComponent<Props> = ({ file, close }) => {
+const FilePreviewOffice: FunctionComponent<Props> = ({ file, close }) => {
   const userProfile = useSelector(selectUserProfile);
   const prefix = useSelector(selectPrefix);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -31,8 +31,7 @@ const FilePreviewPdf: FunctionComponent<Props> = ({ file, close }) => {
   useEffect(() => {
     getOfficeFilePreviewUrl(prefix, file.name, userProfile.token).then((resp) => {
       // console.log(resp);
-
-      setPreviewUrl(`https://www.calicomoomoo.ml/otter-cloud-ws/file/preview?url=${resp.data.url}`);
+      setPreviewUrl(`${previewFileUrl}?url=${resp.data.url}`);
     });
   }, [file, prefix, userProfile, progress]);
 
@@ -64,4 +63,4 @@ const FilePreviewPdf: FunctionComponent<Props> = ({ file, close }) => {
   );
 };
 
-export default FilePreviewPdf;
+export default FilePreviewOffice;

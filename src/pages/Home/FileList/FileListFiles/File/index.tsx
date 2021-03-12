@@ -101,7 +101,9 @@ const FileComponent: FunctionComponent<Props> = ({
       case fileType.isText:
       case fileType.isImage:
       case fileType.isPdf:
+      case fileType.isWord:
       case fileType.isExcel:
+      case fileType.isPpt:
         dispatch(showPreviewFileDialog(file));
     }
   };

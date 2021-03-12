@@ -7,7 +7,7 @@ import { File } from 'src/interface/common';
 import FilePreviewImg from './FilePreviewImg';
 import FilePreviewText from './FilePreviewText';
 import FilePreviewPdf from './FilePreviewPdf';
-import FilePreviewExcel from './FilePreviewExcel';
+import FilePreviewOffice from './FilePreviewOffice';
 
 const getComponent = (file: File, close: () => void) => {
   const fileType = FileService.getFileType(file.contentType, file.size);
@@ -34,12 +34,14 @@ const getComponent = (file: File, close: () => void) => {
           close={close}
         ></FilePreviewPdf>
       );
+    case fileType.isWord:
     case fileType.isExcel:
+    case fileType.isPpt:
       return (
-        <FilePreviewExcel
+        <FilePreviewOffice
           file={file}
           close={close}
-        ></FilePreviewExcel>
+        ></FilePreviewOffice>
       );
   }
 

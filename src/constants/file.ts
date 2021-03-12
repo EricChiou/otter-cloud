@@ -1,3 +1,6 @@
+import { Config } from './config';
+import { ApiUrl } from './api-url';
+
 export const ContentType = {
   file: ['octet-stream'],
   text: ['text'],
@@ -14,4 +17,5 @@ export const ContentType = {
   ppt: ['vnd.openxmlformats-officedocument.presentationml.presentation'],
 };
 
+export const previewFileUrl = Config.API_BASE_URL + ApiUrl.GET_PREVIEW_FILE;
 export const previewOfficeFileUrl = 'https://view.officeapps.live.com/op/embed.aspx';
