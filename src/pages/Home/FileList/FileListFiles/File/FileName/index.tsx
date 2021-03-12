@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 
-import { ContentType } from 'src/constants';
 import { BaseTooltip } from 'src/components/common';
 import { CheckBox } from 'src/components/icons';
 import { File } from 'src/interface/common';
@@ -30,7 +29,8 @@ const FileName: FunctionComponent<Props> = ({
   };
 
   const renderTooltipContent = () => {
-    if (file.contentType.indexOf(ContentType.image) > -1) {
+    const fileType = FileService.getFileType(file.contentType, file.size);
+    if (fileType.isImage) {
       return <FileNamePreviewImg file={file}></FileNamePreviewImg>;
     }
 

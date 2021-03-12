@@ -1,4 +1,4 @@
-import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react';
+import React, { FunctionComponent, MouseEvent, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectBuffer, removeDialog } from './dialog.slice';
@@ -20,6 +20,23 @@ const Dialog: FunctionComponent<{}> = () => {
   const buffer = useSelector(selectBuffer);
   const [defaultSize, setDefaultSize] = useState(true);
 
+  const close = useCallback(() => {
+    if (buffer[0] && buffer[0].callback) { buffer[0].callback(); }
+    dispatch(removeDialog());
+  }, [buffer, dispatch]);
+
+  useEffect(() => {
+    const popstate = () => {
+      if (!buffer[0]) { return; }
+      close();
+    };
+    window.addEventListener('popstate', popstate);
+
+    return () => {
+      window.removeEventListener('popstate', popstate);
+    };
+  }, [close, buffer]);
+
   useEffect(() => {
     if (!buffer[0]) { return; }
 
@@ -33,11 +50,6 @@ const Dialog: FunctionComponent<{}> = () => {
       }
     }
   }, [buffer, defaultSize]);
-
-  const close = () => {
-    if (buffer[0].callback) { buffer[0].callback(); }
-    dispatch(removeDialog());
-  };
 
   const closeByClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();

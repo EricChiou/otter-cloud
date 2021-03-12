@@ -20,6 +20,7 @@ import {
   RenameFileReqVo,
   MoveFilesReqVo,
   GetShareableLinkReqVo,
+  GetOfficeFilePreviewUrlResVo,
 } from './vo';
 import { ApiUrl, ApiResult } from 'src/constants';
 import { uploadFileNext } from 'src/shared/file-shared';
@@ -299,6 +300,34 @@ export const moveFiles = (
       token,
     ).then((resp) => {
       resp.status === ApiResult.Success ? resolve(resp as GetFileListResVo) : reject(resp);
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const getOfficeFilePreviewUrl = (
+  prefix: Prefix,
+  fileName: string,
+  token: string,
+): Promise<GetOfficeFilePreviewUrlResVo> => {
+  const body = {
+    id: prefix.sharedId,
+    prefix: prefix.path,
+    fileName: fileName,
+  };
+
+  return new Promise((resolve, reject) => {
+    post(
+      prefix.sharedId ?
+        ApiUrl.GET_SHARE_OFFICE_FILE_PREVIEW_URL : ApiUrl.GET_OFFICE_FILE_PREVIEW_URL,
+      body,
+      undefined,
+      token,
+    ).then((resp: RespVo) => {
+      resp.status === ApiResult.Success ?
+        resolve(resp as GetOfficeFilePreviewUrlResVo) : reject(resp);
 
     }).catch((error) => {
       reject(error);

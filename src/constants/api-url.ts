@@ -19,6 +19,7 @@ export class ApiUrl {
     public static readonly GET_FILE_LIST = fileGroupUrl + '/list';
     public static readonly UPLOAD_FILES = fileGroupUrl + '/upload';
     public static readonly GET_PREVIEW_URL = fileGroupUrl + '/preview';
+    public static readonly GET_PREVIEW_FILE = fileGroupUrl + '/preview';
     public static readonly DOWNLOAD_FILE = fileGroupUrl + '/download';
     public static readonly REMOVE_FILE = fileGroupUrl + '/remove';
     public static readonly REMOVE_FOLDER = fileGroupUrl + '/remove/folder';
@@ -26,6 +27,7 @@ export class ApiUrl {
     public static readonly GET_OBJECT_BY_SHAREABLE_LINK_URL = fileGroupUrl + '/shareableLink/object';
     public static readonly RENAME_FILE_URL = fileGroupUrl + '/rename';
     public static readonly MOVE_FILES_URL = fileGroupUrl + '/move';
+    public static readonly GET_OFFICE_FILE_PREVIEW_URL = fileGroupUrl + '/preview/url';
 
     // share
     public static readonly ADD_SHARED_FOLDER_URL = shareGroupUrl + '/add';
@@ -41,4 +43,5 @@ export class ApiUrl {
     public static readonly REMOVE_SHARED_FOLDER = shareGroupUrl + '/folder';
     public static readonly RENAME_SHARED_FILE = shareGroupUrl + '/file/rename';
     public static readonly MOVE_SHARED_FILES = shareGroupUrl + '/file/move';
+    public static readonly GET_SHARE_OFFICE_FILE_PREVIEW_URL = shareGroupUrl + '/file/preview/url';
 }

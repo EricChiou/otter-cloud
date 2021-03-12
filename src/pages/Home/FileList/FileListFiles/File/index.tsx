@@ -1,5 +1,5 @@
 import React, { FunctionComponent, MouseEvent } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import { Download, CheckBox } from 'src/components/icons';
@@ -12,6 +12,7 @@ import { ViewType } from '../..';
 import FileIcon from './FileIcon';
 import { File } from 'src/interface/common';
 import { FileService } from 'src/service';
+import { showPreviewFileDialog } from 'src/components/PreviewFileDialog';
 
 import styles from './style.module.scss';
 import table from '../../table.module.scss';
@@ -29,6 +30,7 @@ const FileComponent: FunctionComponent<Props> = ({
   onSelected,
   viewType,
 }) => {
+  const dispatch = useDispatch();
   const prefix = useSelector(selectPrefix);
 
   const convertFileSize = (): string => {
@@ -91,11 +93,30 @@ const FileComponent: FunctionComponent<Props> = ({
     addTask([task]);
   };
 
+  const onDoubleClick = (e: MouseEvent, file: File) => {
+    e.preventDefault();
+
+    const fileType = FileService.getFileType(file.contentType, file.size);
+    switch (true) {
+      case fileType.isText:
+      case fileType.isImage:
+      case fileType.isPdf:
+      case fileType.isWord:
+      case fileType.isExcel:
+      case fileType.isPpt:
+        dispatch(showPreviewFileDialog(file));
+    }
+  };
+
   return (
     <>
       { viewType === ViewType.list ?
         <div className={`${table.file} ${styles.file}`}>
-          <div className={table.nameCol} onClick={(e) => { onSelected(e, file, index); }}>
+          <div
+            className={table.nameCol}
+            onClick={(e) => { onSelected(e, file, index); }}
+            onDoubleClick={(e) => { onDoubleClick(e, file); }}
+          >
             <FileName
               file={file}
               convertFileSize={convertFileSize}
@@ -120,7 +141,11 @@ const FileComponent: FunctionComponent<Props> = ({
       }
       { viewType === ViewType.icon ?
         <div className={`${styles.icon}`}>
-          <div className={styles.iconContainer} onClick={(e) => { onSelected(e, file, index); }}>
+          <div
+            className={styles.iconContainer}
+            onClick={(e) => { onSelected(e, file, index); }}
+            onDoubleClick={(e) => { onDoubleClick(e, file); }}
+          >
             {file.selected ?
               <div className={styles.selected}>
                 <CheckBox></CheckBox>

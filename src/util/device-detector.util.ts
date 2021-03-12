@@ -8,7 +8,7 @@ export interface DeviceInfo {
   ie: boolean;
   edge: boolean;
   webView: boolean;
-};
+}
 
 export const getDeviceInfo = (): DeviceInfo | null => {
   if (!window.navigator || !window.navigator.userAgent) {
@@ -27,4 +27,4 @@ export const getDeviceInfo = (): DeviceInfo | null => {
     edge: /(edge|trident|edg)/.test(userAgent) ? true : false,
     webView: /(fbav|line|wv|iab|webview)/.test(userAgent) ? true : false,
   };
-}
+};

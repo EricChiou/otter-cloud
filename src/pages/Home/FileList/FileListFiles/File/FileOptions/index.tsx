@@ -8,7 +8,6 @@ import FileDelete from './FileDelete';
 import FilePreview from './FilePreview';
 import FolderShare from './FolderShare';
 import { ViewType } from '../../..';
-import { ContentType } from 'src/constants';
 import { FileService } from 'src/service';
 
 import styles from './style.module.scss';
@@ -52,40 +51,28 @@ const FileOptions: FunctionComponent<Props> = ({ file, viewType }) => {
   };
 
   const getOptionsStyle = (): object => {
+    const fileType = FileService.getFileType(file.contentType, file.size);
     switch (viewType) {
       case ViewType.list:
         return {};
 
       case ViewType.icon:
-        if (!FileService.isFile(file)) {
-          return { width: '52px' };
+        switch (true) {
+          case fileType.isText:
+          case fileType.isImage:
+          case fileType.isPdf:
+          case fileType.isWord:
+          case fileType.isExcel:
+          case fileType.isPpt:
+            return { width: '104px' };
 
-        } else if (file.contentType.indexOf(ContentType.text) > -1) {
-          return { width: '104px' };
+          case fileType.isAudio:
+          case fileType.isVideo:
+          case fileType.isZip:
+            return { width: '78px' };
 
-        } else if (file.contentType.indexOf(ContentType.image) > -1) {
-          return { width: '104px' };
-
-        } else if (file.contentType.indexOf(ContentType.audio) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.video) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.zip) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.pdf) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.word) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.excel) > -1) {
-          return { width: '78px' };
-
-        } else if (file.contentType.indexOf(ContentType.ppt) > -1) {
-          return { width: '78px' };
+          case !fileType.isFile:
+            return { width: '52px' };
         }
         return { width: '78px' };
     }
