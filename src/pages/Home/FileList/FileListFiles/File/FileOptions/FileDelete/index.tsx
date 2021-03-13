@@ -57,13 +57,11 @@ const FileDelete: FunctionComponent<Props> = ({ file, onClick }) => {
   };
 
   const showDeleteWarning = () => {
-    const confirm = deleteFile;
-    const cancel = () => { dispatch(removeDialog()); };
     const component = (
       <DeleteFileDialog
         fileName={file.name}
-        confirm={confirm}
-        cancel={cancel}
+        confirm={deleteFile}
+        cancel={() => { dispatch(removeDialog()); }}
       ></DeleteFileDialog>
     );
 
