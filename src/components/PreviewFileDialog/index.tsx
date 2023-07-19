@@ -8,6 +8,7 @@ import FilePreviewImg from './FilePreviewImg';
 import FilePreviewText from './FilePreviewText';
 import FilePreviewPdf from './FilePreviewPdf';
 import FilePreviewOffice from './FilePreviewOffice';
+import FilePreviewVideo from './FilePreviewVideo';
 
 const getComponent = (file: File, close: () => void) => {
   const fileType = FileService.getFileType(file.contentType, file.size);
@@ -21,6 +22,9 @@ const getComponent = (file: File, close: () => void) => {
 
     case fileType.isPdf:
       return <FilePreviewPdf file={file} close={close}></FilePreviewPdf>;
+
+    case fileType.isVideo:
+      return <FilePreviewVideo file={file} close={close}></FilePreviewVideo>;
 
     case fileType.isWord:
     case fileType.isExcel:
