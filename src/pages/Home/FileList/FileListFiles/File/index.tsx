@@ -104,13 +104,14 @@ const FileComponent: FunctionComponent<Props> = ({
       case fileType.isWord:
       case fileType.isExcel:
       case fileType.isPpt:
+      case fileType.isVideo:
         dispatch(showPreviewFileDialog(file));
     }
   };
 
   return (
     <>
-      { viewType === ViewType.list ?
+      {viewType === ViewType.list ?
         <div className={`${table.file} ${styles.file}`}>
           <div
             className={table.nameCol}
@@ -139,7 +140,7 @@ const FileComponent: FunctionComponent<Props> = ({
           </div>
         </div> : null
       }
-      { viewType === ViewType.icon ?
+      {viewType === ViewType.icon ?
         <div className={`${styles.icon}`}>
           <div
             className={styles.iconContainer}
