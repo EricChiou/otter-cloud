@@ -5,6 +5,7 @@ import {
   get,
   uploadPostFile,
   downloadPostFile,
+  streamPostFile,
   del,
   put,
   post,
@@ -100,6 +101,40 @@ export const getPreviewUrl = (
       if (resp instanceof Blob) {
         resolve(resp);
 
+      } else {
+        reject(resp);
+      }
+
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+};
+
+export const getVideoPreview = (
+  prefix: Prefix,
+  fileName: string,
+  token: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<ArrayBuffer> => {
+  const body: DownloadFileReqVo = {
+    id: prefix.sharedId ? prefix.sharedId : undefined,
+    prefix: prefix.path,
+    fileName,
+  };
+
+  return new Promise((resolve, reject) => {
+    streamPostFile(
+      prefix.sharedId ? ApiUrl.DOWNLOAD_SHARED_FILE : ApiUrl.DOWNLOAD_FILE,
+      body,
+      undefined,
+      token,
+      progress,
+      cancelToken,
+    ).then((resp) => {
+      if (resp instanceof ArrayBuffer) {
+        resolve(resp);
       } else {
         reject(resp);
       }

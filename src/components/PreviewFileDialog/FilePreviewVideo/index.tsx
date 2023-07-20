@@ -5,7 +5,7 @@ import axios from 'axios';
 import { File } from 'src/interface/common';
 import { selectPrefix } from 'src/store/system.slice';
 import { selectUserProfile } from 'src/store/user.slice';
-import { getPreviewUrl } from 'src/api/file';
+import { getVideoPreview } from 'src/api/file';
 import VideoFilePreview from 'src/components/VideoFilePreview';
 import loading from 'src/assets/img/loading2.gif';
 
@@ -31,14 +31,15 @@ const FilePreviewImg: FunctionComponent<Props> = ({ file, close }) => {
 
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    getPreviewUrl(
+    getVideoPreview(
       prefix,
       file.name,
       userProfile.token,
       progress,
     ).then((resp) => {
+      const videoBlob = new Blob([resp], { type: 'video/mp4' });
       const urlCreator = window.URL || window.webkitURL;
-      setUrl(urlCreator.createObjectURL(resp));
+      setUrl(urlCreator.createObjectURL(videoBlob));
 
     }).catch(() => {
       // do nothing

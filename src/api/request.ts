@@ -132,6 +132,27 @@ export const downloadPostFile = (
   return request.post(url, body, config);
 };
 
+export const streamPostFile = (
+  url: string,
+  body?: object,
+  params?: object,
+  token?: string,
+  progress?: (event: ProgressEvent<EventTarget>) => void,
+  cancelToken?: CancelTokenSource,
+): Promise<ArrayBuffer> => {
+
+  const config: AxiosRequestConfig = {
+    params,
+    responseType: 'arraybuffer',
+    timeout: 1000 * 60 * 60 * 24 * 365, // 365 days
+    onDownloadProgress: progress,
+    cancelToken: cancelToken?.token,
+  };
+  if (token) { config.headers = { Authorization: `Bearer ${token}` }; }
+
+  return request.post(url, body, config);
+};
+
 export const getBlob = (
   url: string,
   params?: object,
